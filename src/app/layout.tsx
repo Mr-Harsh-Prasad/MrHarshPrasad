@@ -11,41 +11,59 @@ const inter = Inter({
   variable: '--font-inter',
 });
 
-// SEO Metadata
+// SEO Metadata - Optimized for "Mr Harsh Prasad portfolio" search
 export const metadata: Metadata = {
-  title: 'Harsh Kumar | Developer Portfolio',
+  title: 'Mr Harsh Prasad | Personal Portfolio | Computer Science Student',
   description:
-    'B.Tech CS Student | Cybersecurity Enthusiast | Web Developer - Turning ideas into secure, beautiful digital experiences.',
+    'Mr Harsh Prasad personal portfolio. Computer science engineering student skilled in C, Python, HTML, CSS, data structures, cybersecurity, and web development.',
   keywords: [
-    'Harsh Kumar',
-    'Portfolio',
-    'Web Developer',
-    'Cybersecurity',
+    'Mr Harsh Prasad',
+    'Harsh Prasad',
+    'personal portfolio',
+    'computer science engineering',
+    'C',
+    'Python',
+    'HTML',
+    'CSS',
+    'data structures',
+    'cybersecurity',
+    'web development',
     'B.Tech CS',
     'Frontend Developer',
     'JavaScript',
     'React',
     'Next.js',
   ],
-  authors: [{ name: 'Harsh Kumar' }],
-  creator: 'Harsh Kumar',
+  authors: [{ name: 'Mr Harsh Prasad' }],
+  creator: 'Mr Harsh Prasad',
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    title: 'Harsh Kumar | Developer Portfolio',
+    url: 'https://mr-harsh-prasad-portfolio.vercel.app',
+    title: 'Mr Harsh Prasad | Personal Portfolio | Computer Science Student',
     description:
-      'B.Tech CS Student | Cybersecurity Enthusiast | Web Developer',
-    siteName: 'Harsh Kumar Portfolio',
+      'Mr Harsh Prasad personal portfolio. Computer science engineering student skilled in C, Python, HTML, CSS, data structures, cybersecurity, and web development.',
+    siteName: 'Mr Harsh Prasad Portfolio',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Harsh Kumar | Developer Portfolio',
+    title: 'Mr Harsh Prasad | Personal Portfolio | Computer Science Student',
     description:
-      'B.Tech CS Student | Cybersecurity Enthusiast | Web Developer',
+      'Mr Harsh Prasad personal portfolio. Computer science engineering student skilled in C, Python, HTML, CSS, data structures, cybersecurity, and web development.',
   },
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  alternates: {
+    canonical: 'https://mr-harsh-prasad-portfolio.vercel.app',
   },
 };
 

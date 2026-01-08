@@ -104,10 +104,10 @@ export default function Hero() {
                         Hello, I&apos;m
                     </span>
                     <span className="block gradient-text text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight">
-                        HARSH
+                        MR HARSH PRASAD
                     </span>
                     <span className="block text-text-primary text-2xl md:text-3xl lg:text-4xl font-semibold mt-4">
-                        Computer Science Undergraduate
+                        – Personal Portfolio
                     </span>
                 </h1>
 

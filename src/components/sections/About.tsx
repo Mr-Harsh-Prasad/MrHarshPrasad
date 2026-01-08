@@ -102,7 +102,7 @@ export default function About() {
                                 </div>
                                 {/* Initials */}
                                 <div className="absolute inset-0 flex items-center justify-center">
-                                    <span className="text-8xl font-bold text-white/80">HK</span>
+                                    <span className="text-8xl font-bold text-white/80">MHP</span>
                                 </div>
                             </div>
 
@@ -125,7 +125,8 @@ export default function About() {
 
                         <div className="space-y-4 text-text-secondary">
                             <p ref={(el) => { textRefs.current[0] = el; }}>
-                                I am a <strong className="text-text-primary">Computer Science undergraduate</strong> with
+                                I am <strong className="text-text-primary">Mr Harsh Prasad</strong>, a{' '}
+                                <strong className="text-text-primary">Computer Science undergraduate</strong> with
                                 a strong interest in <strong className="text-accent-primary">programming and technology</strong>.
                                 I believe in learning by building and improving through consistent practice.
                             </p>
@@ -133,8 +134,8 @@ export default function About() {
                             <p ref={(el) => { textRefs.current[1] = el; }}>
                                 My mindset is shaped by years of <strong className="text-accent-secondary">martial arts training</strong>,
                                 where discipline and patience matter more than speed. As a{' '}
-                                <strong className="gradient-text">Taekwondo Black Belt (1st Dan)</strong>, I bring the same
-                                focus and dedication to my coding journey.
+                                <strong className="gradient-text">Taekwondo Black Belt (1st Dan)</strong>, Mr Harsh Prasad brings the same
+                                focus and dedication to his coding journey.
                             </p>
 
                             <p ref={(el) => { textRefs.current[2] = el; }}>
