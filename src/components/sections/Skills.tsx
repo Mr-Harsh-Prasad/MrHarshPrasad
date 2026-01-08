@@ -10,35 +10,29 @@ gsap.registerPlugin(ScrollTrigger);
 // Skill data structure
 const skillCategories = [
     {
-        title: 'Programming',
+        title: 'Programming Languages',
         icon: '💻',
         color: 'from-blue-500 to-cyan-400',
         skills: [
             { name: 'C', level: 80 },
-            { name: 'HTML', level: 95 },
-            { name: 'CSS', level: 85 },
-            { name: 'Python', level: 90 },
+            { name: 'Python', level: 75 },
         ],
     },
     {
-        title: 'Web & UI',
-        icon: '🎨',
+        title: 'Web Technologies',
+        icon: '🌐',
         color: 'from-purple-500 to-pink-500',
         skills: [
-            { name: 'Responsive Design', level: 90 },
-            { name: 'Modern UI/UX', level: 85 },
-            { name: 'Animations', level: 88 },
+            { name: 'HTML', level: 90 },
+            { name: 'CSS', level: 85 },
         ],
     },
     {
-        title: 'Tools',
-        icon: '🛠️',
-        color: 'from-orange-500 to-yellow-400',
+        title: 'CS Fundamentals',
+        icon: '📚',
+        color: 'from-green-500 to-emerald-400',
         skills: [
-            { name: 'Git & GitHub', level: 90 },
-            { name: 'VS Code', level: 95 },
-            { name: 'Antigravity', level: 90 },
-
+            { name: 'Data Structures (C)', level: 70 },
         ],
     },
 ];
@@ -97,7 +91,7 @@ function SkillCard({
             <div className="text-4xl mb-4">{category.icon}</div>
 
             {/* Title */}
-            <h3 className="text-xl font-bold text-text-primary mb-4">{category.title}</h3>
+            <h3 className="text-lg md:text-xl font-bold text-text-primary mb-4 min-h-[56px] leading-tight">{category.title}</h3>
 
             {/* Skills List */}
             <div className="space-y-3">
@@ -176,16 +170,16 @@ export default function Skills() {
                 </div>
 
                 {/* Skills Grid */}
-                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto px-4">
                     {skillCategories.map((category, index) => (
                         <SkillCard key={category.title} category={category} index={index} />
                     ))}
                 </div>
             </div>
 
-            {/* Background decoration */}
-            <div className="absolute top-1/2 left-0 w-72 h-72 bg-accent-primary/10 rounded-full blur-[120px] pointer-events-none" />
-            <div className="absolute bottom-0 right-0 w-72 h-72 bg-accent-tertiary/10 rounded-full blur-[120px] pointer-events-none" />
+            {/* Themed Background */}
+            <div className="bg-code-theme" />
+            <div className="grid-pattern" />
         </section>
     );
 }

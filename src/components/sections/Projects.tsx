@@ -14,18 +14,27 @@ const projects = [
         id: 1,
         title: 'Jharkhand Tourism Website',
         description:
-            'An interactive tourism website showcasing destinations in Jharkhand with modern UI and future integration plans.',
+            'A responsive website showcasing tourist destinations of Jharkhand. Features modern UI with interactive elements.',
         tech: ['HTML', 'CSS', 'JavaScript'],
         color: 'from-emerald-500 to-teal-400',
-        image: null, // Placeholder gradient
+        image: null,
     },
     {
         id: 2,
-        title: 'Student E-Library System',
+        title: 'Student E-Digital Library',
         description:
-            'A digital library platform where students can access PDF books with admin upload functionality.',
+            'A digital library platform for accessing academic PDF resources. Includes basic admin content management.',
         tech: ['HTML', 'CSS', 'JavaScript'],
         color: 'from-violet-500 to-purple-400',
+        image: null,
+    },
+    {
+        id: 3,
+        title: 'Personal Portfolio Website',
+        description:
+            'A modern, animated portfolio built to showcase my skills, projects, and personality. Features fluid animations and 3D elements.',
+        tech: ['Next.js', 'GSAP', 'Three.js', 'Tailwind'],
+        color: 'from-pink-500 to-rose-400',
         image: null,
     },
 ];
@@ -210,7 +219,7 @@ export default function Projects() {
                 {/* More Projects CTA */}
                 <div className="text-center mt-12">
                     <MagneticButton
-                        href="https://github.com"
+                        href="https://github.com/Mr-Harsh-Prasad"
                         className="btn-secondary"
                     >
                         <span>View More on GitHub</span>
@@ -220,6 +229,9 @@ export default function Projects() {
                     </MagneticButton>
                 </div>
             </div>
+
+            {/* Projects Themed Background */}
+            <div className="bg-projects-theme" />
         </section>
     );
 }

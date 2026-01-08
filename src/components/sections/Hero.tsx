@@ -74,17 +74,24 @@ export default function Hero() {
                 );
 
             // Scroll-triggered parallax for title
-            gsap.to(titleRef.current, {
-                y: -100,
-                opacity: 0,
-                ease: 'none',
-                scrollTrigger: {
-                    trigger: sectionRef.current,
-                    start: 'top top',
-                    end: 'bottom top',
-                    scrub: true,
+            gsap.fromTo(
+                titleRef.current,
+                {
+                    y: 0,
+                    opacity: 1,
                 },
-            });
+                {
+                    y: -100,
+                    opacity: 0,
+                    ease: 'none',
+                    scrollTrigger: {
+                        trigger: sectionRef.current,
+                        start: 'top top',
+                        end: 'bottom top',
+                        scrub: 0.5,
+                    },
+                }
+            );
         }, sectionRef);
 
         return () => ctx.revert();
@@ -110,20 +117,23 @@ export default function Hero() {
                         Harsh Kumar
                     </span>
                     <span className="block text-text-primary text-2xl md:text-3xl lg:text-4xl font-semibold mt-4">
-                        B.Tech CSE Student
+                        Computer Science Undergraduate
                     </span>
                 </h1>
 
                 {/* Tagline */}
                 <p
                     ref={subtitleRef}
-                    className="text-text-secondary text-lg md:text-xl max-w-2xl mx-auto mb-8 leading-relaxed"
+                    className="text-text-secondary text-lg md:text-xl max-w-3xl mx-auto mb-8 leading-relaxed"
                 >
-                    <span className="text-accent-primary">Cybersecurity Enthusiast</span> &bull;{' '}
-                    <span className="text-accent-secondary">Web Developer</span>
-                    <br />
+                    <span className="block text-2xl md:text-3xl font-bold gradient-text mb-4">
+                        I don&apos;t just write code — I build discipline.
+                    </span>
+                    <span className="block text-text-secondary mb-2">
+                        A <span className="gradient-text font-semibold">1st Dan Black Belt</span> in Taekwondo who brings the same focus, consistency, and control into Computer Science.
+                    </span>
                     <em className="text-text-muted">
-                        &quot;Turning ideas into secure, beautiful digital experiences.&quot;
+                        &quot;Once known for words, now known for silence and execution.&quot;
                     </em>
                 </p>
 

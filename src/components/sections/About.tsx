@@ -119,38 +119,36 @@ export default function About() {
                     <div className="order-1 lg:order-2">
                         <span className="section-subtitle gradient-text">About Me</span>
                         <h2 ref={titleRef} className="section-title text-text-primary mb-6">
-                            Passionate About<br />
-                            <span className="gradient-text">Secure & Beautiful</span> Code
+                            Discipline Meets<br />
+                            <span className="gradient-text">Technology</span>
                         </h2>
 
                         <div className="space-y-4 text-text-secondary">
                             <p ref={(el) => { textRefs.current[0] = el; }}>
-                                I am a <strong className="text-text-primary">Computer Science & Engineering student</strong> with
-                                a strong interest in <strong className="text-accent-primary">Cybersecurity</strong> and
-                                modern web development. My journey in tech is driven by curiosity and a desire to build
-                                solutions that are both functional and secure.
+                                I am a <strong className="text-text-primary">Computer Science undergraduate</strong> with
+                                a strong interest in <strong className="text-accent-primary">programming and technology</strong>.
+                                I believe in learning by building and improving through consistent practice.
                             </p>
 
                             <p ref={(el) => { textRefs.current[1] = el; }}>
-                                I enjoy building <strong className="text-accent-secondary">clean, interactive, and
-                                    performance-focused</strong> web experiences. From crafting pixel-perfect UIs to
-                                implementing secure coding practices, I strive for excellence in every project.
+                                My mindset is shaped by years of <strong className="text-accent-secondary">martial arts training</strong>,
+                                where discipline and patience matter more than speed. As a{' '}
+                                <strong className="gradient-text">Taekwondo Black Belt (1st Dan)</strong>, I bring the same
+                                focus and dedication to my coding journey.
                             </p>
 
                             <p ref={(el) => { textRefs.current[2] = el; }}>
-                                I value <strong className="text-text-primary">discipline, consistency, and continuous
-                                    learning</strong>, and I aim to grow as a security-focused software engineer. When I&apos;m
-                                not coding, you&apos;ll find me exploring the latest in cybersecurity or experimenting
-                                with new web technologies.
+                                Currently pursuing <strong className="text-text-primary">B.Tech in Computer Science</strong> from
+                                an AKTU affiliated college, with expected graduation in <strong className="text-accent-primary">2028</strong>.
                             </p>
                         </div>
 
                         {/* Quick Stats */}
                         <div className="grid grid-cols-3 gap-4 mt-8">
                             {[
-                                { number: '10+', label: 'Projects' },
-                                { number: '5+', label: 'Technologies' },
-                                { number: '∞', label: 'Curiosity' },
+                                { number: '🥋', label: 'Black Belt' },
+                                { number: '2028', label: 'Graduation' },
+                                { number: '∞', label: 'Discipline' },
                             ].map((stat, index) => (
                                 <div
                                     key={stat.label}
