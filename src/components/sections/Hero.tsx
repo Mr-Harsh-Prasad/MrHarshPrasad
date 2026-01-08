@@ -22,7 +22,7 @@ export default function Hero() {
     const titleRef = useRef<HTMLHeadingElement>(null);
     const subtitleRef = useRef<HTMLParagraphElement>(null);
     const ctaRef = useRef<HTMLDivElement>(null);
-    const scrollIndicatorRef = useRef<HTMLDivElement>(null);
+
 
     useEffect(() => {
         const ctx = gsap.context(() => {
@@ -31,7 +31,7 @@ export default function Hero() {
                 opacity: 0,
                 y: 50,
             });
-            gsap.set(scrollIndicatorRef.current, { opacity: 0, y: -20 });
+
 
             // Entrance animation timeline
             const tl = gsap.timeline({ delay: 0.5 });
@@ -61,16 +61,6 @@ export default function Hero() {
                         ease: 'power3.out',
                     },
                     '-=0.4'
-                )
-                .to(
-                    scrollIndicatorRef.current,
-                    {
-                        opacity: 1,
-                        y: 0,
-                        duration: 0.6,
-                        ease: 'power3.out',
-                    },
-                    '-=0.2'
                 );
 
             // Scroll-triggered parallax for title
@@ -161,16 +151,7 @@ export default function Hero() {
                 </div>
             </div>
 
-            {/* Scroll Down Indicator */}
-            <div
-                ref={scrollIndicatorRef}
-                className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-text-muted"
-            >
-                <span className="text-sm tracking-widest uppercase">Scroll</span>
-                <div className="w-6 h-10 border-2 border-text-muted rounded-full flex justify-center pt-2">
-                    <div className="w-1 h-3 bg-text-muted rounded-full animate-bounce" />
-                </div>
-            </div>
+
 
             {/* Decorative gradient orbs */}
             <div className="absolute top-1/4 -left-32 w-64 h-64 bg-accent-primary/20 rounded-full blur-[100px] pointer-events-none" />
