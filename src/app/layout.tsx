@@ -15,13 +15,13 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: 'Harsh Kumar | Developer Portfolio',
   description:
-    'B.Tech CSE Student | Cybersecurity Enthusiast | Web Developer - Turning ideas into secure, beautiful digital experiences.',
+    'B.Tech CS Student | Cybersecurity Enthusiast | Web Developer - Turning ideas into secure, beautiful digital experiences.',
   keywords: [
     'Harsh Kumar',
     'Portfolio',
     'Web Developer',
     'Cybersecurity',
-    'B.Tech CSE',
+    'B.Tech CS',
     'Frontend Developer',
     'JavaScript',
     'React',
@@ -34,14 +34,14 @@ export const metadata: Metadata = {
     locale: 'en_US',
     title: 'Harsh Kumar | Developer Portfolio',
     description:
-      'B.Tech CSE Student | Cybersecurity Enthusiast | Web Developer',
+      'B.Tech CS Student | Cybersecurity Enthusiast | Web Developer',
     siteName: 'Harsh Kumar Portfolio',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Harsh Kumar | Developer Portfolio',
     description:
-      'B.Tech CSE Student | Cybersecurity Enthusiast | Web Developer',
+      'B.Tech CS Student | Cybersecurity Enthusiast | Web Developer',
   },
   robots: {
     index: true,

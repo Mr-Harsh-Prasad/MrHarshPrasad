@@ -82,7 +82,7 @@ export default function Resume() {
                         {/* Resume highlights */}
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-10">
                             {[
-                                { icon: '🎓', label: 'B.Tech CSE' },
+                                { icon: '🎓', label: 'B.Tech CS' },
                                 { icon: '💻', label: 'Web Dev' },
                                 { icon: '🔐', label: 'Cybersecurity' },
                                 { icon: '📚', label: 'Continuous Learner' },
