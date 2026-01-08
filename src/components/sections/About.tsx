@@ -84,26 +84,16 @@ export default function About() {
                     {/* Image/Visual Side */}
                     <div className="relative order-2 lg:order-1">
                         <div className="relative aspect-square max-w-md mx-auto overflow-hidden rounded-3xl">
-                            {/* Gradient placeholder for profile image */}
+                            {/* Profile Image */}
                             <div
                                 ref={imageRef}
-                                className="absolute inset-0 bg-gradient-to-br from-accent-primary via-accent-secondary to-accent-tertiary"
+                                className="absolute inset-0"
                             >
-                                {/* Abstract pattern overlay */}
-                                <div className="absolute inset-0 opacity-30">
-                                    <svg className="w-full h-full" viewBox="0 0 200 200">
-                                        <defs>
-                                            <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
-                                                <path d="M 20 0 L 0 0 0 20" fill="none" stroke="white" strokeWidth="0.5" />
-                                            </pattern>
-                                        </defs>
-                                        <rect width="100%" height="100%" fill="url(#grid)" />
-                                    </svg>
-                                </div>
-                                {/* Initials */}
-                                <div className="absolute inset-0 flex items-center justify-center">
-                                    <span className="text-8xl font-bold text-white/80">MHP</span>
-                                </div>
+                                <img
+                                    src="/mrharshprasad.jpeg"
+                                    alt="Mr Harsh Prasad"
+                                    className="w-full h-full object-cover"
+                                />
                             </div>
 
                             {/* Decorative border */}
