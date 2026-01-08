@@ -36,6 +36,9 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: 'Mr Harsh Prasad' }],
   creator: 'Mr Harsh Prasad',
+  verification: {
+    google: 'HVyk8tiOa8GaEonBfZ2EDkM24cxpXOUqKP_2eeEw1Sw',
+  },
   openGraph: {
     type: 'website',
     locale: 'en_US',
