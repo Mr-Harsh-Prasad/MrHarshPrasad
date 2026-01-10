@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import CustomCursor from '@/components/ui/CustomCursor';
 import SmoothScroll from '@/components/ui/SmoothScroll';
+import Navbar from '@/components/ui/Navbar';
 
 // Load Inter font with variable weight
 const inter = Inter({
@@ -80,6 +81,9 @@ export default function RootLayout({
       <body className="antialiased">
         {/* Custom cursor (hidden on touch devices) */}
         <CustomCursor />
+
+        {/* Navigation */}
+        <Navbar />
 
         {/* Smooth scroll wrapper */}
         <SmoothScroll>

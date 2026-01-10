@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import Image from 'next/image';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -89,10 +90,13 @@ export default function About() {
                                 ref={imageRef}
                                 className="absolute inset-0"
                             >
-                                <img
+                                <Image
                                     src="/mrharshprasad.jpeg"
-                                    alt="Mr Harsh Prasad"
-                                    className="w-full h-full object-cover"
+                                    alt="Mr Harsh Prasad - Computer Science Student and Taekwondo Black Belt"
+                                    fill
+                                    priority
+                                    sizes="(max-width: 768px) 100vw, 448px"
+                                    className="object-cover"
                                 />
                             </div>
 
@@ -124,8 +128,8 @@ export default function About() {
                             <p ref={(el) => { textRefs.current[1] = el; }}>
                                 My mindset is shaped by years of <strong className="text-accent-secondary">martial arts training</strong>,
                                 where discipline and patience matter more than speed. As a{' '}
-                                <strong className="gradient-text">Taekwondo Black Belt (1st Dan)</strong>, Mr Harsh Prasad brings the same
-                                focus and dedication to his coding journey.
+                                <strong className="gradient-text">Taekwondo Black Belt (1st Dan)</strong>, I bring the same
+                                focus and dedication to my coding journey.
                             </p>
 
                             <p ref={(el) => { textRefs.current[2] = el; }}>

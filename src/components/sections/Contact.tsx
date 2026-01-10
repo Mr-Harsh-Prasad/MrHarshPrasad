@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useId } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { motion } from 'framer-motion';
@@ -26,12 +26,14 @@ function AnimatedInput({
 }) {
     const [isFocused, setIsFocused] = useState(false);
     const [hasValue, setHasValue] = useState(false);
+    const inputId = useId();
 
     const InputComponent = textarea ? 'textarea' : 'input';
 
     return (
         <div className="relative">
             <InputComponent
+                id={inputId}
                 type={type}
                 name={name}
                 required={required}
@@ -44,6 +46,7 @@ function AnimatedInput({
                 placeholder=" "
             />
             <motion.label
+                htmlFor={inputId}
                 className="absolute left-4 top-4 text-text-muted pointer-events-none origin-left"
                 animate={{
                     y: isFocused || hasValue ? -28 : 0,
@@ -156,18 +159,37 @@ export default function Contact() {
         return () => ctx.revert();
     }, []);
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setIsSubmitting(true);
 
-        // Simulate form submission
-        await new Promise((resolve) => setTimeout(resolve, 1500));
+        const form = e.currentTarget;
+        const formData = new FormData(form);
 
-        setIsSubmitting(false);
-        setIsSubmitted(true);
+        try {
+            // Submit to Formspree
+            const response = await fetch('https://formspree.io/f/xpwzvwdz', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
 
-        // Reset after showing success
-        setTimeout(() => setIsSubmitted(false), 3000);
+            if (response.ok) {
+                setIsSubmitted(true);
+                form.reset();
+                // Reset success message after 5 seconds
+                setTimeout(() => setIsSubmitted(false), 5000);
+            } else {
+                throw new Error('Form submission failed');
+            }
+        } catch (error) {
+            console.error('Form submission error:', error);
+            alert('Sorry, there was an error sending your message. Please try again or email me directly.');
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     return (
@@ -228,6 +250,9 @@ export default function Contact() {
                         onSubmit={handleSubmit}
                         className="glass p-8 space-y-6"
                     >
+                        {/* Honeypot field for spam protection */}
+                        <input type="text" name="_gotcha" style={{ display: 'none' }} tabIndex={-1} aria-hidden="true" />
+
                         <AnimatedInput label="Your Name" name="name" required />
                         <AnimatedInput label="Your Email" type="email" name="email" required />
                         <AnimatedInput label="Subject" name="subject" />

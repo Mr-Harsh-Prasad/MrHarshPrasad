@@ -5,6 +5,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import dynamic from 'next/dynamic';
 import MagneticButton from '@/components/ui/MagneticButton';
+import ErrorBoundary from '@/components/ui/ErrorBoundary';
 
 // Dynamically import 3D component to avoid SSR issues
 const HeroBackground = dynamic(() => import('@/components/3d/HeroBackground'), {
@@ -93,8 +94,14 @@ export default function Hero() {
             id="hero"
             className="relative min-h-screen flex items-center justify-center overflow-hidden"
         >
-            {/* 3D Background */}
-            <HeroBackground />
+            {/* 3D Background with Error Boundary */}
+            <ErrorBoundary
+                fallback={
+                    <div className="absolute inset-0 bg-gradient-to-br from-bg-primary via-bg-secondary to-accent-primary/20" />
+                }
+            >
+                <HeroBackground />
+            </ErrorBoundary>
 
             {/* Content */}
             <div className="container relative z-10 text-center px-4">
