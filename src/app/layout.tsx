@@ -43,7 +43,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://mr-harsh-prasad-portfolio.vercel.app',
+    url: 'https://mrharshprasad-portfolio.vercel.app',
     title: 'Mr Harsh Prasad | Personal Portfolio | Computer Science Student',
     description:
       'Mr Harsh Prasad personal portfolio. Computer science engineering student skilled in C, Python, HTML, CSS, data structures, cybersecurity, and web development.',
@@ -67,7 +67,7 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: 'https://mr-harsh-prasad-portfolio.vercel.app',
+    canonical: 'https://mrharshprasad-portfolio.vercel.app',
   },
 };
 

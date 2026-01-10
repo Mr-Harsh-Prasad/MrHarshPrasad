@@ -42,7 +42,7 @@ const projects = [
         color: 'from-pink-500 to-rose-400',
         image: '/projects/portfolio.png',
         github: 'https://github.com/Mr-Harsh-Prasad',
-        live: 'https://mr-harsh-prasad-portfolio.vercel.app',
+        live: 'https://mrharshprasad-portfolio.vercel.app',
     },
 ];
 
