@@ -1,153 +1,42 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { motion } from 'framer-motion';
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Skill data structure
-const skillCategories = [
+// Programming Languages & Technologies
+const skills = [
+    { name: 'C', icon: '🔷' },
+    { name: 'Python', icon: '🐍' },
+    { name: 'HTML', icon: '🌐' },
+    { name: 'CSS', icon: '🎨' },
+    { name: 'Data Structures', icon: '📊' },
+];
+
+// Courses & Certifications
+const certifications = [
     {
-        title: 'Programming Languages',
-        icon: '💻',
-        color: 'from-blue-500 to-cyan-400',
-        skills: [
-            { name: 'C', level: 80, certificateUrl: 'https://www.linkedin.com/posts/mrharshprasad_certificate-programminglife-cprogramming-activity-7394020044768378880-jwPx' },
-            { name: 'Python', level: 75 },
-        ],
+        name: 'C Programming',
+        provider: 'Infosys Springboard',
+        certificateUrl: 'https://www.linkedin.com/posts/mrharshprasad_certificate-programminglife-cprogramming-activity-7394020044768378880-jwPx',
     },
     {
-        title: 'Web Technologies',
-        icon: '🌐',
-        color: 'from-purple-500 to-pink-500',
-        skills: [
-            { name: 'HTML', level: 90, certificateUrl: 'https://www.linkedin.com/posts/mrharshprasad_html-codingforfun-webdevelopment-activity-7394025565885771776-XQtg' },
-            { name: 'CSS', level: 85 },
-        ],
+        name: 'HTML Fundamentals',
+        provider: 'Infosys Springboard',
+        certificateUrl: 'https://www.linkedin.com/posts/mrharshprasad_html-codingforfun-webdevelopment-activity-7394025565885771776-XQtg',
     },
     {
-        title: 'Cybersecurity',
-        icon: '🔐',
-        color: 'from-red-500 to-orange-400',
-        skills: [
-            { name: 'Web Exploit & Bug Bounty', level: 75, certificateUrl: 'https://www.linkedin.com/posts/mrharshprasad_cybersecurity-bugbounty-websecurity-activity-7409989219709976577-C92n' },
-        ],
-    },
-    {
-        title: 'CS Fundamentals',
-        icon: '📚',
-        color: 'from-green-500 to-emerald-400',
-        skills: [
-            { name: 'Data Structures (C)', level: 70 },
-        ],
+        name: 'Web Exploit & Bug Bounty',
+        provider: 'Udemy',
+        certificateUrl: 'https://www.linkedin.com/posts/mrharshprasad_cybersecurity-bugbounty-websecurity-activity-7409989219709976577-C92n',
     },
 ];
 
 /**
- * SkillCard - Individual skill category card with hover animations
- */
-function SkillCard({
-    category,
-    index,
-}: {
-    category: (typeof skillCategories)[0];
-    index: number;
-}) {
-    const [isHovered, setIsHovered] = useState(false);
-    const cardRef = useRef<HTMLDivElement>(null);
-
-    useEffect(() => {
-        const card = cardRef.current;
-        if (!card) return;
-
-        gsap.fromTo(
-            card,
-            { opacity: 0, y: 50, scale: 0.95 },
-            {
-                opacity: 1,
-                y: 0,
-                scale: 1,
-                duration: 0.6,
-                delay: index * 0.1,
-                ease: 'power3.out',
-                scrollTrigger: {
-                    trigger: card,
-                    start: 'top 85%',
-                    toggleActions: 'play none none reverse',
-                },
-            }
-        );
-    }, [index]);
-
-    return (
-        <motion.div
-            ref={cardRef}
-            className="card relative overflow-hidden group"
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-            whileHover={{ y: -8 }}
-            transition={{ duration: 0.3, ease: 'easeOut' }}
-        >
-            {/* Gradient background on hover */}
-            <div
-                className={`absolute inset-0 bg-gradient-to-br ${category.color} opacity-0 group-hover:opacity-10 transition-opacity duration-500`}
-            />
-
-            {/* Icon */}
-            <div className="text-4xl mb-4">{category.icon}</div>
-
-            {/* Title */}
-            <h3 className="text-lg md:text-xl font-bold text-text-primary mb-4 min-h-[56px] leading-tight">{category.title}</h3>
-
-            {/* Skills List */}
-            <div className="space-y-4">
-                {category.skills.map((skill, skillIndex) => (
-                    <div key={skill.name}>
-                        <div className="flex justify-between text-sm mb-1">
-                            <span className="text-text-secondary">{skill.name}</span>
-                            <span className="text-text-muted">{skill.level}%</span>
-                        </div>
-                        <div className="h-2 bg-bg-tertiary rounded-full overflow-hidden">
-                            <motion.div
-                                className={`h-full rounded-full bg-gradient-to-r ${category.color}`}
-                                initial={{ width: 0 }}
-                                animate={{ width: isHovered ? `${skill.level}%` : '0%' }}
-                                transition={{
-                                    duration: 0.8,
-                                    delay: skillIndex * 0.1,
-                                    ease: 'easeOut',
-                                }}
-                            />
-                        </div>
-                        {'certificateUrl' in skill && skill.certificateUrl && (
-                            <a
-                                href={skill.certificateUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="inline-flex items-center gap-1.5 mt-2 px-3 py-1 text-xs font-medium rounded-full bg-bg-tertiary hover:bg-accent-primary/20 text-text-muted hover:text-accent-primary border border-border hover:border-accent-primary/50 transition-all duration-200"
-                            >
-                                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                                </svg>
-                                View Certificate
-                            </a>
-                        )}
-                    </div>
-                ))}
-            </div>
-
-            {/* Decorative corner */}
-            <div
-                className={`absolute -top-10 -right-10 w-20 h-20 bg-gradient-to-br ${category.color} opacity-20 rounded-full blur-2xl group-hover:opacity-40 transition-opacity duration-500`}
-            />
-        </motion.div>
-    );
-}
-
-/**
- * Skills Section - Skill categories with interactive cards
+ * Skills Section - Clean display of skills and certifications
  */
 export default function Skills() {
     const sectionRef = useRef<HTMLElement>(null);
@@ -184,23 +73,77 @@ export default function Skills() {
                     <h2 className="section-title text-text-primary">
                         Technologies I <span className="gradient-text">Work With</span>
                     </h2>
-                    <p className="text-text-secondary max-w-2xl mx-auto mt-4">
-                        Constantly learning and expanding my toolkit to build better,
-                        more secure digital experiences.
-                    </p>
                 </div>
 
                 {/* Skills Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto px-4">
-                    {skillCategories.map((category, index) => (
-                        <SkillCard key={category.title} category={category} index={index} />
-                    ))}
+                <div className="max-w-4xl mx-auto mb-16">
+                    <h3 className="text-lg font-semibold text-text-primary mb-6 flex items-center gap-2">
+                        <span className="text-2xl">💻</span> Languages & Technologies
+                    </h3>
+                    <div className="flex flex-wrap gap-3">
+                        {skills.map((skill, index) => (
+                            <motion.div
+                                key={skill.name}
+                                initial={{ opacity: 0, scale: 0.8 }}
+                                whileInView={{ opacity: 1, scale: 1 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: index * 0.05 }}
+                                whileHover={{ scale: 1.05, y: -2 }}
+                                className="px-5 py-3 rounded-xl bg-bg-secondary border border-border hover:border-accent-primary/50 hover:bg-bg-tertiary transition-all duration-200 cursor-default"
+                            >
+                                <span className="text-text-primary font-medium flex items-center gap-2">
+                                    <span>{skill.icon}</span>
+                                    {skill.name}
+                                </span>
+                            </motion.div>
+                        ))}
+                    </div>
+                </div>
+
+                {/* Certifications */}
+                <div className="max-w-4xl mx-auto">
+                    <h3 className="text-lg font-semibold text-text-primary mb-6 flex items-center gap-2">
+                        <span className="text-2xl">📜</span> Courses & Certifications
+                    </h3>
+                    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                        {certifications.map((cert, index) => (
+                            <motion.a
+                                key={cert.name}
+                                href={cert.certificateUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: index * 0.1 }}
+                                whileHover={{ scale: 1.02, y: -4 }}
+                                className="block p-5 rounded-xl bg-bg-secondary border border-border hover:border-accent-primary/50 hover:bg-bg-tertiary transition-all duration-200 group"
+                            >
+                                <div className="flex items-start justify-between gap-3">
+                                    <div>
+                                        <h4 className="font-medium text-text-primary group-hover:text-accent-primary transition-colors">
+                                            {cert.name}
+                                        </h4>
+                                        <p className="text-sm text-text-muted mt-1">{cert.provider}</p>
+                                    </div>
+                                    <svg
+                                        className="w-5 h-5 text-text-muted group-hover:text-accent-primary transition-colors flex-shrink-0 mt-0.5"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                                    </svg>
+                                </div>
+                            </motion.a>
+                        ))}
+                    </div>
                 </div>
             </div>
 
             {/* Themed Background */}
-            <div className="bg-code-theme" />
-            <div className="grid-pattern" />
+            <div className="bg-code-theme pointer-events-none" />
+            <div className="grid-pattern pointer-events-none" />
         </section>
     );
 }
