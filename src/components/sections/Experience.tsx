@@ -15,6 +15,7 @@ const experiences = [
         icon: '🔐',
         color: 'from-red-500 to-orange-400',
         description: 'Learning web security concepts, vulnerability assessment, and participating in bug bounty programs.',
+        certificateUrl: 'https://www.linkedin.com/posts/mrharshprasad_cybersecurity-bugbounty-websecurity-activity-7409989219709976577-C92n',
     },
 ];
 
@@ -75,7 +76,7 @@ export default function Experience() {
                         >
                             {/* Gradient background on hover */}
                             <div
-                                className={`absolute inset-0 bg-gradient-to-br ${exp.color} opacity-0 group-hover:opacity-10 transition-opacity duration-500`}
+                                className={`absolute inset-0 bg-gradient-to-br ${exp.color} opacity-0 group-hover:opacity-10 transition-opacity duration-500 pointer-events-none`}
                             />
 
                             {/* Icon */}
@@ -86,11 +87,26 @@ export default function Experience() {
                             <span className="text-sm text-accent-primary mb-3 block">{exp.type}</span>
 
                             {/* Description */}
-                            <p className="text-text-secondary text-sm">{exp.description}</p>
+                            <p className="text-text-secondary text-sm mb-4">{exp.description}</p>
+
+                            {/* Certificate Link */}
+                            {exp.certificateUrl && (
+                                <a
+                                    href={exp.certificateUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-1.5 text-sm text-text-muted hover:text-accent-primary transition-colors"
+                                >
+                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                                    </svg>
+                                    View Certificate
+                                </a>
+                            )}
 
                             {/* Decorative corner */}
                             <div
-                                className={`absolute -top-10 -right-10 w-20 h-20 bg-gradient-to-br ${exp.color} opacity-20 rounded-full blur-2xl group-hover:opacity-40 transition-opacity duration-500`}
+                                className={`absolute -top-10 -right-10 w-20 h-20 bg-gradient-to-br ${exp.color} opacity-20 rounded-full blur-2xl group-hover:opacity-40 transition-opacity duration-500 pointer-events-none`}
                             />
                         </motion.div>
                     ))}
