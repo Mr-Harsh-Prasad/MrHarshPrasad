@@ -14,7 +14,7 @@ const skillCategories = [
         icon: '💻',
         color: 'from-blue-500 to-cyan-400',
         skills: [
-            { name: 'C', level: 80 },
+            { name: 'C', level: 80, certificateUrl: 'https://www.linkedin.com/posts/mrharshprasad_certificate-programminglife-cprogramming-activity-7394020044768378880-jwPx' },
             { name: 'Python', level: 75 },
         ],
     },
@@ -23,8 +23,16 @@ const skillCategories = [
         icon: '🌐',
         color: 'from-purple-500 to-pink-500',
         skills: [
-            { name: 'HTML', level: 90 },
+            { name: 'HTML', level: 90, certificateUrl: 'https://www.linkedin.com/posts/mrharshprasad_html-codingforfun-webdevelopment-activity-7394025565885771776-XQtg' },
             { name: 'CSS', level: 85 },
+        ],
+    },
+    {
+        title: 'Cybersecurity',
+        icon: '🔐',
+        color: 'from-red-500 to-orange-400',
+        skills: [
+            { name: 'Web Exploit & Bug Bounty', level: 75, certificateUrl: 'https://www.linkedin.com/posts/mrharshprasad_cybersecurity-bugbounty-websecurity-activity-7409989219709976577-C92n' },
         ],
     },
     {
@@ -98,7 +106,23 @@ function SkillCard({
                 {category.skills.map((skill, skillIndex) => (
                     <div key={skill.name}>
                         <div className="flex justify-between text-sm mb-1">
-                            <span className="text-text-secondary">{skill.name}</span>
+                            <span className="text-text-secondary flex items-center gap-2">
+                                {skill.name}
+                                {'certificateUrl' in skill && skill.certificateUrl && (
+                                    <a
+                                        href={skill.certificateUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="inline-flex items-center gap-1 px-2 py-0.5 text-xs font-medium bg-accent-primary/20 text-accent-primary rounded-full hover:bg-accent-primary/30 transition-colors"
+                                        onClick={(e) => e.stopPropagation()}
+                                    >
+                                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+                                        </svg>
+                                        Certified
+                                    </a>
+                                )}
+                            </span>
                             <span className="text-text-muted">{skill.level}%</span>
                         </div>
                         <div className="h-2 bg-bg-tertiary rounded-full overflow-hidden">
