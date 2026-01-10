@@ -79,29 +79,14 @@ export default function Navbar() {
 
             <motion.header
                 className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled
-                        ? 'py-3 bg-bg-primary/80 backdrop-blur-xl border-b border-border'
-                        : 'py-5 bg-transparent'
+                    ? 'py-3 bg-bg-primary/80 backdrop-blur-xl border-b border-border'
+                    : 'py-5 bg-transparent'
                     }`}
                 initial={{ y: -100 }}
                 animate={{ y: 0 }}
                 transition={{ duration: 0.5, ease: 'easeOut' }}
             >
                 <nav className="container flex items-center justify-between" aria-label="Main navigation">
-                    {/* Logo */}
-                    <motion.a
-                        href="#hero"
-                        onClick={(e) => {
-                            e.preventDefault();
-                            window.scrollTo({ top: 0, behavior: 'smooth' });
-                        }}
-                        className="text-xl font-bold gradient-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary rounded"
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        aria-label="Go to top of page"
-                    >
-                        MHP
-                    </motion.a>
-
                     {/* Desktop Navigation */}
                     <ul className="hidden md:flex items-center gap-1" role="menubar">
                         {navLinks.map((link) => (
@@ -111,8 +96,8 @@ export default function Navbar() {
                                     onClick={(e) => handleNavClick(e, link.href)}
                                     role="menuitem"
                                     className={`relative px-4 py-2 text-sm font-medium transition-colors rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary ${activeSection === link.href.slice(1)
-                                            ? 'text-text-primary'
-                                            : 'text-text-muted hover:text-text-secondary'
+                                        ? 'text-text-primary'
+                                        : 'text-text-muted hover:text-text-secondary'
                                         }`}
                                 >
                                     {link.name}
@@ -204,8 +189,8 @@ export default function Navbar() {
                                                 onClick={(e) => handleNavClick(e, link.href)}
                                                 role="menuitem"
                                                 className={`block py-3 px-4 text-lg font-medium rounded-xl transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary ${activeSection === link.href.slice(1)
-                                                        ? 'text-text-primary bg-bg-tertiary'
-                                                        : 'text-text-muted hover:text-text-secondary hover:bg-bg-tertiary/50'
+                                                    ? 'text-text-primary bg-bg-tertiary'
+                                                    : 'text-text-muted hover:text-text-secondary hover:bg-bg-tertiary/50'
                                                     }`}
                                             >
                                                 {link.name}

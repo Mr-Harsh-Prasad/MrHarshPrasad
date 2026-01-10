@@ -102,27 +102,11 @@ function SkillCard({
             <h3 className="text-lg md:text-xl font-bold text-text-primary mb-4 min-h-[56px] leading-tight">{category.title}</h3>
 
             {/* Skills List */}
-            <div className="space-y-3">
+            <div className="space-y-4">
                 {category.skills.map((skill, skillIndex) => (
                     <div key={skill.name}>
                         <div className="flex justify-between text-sm mb-1">
-                            <span className="text-text-secondary flex items-center gap-2">
-                                {skill.name}
-                                {'certificateUrl' in skill && skill.certificateUrl && (
-                                    <a
-                                        href={skill.certificateUrl}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="inline-flex items-center gap-1 px-2 py-0.5 text-xs font-medium bg-accent-primary/20 text-accent-primary rounded-full hover:bg-accent-primary/30 transition-colors"
-                                        onClick={(e) => e.stopPropagation()}
-                                    >
-                                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
-                                        </svg>
-                                        Certified
-                                    </a>
-                                )}
-                            </span>
+                            <span className="text-text-secondary">{skill.name}</span>
                             <span className="text-text-muted">{skill.level}%</span>
                         </div>
                         <div className="h-2 bg-bg-tertiary rounded-full overflow-hidden">
@@ -137,6 +121,19 @@ function SkillCard({
                                 }}
                             />
                         </div>
+                        {'certificateUrl' in skill && skill.certificateUrl && (
+                            <a
+                                href={skill.certificateUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-1.5 mt-2 px-3 py-1 text-xs font-medium rounded-full bg-bg-tertiary hover:bg-accent-primary/20 text-text-muted hover:text-accent-primary border border-border hover:border-accent-primary/50 transition-all duration-200"
+                            >
+                                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                                </svg>
+                                View Certificate
+                            </a>
+                        )}
                     </div>
                 ))}
             </div>
