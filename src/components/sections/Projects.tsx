@@ -44,6 +44,17 @@ const projects = [
         github: 'https://github.com/Mr-Harsh-Prasad',
         live: 'https://mrharshprasad-portfolio.vercel.app',
     },
+    {
+        id: 4,
+        title: 'Expense Tracker',
+        description:
+            'A full-stack expense management application with user authentication, expense tracking, and data visualization features.',
+        tech: ['Django', 'Python', 'JavaScript', 'HTML', 'CSS'],
+        color: 'from-blue-500 to-cyan-400',
+        image: '/projects/expense-tracker.png',
+        github: 'https://github.com/Mr-Harsh-Prasad/Money-Analyzer',
+        live: 'https://money-analyzer.vercel.app',
+    },
 ];
 
 /**
