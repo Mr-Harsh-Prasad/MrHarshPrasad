@@ -41,7 +41,7 @@ const projects = [
         tech: ['Next.js', 'GSAP', 'Three.js', 'Tailwind'],
         color: 'from-pink-500 to-rose-400',
         image: '/projects/portfolio.png',
-        github: 'https://github.com/Mr-Harsh-Prasad',
+        github: 'https://github.com/Mr-Harsh-Prasad/MrHarshPrasad',
         live: 'https://mrharshprasad-portfolio.vercel.app',
     },
     {
