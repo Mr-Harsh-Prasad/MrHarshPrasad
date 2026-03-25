@@ -91,7 +91,7 @@ export default function About() {
                                 className="absolute inset-0"
                             >
                                 <Image
-                                    src="/mrharshprasad.jpeg"
+                                    src="/mrharshprasad.png"
                                     alt="Mr Harsh Prasad - Computer Science Student and Taekwondo Black Belt"
                                     fill
                                     priority
