@@ -9,11 +9,19 @@ gsap.registerPlugin(ScrollTrigger);
 
 // Skills with optional certificate links
 const skills = [
+    // Programming
     { name: 'C', icon: '🔷', color: 'from-blue-500 to-cyan-400', certificateUrl: 'https://www.linkedin.com/posts/mrharshprasad_certificate-programminglife-cprogramming-activity-7394020044768378880-jwPx' },
     { name: 'Python', icon: '🐍', color: 'from-yellow-500 to-green-400' },
+    { name: 'Java', icon: '☕', color: 'from-orange-600 to-red-500' },
+    // Web Development
     { name: 'HTML', icon: '🌐', color: 'from-orange-500 to-red-400', certificateUrl: 'https://www.linkedin.com/posts/mrharshprasad_html-codingforfun-webdevelopment-activity-7394025565885771776-XQtg' },
     { name: 'CSS', icon: '🎨', color: 'from-purple-500 to-pink-400' },
+    // DSA
     { name: 'DSA', subtitle: 'using C', icon: '📊', color: 'from-green-500 to-emerald-400' },
+    // Cybersecurity
+    { name: 'Kali Linux', icon: '🐉', color: 'from-slate-500 to-gray-400' },
+    { name: 'Network Security', icon: '🛡️', color: 'from-cyan-500 to-blue-400' },
+    { name: 'Wireshark', icon: '🦈', color: 'from-teal-500 to-cyan-400' },
 ];
 
 /**

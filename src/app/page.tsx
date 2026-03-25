@@ -1,9 +1,11 @@
 import Hero from '@/components/sections/Hero';
 import About from '@/components/sections/About';
-import Taekwondo from '@/components/sections/Taekwondo';
+import Education from '@/components/sections/Education';
+import Achievements from '@/components/sections/Achievements';
 import Skills from '@/components/sections/Skills';
 import Projects from '@/components/sections/Projects';
-import Experience from '@/components/sections/Experience';
+import Certifications from '@/components/sections/Experience';
+import ProfessionalExperience from '@/components/sections/ProfessionalExperience';
 import Resume from '@/components/sections/Resume';
 import Contact from '@/components/sections/Contact';
 import Footer from '@/components/sections/Footer';
@@ -20,8 +22,11 @@ export default function Home() {
       {/* About Section - Personal introduction */}
       <About />
 
-      {/* Taekwondo Section - Martial arts showcase */}
-      <Taekwondo />
+      {/* Education Section */}
+      <Education />
+
+      {/* Achievements Section */}
+      <Achievements />
 
       {/* Skills Section - Technologies and abilities */}
       <Skills />
@@ -29,8 +34,11 @@ export default function Home() {
       {/* Projects Section - Portfolio showcases */}
       <Projects />
 
-      {/* Experience Section - Practical learning */}
-      <Experience />
+      {/* Professional Experience Section */}
+      <ProfessionalExperience />
+
+      {/* Certifications Section */}
+      <Certifications />
 
       {/* Resume Section - Download CTA */}
       <Resume />

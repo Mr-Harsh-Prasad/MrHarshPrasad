@@ -7,22 +7,30 @@ import { motion } from 'framer-motion';
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Experience data
-const experiences = [
+// Certifications data
+const certifications = [
     {
         title: 'Web Exploit Hunting & Bug Bounty',
-        type: 'Practical Learning',
+        type: 'Internship · EDU Skills',
         icon: '🔐',
         color: 'from-red-500 to-orange-400',
         description: 'Learning web security concepts, vulnerability assessment, and participating in bug bounty programs.',
         certificateUrl: 'https://www.linkedin.com/posts/mrharshprasad_cybersecurity-bugbounty-websecurity-activity-7409989219709976577-C92n',
     },
+    {
+        title: 'AR VR Development using Unity',
+        type: 'Internship · EDU Skills',
+        icon: '🥽',
+        color: 'from-purple-500 to-blue-400',
+        description: 'Hands-on development of Augmented Reality and Virtual Reality applications using the Unity game engine.',
+        certificateUrl: 'https://www.linkedin.com/posts/mrharshprasad_ar-vr-unity-activity-7437848146652766208-ipfL',
+    },
 ];
 
 /**
- * Experience Section - Practical learning experiences
+ * Certifications Section - Certifications and learning achievements
  */
-export default function Experience() {
+export default function Certifications() {
     const sectionRef = useRef<HTMLElement>(null);
     const titleRef = useRef<HTMLDivElement>(null);
 
@@ -49,22 +57,22 @@ export default function Experience() {
     }, []);
 
     return (
-        <section ref={sectionRef} id="experience" className="section">
+        <section ref={sectionRef} id="certifications" className="section">
             <div className="container">
                 {/* Section Header */}
                 <div ref={titleRef} className="text-center mb-16">
-                    <span className="section-subtitle gradient-text">Experience</span>
+                    <span className="section-subtitle gradient-text">Certifications</span>
                     <h2 className="section-title text-text-primary">
-                        Practical <span className="gradient-text">Learning</span>
+                        My <span className="gradient-text">Certifications</span>
                     </h2>
                     <p className="text-text-secondary max-w-2xl mx-auto mt-4">
-                        These are learning-based practical experiences, not internships or job roles.
+                        Certifications and credentials I've earned through dedicated learning and practice.
                     </p>
                 </div>
 
-                {/* Experience Cards */}
+                {/* Certification Cards */}
                 <div className="flex justify-center">
-                    {experiences.map((exp, index) => (
+                    {certifications.map((exp, index) => (
                         <motion.div
                             key={exp.title}
                             className="card relative overflow-hidden group max-w-md"

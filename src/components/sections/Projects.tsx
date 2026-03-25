@@ -55,6 +55,28 @@ const projects = [
         github: 'https://github.com/Mr-Harsh-Prasad/Money-Analyzer',
         live: 'https://money-analyzer.vercel.app',
     },
+    {
+        id: 5,
+        title: 'TKD AI Coach',
+        description:
+            'AI-based Taekwondo coach using computer vision to analyze moves and posture in real time. Provides instant feedback and correction suggestions, with personalized training based on user performance tracking.',
+        tech: ['Python', 'Computer Vision', 'MediaPipe', 'OpenCV', 'AI/ML'],
+        color: 'from-red-500 to-orange-400',
+        image: '/projects/tkd-ai-coach.png',
+        github: 'https://github.com/Mr-Harsh-Prasad',
+        live: null,
+    },
+    {
+        id: 6,
+        title: 'Error – Anti Cheat Coding Platform',
+        description:
+            'Anti-cheat coding platform to prevent unfair practices during online tests. Features tab switching detection, activity tracking, and suspicious action restriction to ensure a secure coding environment.',
+        tech: ['Next.js', 'JavaScript', 'Supabase', 'Judge0 API'],
+        color: 'from-violet-500 to-indigo-400',
+        image: '/projects/error-platform.png',
+        github: 'https://github.com/Mr-Harsh-Prasad',
+        live: null,
+    },
 ];
 
 /**
