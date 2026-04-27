@@ -12,11 +12,6 @@ const skills = [
     { name: 'Python', tag: 'Programming', level: 75, color: '#eab308' },
     { name: 'Java', tag: 'Programming', level: 65, color: '#ef4444' },
     { name: 'HTML & CSS', tag: 'Web', level: 88, color: '#ec4899' },
-    { name: 'JavaScript', tag: 'Web', level: 72, color: '#f59e0b' },
-    { name: 'DSA', tag: 'Algorithms', level: 68, color: '#10b981' },
-    { name: 'Kali Linux', tag: 'Security', level: 70, color: '#0ea5e9' },
-    { name: 'Network Security', tag: 'Security', level: 65, color: '#8b5cf6' },
-    { name: 'Wireshark', tag: 'Security', level: 60, color: '#14b8a6' },
 ];
 
 function SkillNode({ skill, index }: { skill: typeof skills[0], index: number }) {
