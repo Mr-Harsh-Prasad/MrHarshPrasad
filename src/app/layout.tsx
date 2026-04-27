@@ -1,15 +1,23 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Inter, Space_Mono } from 'next/font/google';
 import './globals.css';
 import CustomCursor from '@/components/ui/CustomCursor';
 import SmoothScroll from '@/components/ui/SmoothScroll';
 import Navbar from '@/components/ui/Navbar';
 
-// Load Inter font with variable weight
+// Body font
 const inter = Inter({
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-inter',
+});
+
+// Monospace font
+const spaceMono = Space_Mono({
+  subsets: ['latin'],
+  weight: ['400', '700'],
+  display: 'swap',
+  variable: '--font-space-mono',
 });
 
 // SEO Metadata - Optimized for "Mr Harsh Prasad portfolio" search
@@ -77,7 +85,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={inter.variable}>
+    <html lang="en" className={`${inter.variable} ${spaceMono.variable}`}>
       <body className="antialiased">
         {/* Custom cursor (hidden on touch devices) */}
         <CustomCursor />

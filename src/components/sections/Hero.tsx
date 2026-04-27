@@ -3,88 +3,59 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import dynamic from 'next/dynamic';
 import MagneticButton from '@/components/ui/MagneticButton';
-import ErrorBoundary from '@/components/ui/ErrorBoundary';
-
-// Dynamically import 3D component to avoid SSR issues
-const HeroBackground = dynamic(() => import('@/components/3d/HeroBackground'), {
-    ssr: false,
-    loading: () => <div className="absolute inset-0 bg-bg-primary" />,
-});
+import GlitchText from '@/components/ui/GlitchText';
 
 gsap.registerPlugin(ScrollTrigger);
 
-/**
- * Hero Section - Full viewport intro with animated text and 3D background
- */
 export default function Hero() {
-    const sectionRef = useRef<HTMLElement>(null);
-    const titleRef = useRef<HTMLHeadingElement>(null);
-    const subtitleRef = useRef<HTMLParagraphElement>(null);
-    const ctaRef = useRef<HTMLDivElement>(null);
-
+    const sectionRef    = useRef<HTMLElement>(null);
+    const greetRef      = useRef<HTMLSpanElement>(null);
+    const nameRef       = useRef<HTMLSpanElement>(null);
+    const tagRef        = useRef<HTMLDivElement>(null);
+    const ctaRef        = useRef<HTMLDivElement>(null);
+    const scrollHintRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         const ctx = gsap.context(() => {
-            // Initial state
-            gsap.set([titleRef.current, subtitleRef.current, ctaRef.current], {
-                opacity: 0,
-                y: 50,
+            /* Entrance */
+            const tl = gsap.timeline({ delay: 0.3 });
+            gsap.set([greetRef.current, nameRef.current, tagRef.current, ctaRef.current], {
+                opacity: 0, y: 80,
             });
+            tl.to(greetRef.current, { opacity: 1, y: 0, duration: 1,   ease: 'expo.out' })
+              .to(nameRef.current,  { opacity: 1, y: 0, duration: 1.2, ease: 'expo.out' }, '-=0.7')
+              .to(tagRef.current,   { opacity: 1, y: 0, duration: 1,   ease: 'expo.out' }, '-=0.8')
+              .to(ctaRef.current,   { opacity: 1, y: 0, duration: 0.8, ease: 'expo.out' }, '-=0.6')
+              .to(scrollHintRef.current, { opacity: 1, duration: 0.6 }, '-=0.2');
 
+            const section = sectionRef.current;
 
-            // Entrance animation timeline
-            const tl = gsap.timeline({ delay: 0.5 });
-
-            tl.to(titleRef.current, {
-                opacity: 1,
-                y: 0,
-                duration: 1,
-                ease: 'power3.out',
-            })
-                .to(
-                    subtitleRef.current,
-                    {
-                        opacity: 1,
-                        y: 0,
-                        duration: 0.8,
-                        ease: 'power3.out',
-                    },
-                    '-=0.5'
-                )
-                .to(
-                    ctaRef.current,
-                    {
-                        opacity: 1,
-                        y: 0,
-                        duration: 0.8,
-                        ease: 'power3.out',
-                    },
-                    '-=0.4'
-                );
-
-            // Scroll-triggered parallax for title
+            /* Text parallax on scroll */
             gsap.fromTo(
-                titleRef.current,
+                [nameRef.current, tagRef.current],
+                { y: 0, opacity: 1 },
                 {
-                    y: 0,
-                    opacity: 1,
-                },
-                {
-                    y: -100,
-                    opacity: 0,
-                    ease: 'none',
+                    y: -120, opacity: 0, ease: 'none',
                     scrollTrigger: {
-                        trigger: sectionRef.current,
-                        start: 'top top',
-                        end: 'bottom top',
-                        scrub: 0.5,
+                        trigger: section, start: 'top top', end: '60% top', scrub: 0.5,
                     },
                 }
             );
-        }, sectionRef);
 
+            /* Scroll hint fade */
+            if (scrollHintRef.current) {
+                gsap.fromTo(scrollHintRef.current,
+                    { opacity: 1, y: 0 },
+                    {
+                        opacity: 0, y: -20, ease: 'none',
+                        scrollTrigger: {
+                            trigger: section, start: 'top top', end: '15% top', scrub: true,
+                        },
+                    }
+                );
+            }
+        }, sectionRef);
         return () => ctx.revert();
     }, []);
 
@@ -92,77 +63,67 @@ export default function Hero() {
         <section
             ref={sectionRef}
             id="hero"
-            className="relative min-h-screen flex items-center justify-center overflow-hidden"
+            className="relative min-h-screen flex items-end justify-start overflow-hidden"
         >
-            {/* 3D Background with Error Boundary */}
-            <ErrorBoundary
-                fallback={
-                    <div className="absolute inset-0 bg-gradient-to-br from-bg-primary via-bg-secondary to-accent-primary/20" />
-                }
-            >
-                <HeroBackground />
-            </ErrorBoundary>
+            {/* Dark gradient background — deep black with subtle red glow */}
+            <div className="absolute inset-0 bg-[#050505]" />
+            <div className="absolute inset-0 pointer-events-none"
+                style={{ background: 'radial-gradient(ellipse 80% 60% at 70% 40%, rgba(230,57,70,0.08) 0%, transparent 70%)' }}
+            />
+            <div className="absolute inset-0 pointer-events-none"
+                style={{ background: 'radial-gradient(ellipse 60% 50% at 30% 80%, rgba(255,183,3,0.04) 0%, transparent 70%)' }}
+            />
+
+            {/* Bottom blend into next section */}
+            <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#050505] to-transparent pointer-events-none z-10" />
 
             {/* Content */}
-            <div className="container relative z-10 text-center px-4">
-                {/* Greeting & Name */}
-                <h1 ref={titleRef} className="mb-6">
-                    <span className="block text-text-secondary text-lg md:text-xl font-medium mb-4 tracking-widest uppercase">
-                        Hello, I&apos;m
-                    </span>
-                    <span className="block gradient-text text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight">
-                        MR HARSH PRASAD
-                    </span>
-                    <span className="block text-text-primary text-2xl md:text-3xl lg:text-4xl font-semibold mt-4">
-                        – Personal Portfolio
-                    </span>
-                </h1>
+            <div className="relative z-10 container px-4 pb-24 md:pb-32 text-left max-w-6xl mx-auto">
 
-                {/* Tagline */}
-                <p
-                    ref={subtitleRef}
-                    className="text-text-secondary text-lg md:text-xl max-w-3xl mx-auto mb-8 leading-relaxed"
+                <span
+                    ref={greetRef}
+                    className="block font-mono text-xs md:text-sm tracking-[0.4em] text-[#e63946] uppercase mb-6 opacity-0"
                 >
-                    <span className="block text-2xl md:text-3xl font-bold gradient-text mb-4">
-                        I don&apos;t just write code — I build discipline.
-                    </span>
-                    <span className="block text-text-secondary mb-2">
-                        A <span className="gradient-text font-semibold">1st Dan Black Belt</span> in Taekwondo who brings the same focus, consistency, and control into Computer Science.
-                    </span>
-                    <em className="text-text-muted">
-                        &quot;Once known for words, now known for silence and execution.&quot;
-                    </em>
-                </p>
+                    // Hello, I&apos;m
+                </span>
 
-                {/* CTA Buttons */}
-                <div ref={ctaRef} className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <span ref={nameRef} className="block hero-name opacity-0 leading-none">
+                    MR HARSH
+                    <br />
+                    <GlitchText />
+                </span>
+
+                <div ref={tagRef} className="mt-8 opacity-0 flex flex-col gap-3 max-w-2xl">
+                    <p className="text-white/90 text-lg md:text-xl font-light leading-relaxed">
+                        <span className="text-[#e63946] font-semibold">1st Dan Black Belt</span>
+                        {' '}· Computer Science · Builder
+                    </p>
+                    <p className="text-white/40 text-sm md:text-base font-mono italic">
+                        &ldquo;Once known for words, now known for silence and execution.&rdquo;
+                    </p>
+                </div>
+
+                <div ref={ctaRef} className="mt-10 opacity-0 flex flex-col sm:flex-row gap-4">
                     <MagneticButton href="#projects" className="btn-primary">
                         <span>View My Work</span>
-                        <svg
-                            className="w-5 h-5"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M17 8l4 4m0 0l-4 4m4-4H3"
-                            />
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                         </svg>
                     </MagneticButton>
-                    <MagneticButton href="#contact" className="btn-secondary">
+                    <MagneticButton href="#contact" className="btn-ghost">
                         <span>Get in Touch</span>
                     </MagneticButton>
                 </div>
             </div>
 
-
-
-            {/* Decorative gradient orbs */}
-            <div className="absolute top-1/4 -left-32 w-64 h-64 bg-accent-primary/20 rounded-full blur-[100px] pointer-events-none" />
-            <div className="absolute bottom-1/4 -right-32 w-64 h-64 bg-accent-tertiary/20 rounded-full blur-[100px] pointer-events-none" />
+            {/* Scroll indicator */}
+            <div
+                ref={scrollHintRef}
+                className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-0 z-10"
+            >
+                <span className="text-white/30 text-[10px] tracking-[0.3em] uppercase font-mono">Scroll</span>
+                <div className="w-px h-12 bg-gradient-to-b from-[#e63946] to-transparent animate-pulse" />
+            </div>
         </section>
     );
 }

@@ -90,11 +90,22 @@ export default function CustomCursor() {
     if (!cursor) return;
 
     gsap.to(cursor, {
-      scale: isHovering ? 1.5 : 1,
-      opacity: isHovering ? 0.8 : 0.5,
+      scale: isHovering ? 2.5 : 1,
+      opacity: isHovering ? 1 : 0.5,
+      backgroundColor: isHovering ? 'rgba(230, 57, 70, 0.1)' : 'transparent',
       duration: 0.3,
-      ease: 'power2.out',
+      ease: 'expo.out',
     });
+
+    const cursorDot = cursorDotRef.current;
+    if (cursorDot) {
+      gsap.to(cursorDot, {
+        scale: isHovering ? 0 : 1,
+        opacity: isHovering ? 0 : 1,
+        duration: 0.3,
+        ease: 'expo.out',
+      });
+    }
   }, [isHovering]);
 
   return (

@@ -248,14 +248,15 @@ export default function Projects() {
 
     useEffect(() => {
         const ctx = gsap.context(() => {
+            // Title entrance
             gsap.fromTo(
                 titleRef.current,
-                { opacity: 0, y: 40 },
+                { opacity: 0, y: 60 },
                 {
                     opacity: 1,
                     y: 0,
-                    duration: 0.8,
-                    ease: 'power3.out',
+                    duration: 1.2,
+                    ease: 'expo.out',
                     scrollTrigger: {
                         trigger: titleRef.current,
                         start: 'top 80%',
@@ -263,6 +264,30 @@ export default function Projects() {
                     },
                 }
             );
+
+            // Horizontal Scroll
+            const projectsContainer = sectionRef.current?.querySelector('.projects-horizontal-scroll') as HTMLElement;
+            if (projectsContainer) {
+                const getScrollAmount = () => {
+                    let containerWidth = projectsContainer.scrollWidth;
+                    return -(containerWidth - window.innerWidth + 100); // 100px padding
+                };
+
+                const tween = gsap.to(projectsContainer, {
+                    x: getScrollAmount,
+                    ease: 'none'
+                });
+
+                ScrollTrigger.create({
+                    trigger: sectionRef.current,
+                    start: 'top top',
+                    end: () => `+=${getScrollAmount() * -1}`,
+                    pin: true,
+                    animation: tween,
+                    scrub: 1,
+                    invalidateOnRefresh: true
+                });
+            }
         }, sectionRef);
 
         return () => ctx.revert();
@@ -283,11 +308,15 @@ export default function Projects() {
                     </p>
                 </div>
 
-                {/* Projects Grid */}
-                <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-                    {projects.map((project, index) => (
-                        <ProjectCard key={project.id} project={project} index={index} />
-                    ))}
+                {/* Projects Horizontal Container */}
+                <div className="mt-12 overflow-hidden">
+                    <div className="projects-horizontal-scroll flex flex-nowrap gap-8 w-max px-[5vw]">
+                        {projects.map((project, index) => (
+                            <div key={project.id} className="w-[85vw] md:w-[600px] flex-shrink-0">
+                                <ProjectCard project={project} index={index} />
+                            </div>
+                        ))}
+                    </div>
                 </div>
 
                 {/* More Projects CTA */}

@@ -7,157 +7,125 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-/**
- * About Section - Personal introduction with text reveal animations
- */
+const stats = [
+    { number: '01', label: 'Black Belt', sub: '1st Dan Taekwondo' },
+    { number: '02', label: 'Hackathon Win', sub: 'MLH Gemini Buildathon' },
+    { number: '03', label: 'B.Tech CSE', sub: 'AKTU — Class of 2028' },
+];
+
 export default function About() {
     const sectionRef = useRef<HTMLElement>(null);
-    const titleRef = useRef<HTMLHeadingElement>(null);
-    const textRefs = useRef<(HTMLParagraphElement | null)[]>([]);
-    const imageRef = useRef<HTMLDivElement>(null);
+    const headRef    = useRef<HTMLDivElement>(null);
+    const imgRef     = useRef<HTMLDivElement>(null);
+    const bodyRef    = useRef<HTMLDivElement>(null);
+    const statsRef   = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         const ctx = gsap.context(() => {
-            // Title animation
-            gsap.fromTo(
-                titleRef.current,
-                { opacity: 0, y: 40 },
-                {
-                    opacity: 1,
-                    y: 0,
-                    duration: 0.8,
-                    ease: 'power3.out',
-                    scrollTrigger: {
-                        trigger: titleRef.current,
-                        start: 'top 80%',
-                        toggleActions: 'play none none reverse',
-                    },
-                }
-            );
-
-            // Text paragraphs staggered animation
-            textRefs.current.forEach((ref, index) => {
-                if (!ref) return;
-                gsap.fromTo(
-                    ref,
-                    { opacity: 0, y: 30 },
-                    {
-                        opacity: 1,
-                        y: 0,
-                        duration: 0.6,
-                        delay: index * 0.1,
-                        ease: 'power3.out',
-                        scrollTrigger: {
-                            trigger: ref,
-                            start: 'top 85%',
-                            toggleActions: 'play none none reverse',
-                        },
-                    }
-                );
+            const tl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: sectionRef.current,
+                    start: 'top 75%',
+                    toggleActions: 'play none none reverse',
+                },
             });
 
-            // Image parallax effect
-            if (imageRef.current) {
-                gsap.fromTo(
-                    imageRef.current,
-                    { scale: 1.1 },
-                    {
-                        scale: 1,
-                        ease: 'none',
-                        scrollTrigger: {
-                            trigger: imageRef.current,
-                            start: 'top bottom',
-                            end: 'bottom top',
-                            scrub: true,
-                        },
-                    }
-                );
-            }
+            tl.fromTo(headRef.current,
+                { opacity: 0, x: -60 },
+                { opacity: 1, x: 0, duration: 1, ease: 'expo.out' }
+            )
+            .fromTo(imgRef.current,
+                { opacity: 0, scale: 1.05 },
+                { opacity: 1, scale: 1, duration: 1.2, ease: 'expo.out' },
+                '-=0.7'
+            )
+            .fromTo(bodyRef.current,
+                { opacity: 0, y: 40 },
+                { opacity: 1, y: 0, duration: 1, ease: 'expo.out' },
+                '-=0.8'
+            )
+            .fromTo(statsRef.current?.children ?? [],
+                { opacity: 0, y: 30 },
+                { opacity: 1, y: 0, stagger: 0.12, duration: 0.8, ease: 'expo.out' },
+                '-=0.6'
+            );
         }, sectionRef);
-
         return () => ctx.revert();
     }, []);
 
     return (
-        <section ref={sectionRef} id="about" className="section bg-bg-secondary">
+        <section ref={sectionRef} id="about" className="section">
             <div className="container">
-                <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-                    {/* Image/Visual Side */}
-                    <div className="relative order-2 lg:order-1">
-                        <div className="relative aspect-square max-w-md mx-auto overflow-hidden rounded-3xl">
-                            {/* Profile Image */}
-                            <div
-                                ref={imageRef}
-                                className="absolute inset-0"
-                            >
-                                <Image
-                                    src="/mrharshprasad.png"
-                                    alt="Mr Harsh Prasad - Computer Science Student and Taekwondo Black Belt"
-                                    fill
-                                    priority
-                                    sizes="(max-width: 768px) 100vw, 448px"
-                                    className="object-cover"
-                                />
-                            </div>
 
-                            {/* Decorative border */}
-                            <div className="absolute inset-0 border-2 border-white/10 rounded-3xl" />
+                {/* Headline */}
+                <div ref={headRef} className="mb-16 max-w-3xl">
+                    <span className="section-subtitle">About Me</span>
+                    <h2 className="section-title text-text-primary">
+                        Discipline<br />
+                        <span className="gradient-text">Meets Tech.</span>
+                    </h2>
+                </div>
+
+                {/* Grid: photo left, content right */}
+                <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-start">
+
+                    {/* Photo */}
+                    <div ref={imgRef} className="relative">
+                        <div className="relative aspect-[3/4] max-w-sm overflow-hidden rounded-2xl">
+                            <Image
+                                src="/mrharshprasad.png"
+                                alt="Harsh Prasad — Computer Science & Taekwondo Black Belt"
+                                fill
+                                priority
+                                sizes="(max-width: 768px) 100vw, 400px"
+                                className="object-cover object-top"
+                            />
+                            {/* red accent line */}
+                            <div className="absolute inset-y-0 -right-2 w-0.5 bg-gradient-to-b from-transparent via-[#e63946] to-transparent" />
                         </div>
-
-                        {/* Floating decoration elements */}
-                        <div className="absolute -top-4 -right-4 w-20 h-20 bg-accent-primary/30 rounded-full blur-2xl" />
-                        <div className="absolute -bottom-4 -left-4 w-24 h-24 bg-accent-tertiary/30 rounded-full blur-2xl" />
+                        {/* location tag */}
+                        <div className="absolute -bottom-4 left-4 bg-bg-tertiary border border-border px-4 py-2 rounded-lg mono text-xs text-text-muted">
+                            // Ghaziabad, India 🇮🇳
+                        </div>
                     </div>
 
-                    {/* Text Content */}
-                    <div className="order-1 lg:order-2">
-                        <span className="section-subtitle gradient-text">About Me</span>
-                        <h2 ref={titleRef} className="section-title text-text-primary mb-6">
-                            Discipline Meets<br />
-                            <span className="gradient-text">Technology</span>
-                        </h2>
-
-                        <div className="space-y-4 text-text-secondary">
-                            <p ref={(el) => { textRefs.current[0] = el; }}>
-                                I am <strong className="text-text-primary">Mr Harsh Prasad</strong>, a{' '}
-                                <strong className="text-text-primary">Computer Science undergraduate</strong> with
-                                a strong interest in <strong className="text-accent-primary">programming and technology</strong>.
-                                I believe in learning by building and improving through consistent practice.
+                    {/* Text + stats */}
+                    <div ref={bodyRef} className="space-y-8">
+                        <div className="space-y-5 text-text-secondary leading-relaxed">
+                            <p>
+                                I&apos;m <strong className="text-text-primary font-semibold">Harsh Prasad</strong> — a Computer Science
+                                undergraduate who believes the best code is written with the same mindset as a black belt:
+                                slow deliberate practice, fast decisive execution.
                             </p>
-
-                            <p ref={(el) => { textRefs.current[1] = el; }}>
-                                My mindset is shaped by years of <strong className="text-accent-secondary">martial arts training</strong>,
-                                where discipline and patience matter more than speed. As a{' '}
-                                <strong className="gradient-text">Taekwondo Black Belt (1st Dan)</strong>, I bring the same
-                                focus and dedication to my coding journey.
+                            <p>
+                                Training in <span className="text-[#e63946] font-medium">Taekwondo for years</span> taught me
+                                that discipline isn&apos;t optional — it&apos;s the foundation. I bring that same obsession
+                                with fundamentals to every line of software I write.
                             </p>
-
-                            <p ref={(el) => { textRefs.current[2] = el; }}>
-                                Currently pursuing <strong className="text-text-primary">B.Tech in Computer Science</strong> from
-                                an AKTU affiliated college, with expected graduation in <strong className="text-accent-primary">2028</strong>.
-                            </p>
+                            <blockquote className="border-l-2 border-[#e63946] pl-5 italic text-text-muted text-sm">
+                                &ldquo;Once known for words, now known for silence and execution.&rdquo;
+                            </blockquote>
                         </div>
 
-                        {/* Quick Stats */}
-                        <div className="grid grid-cols-3 gap-4 mt-8">
-                            {[
-                                { number: '🥋', label: 'Black Belt' },
-                                { number: '2028', label: 'Graduation' },
-                                { number: '∞', label: 'Discipline' },
-                            ].map((stat, index) => (
-                                <div
-                                    key={stat.label}
-                                    className="glass p-4 text-center"
-                                    ref={(el) => { textRefs.current[3 + index] = el; }}
-                                >
-                                    <span className="block text-2xl font-bold gradient-text">{stat.number}</span>
-                                    <span className="text-sm text-text-muted">{stat.label}</span>
+                        {/* Stats */}
+                        <div ref={statsRef} className="grid grid-cols-3 gap-4 pt-4 border-t border-border">
+                            {stats.map((s) => (
+                                <div key={s.number} className="flex flex-col gap-1">
+                                    <span className="font-mono text-3xl font-bold text-[#e63946] leading-none">{s.number}</span>
+                                    <span className="text-text-primary font-semibold text-sm">{s.label}</span>
+                                    <span className="text-text-muted text-xs">{s.sub}</span>
                                 </div>
                             ))}
                         </div>
+
+                        <p className="mono text-xs text-text-muted tracking-widest">
+                            // Technical Head · GeeksforGeeks Cloud Computing Club
+                        </p>
                     </div>
                 </div>
             </div>
+
+            <div className="absolute top-0 right-0 w-80 h-80 rounded-full bg-[#e63946] opacity-[0.04] blur-[120px] pointer-events-none" />
         </section>
     );
 }

@@ -3,120 +3,108 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import MagneticButton from '@/components/ui/MagneticButton';
 
 gsap.registerPlugin(ScrollTrigger);
 
 /**
- * Footer - Site footer with motion elements
+ * Footer — clean, branded, minimal.
  */
 export default function Footer() {
     const footerRef = useRef<HTMLElement>(null);
-    const contentRef = useRef<HTMLDivElement>(null);
+    const lineRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         const ctx = gsap.context(() => {
             gsap.fromTo(
-                contentRef.current,
-                { opacity: 0, y: 30 },
+                footerRef.current,
+                { opacity: 0 },
                 {
-                    opacity: 1,
-                    y: 0,
-                    duration: 0.8,
-                    ease: 'power3.out',
+                    opacity: 1, duration: 1, ease: 'expo.out',
                     scrollTrigger: {
                         trigger: footerRef.current,
-                        start: 'top 90%',
+                        start: 'top 95%',
                         toggleActions: 'play none none reverse',
                     },
                 }
             );
+            // animated border line
+            gsap.fromTo(lineRef.current, { scaleX: 0 }, {
+                scaleX: 1, duration: 1.5, ease: 'expo.out',
+                scrollTrigger: {
+                    trigger: footerRef.current,
+                    start: 'top 90%',
+                },
+            });
         }, footerRef);
-
         return () => ctx.revert();
     }, []);
 
-    const scrollToTop = () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    };
+    const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 
     return (
-        <footer ref={footerRef} className="relative py-12 border-t border-border">
+        <footer ref={footerRef} className="relative pt-16 pb-8 overflow-hidden">
+            {/* glow top line */}
+            <div
+                ref={lineRef}
+                className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#e63946] to-transparent origin-left"
+            />
+
             <div className="container">
-                <div ref={contentRef} className="grid md:grid-cols-3 gap-8 items-center">
-                    {/* Logo/Name */}
-                    <div className="text-center md:text-left">
-                        <span className="text-2xl font-bold gradient-text">HK</span>
-                        <p className="text-text-muted text-sm mt-2">
-                            Building the future, one line at a time.
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-10">
+
+                    {/* Brand */}
+                    <div>
+                        <button
+                            onClick={scrollToTop}
+                            className="text-4xl font-black gradient-text tracking-tight hover:opacity-80 transition-opacity"
+                            aria-label="Back to top"
+                        >
+                            MHP.
+                        </button>
+                        <p className="text-text-muted text-xs mono mt-2 tracking-widest">
+                            // HARSH PRASAD — PORTFOLIO
                         </p>
                     </div>
 
-                    {/* Quick Links */}
-                    <nav className="flex justify-center gap-6 text-sm text-text-secondary">
-                        <a
-                            href="#about"
-                            className="hover:text-text-primary transition-colors"
-                        >
-                            About
-                        </a>
-                        <a
-                            href="#skills"
-                            className="hover:text-text-primary transition-colors"
-                        >
-                            Skills
-                        </a>
-                        <a
-                            href="#projects"
-                            className="hover:text-text-primary transition-colors"
-                        >
-                            Projects
-                        </a>
-                        <a
-                            href="#contact"
-                            className="hover:text-text-primary transition-colors"
-                        >
-                            Contact
-                        </a>
+                    {/* Links */}
+                    <nav className="flex flex-wrap gap-6 text-sm text-text-muted">
+                        {['about', 'skills', 'projects', 'contact'].map((id) => (
+                            <a
+                                key={id}
+                                href={`#${id}`}
+                                className="hover:text-text-primary transition-colors uppercase tracking-widest text-xs mono"
+                            >
+                                {id}
+                            </a>
+                        ))}
                     </nav>
 
-                    {/* Back to Top */}
-                    <div className="flex justify-center md:justify-end">
-                        <MagneticButton
-                            onClick={scrollToTop}
-                            className="p-3 rounded-full glass hover:border-accent-primary transition-colors"
-                        >
-                            <svg
-                                className="w-5 h-5 text-text-secondary"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M5 10l7-7m0 0l7 7m-7-7v18"
-                                />
-                            </svg>
-                        </MagneticButton>
-                    </div>
+                    {/* Back to top arrow */}
+                    <button
+                        onClick={scrollToTop}
+                        className="w-10 h-10 rounded-full border border-border flex items-center justify-center text-text-muted hover:border-accent-primary hover:text-accent-primary transition-all duration-300"
+                        aria-label="Scroll to top"
+                    >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                        </svg>
+                    </button>
                 </div>
 
                 {/* Copyright */}
-                <div className="mt-8 pt-8 border-t border-border/50 text-center">
-                    <p className="text-text-muted text-sm">
-                        © {new Date().getFullYear()} Harsh Kumar. All rights reserved.
+                <div className="mt-10 pt-6 border-t border-border/40 flex flex-col sm:flex-row justify-between items-center gap-3">
+                    <p className="text-text-muted text-xs mono">
+                        © {new Date().getFullYear()} Mr Harsh Prasad. All rights reserved.
                     </p>
-                    <p className="text-text-muted/60 text-xs mt-2">
-                        Built with Next.js, GSAP & 💜
+                    <p className="text-text-muted/50 text-xs mono">
+                        Built with 🩷 AB
                     </p>
                 </div>
             </div>
 
-            {/* Background decorations */}
-            <div className="absolute bottom-0 left-1/4 w-48 h-48 bg-accent-primary/5 rounded-full blur-[100px] pointer-events-none" />
-            <div className="absolute bottom-0 right-1/4 w-48 h-48 bg-accent-tertiary/5 rounded-full blur-[100px] pointer-events-none" />
+            {/* bg orbs */}
+            <div className="absolute bottom-0 left-1/4 w-64 h-64 bg-[#e63946] opacity-[0.04] rounded-full blur-[100px] pointer-events-none" />
+            <div className="absolute bottom-0 right-1/4 w-64 h-64 bg-[#ffb703] opacity-[0.03] rounded-full blur-[100px] pointer-events-none" />
         </footer>
     );
 }
