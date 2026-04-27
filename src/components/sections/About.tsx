@@ -129,9 +129,7 @@ export default function About() {
                                 that discipline isn&apos;t optional — it&apos;s the foundation. I bring that same obsession
                                 with fundamentals to every line of software I write.
                             </p>
-                            <blockquote className="border-l-2 border-[#e63946] pl-5 italic text-text-muted text-base relative overflow-hidden bg-gradient-to-r from-bg-tertiary/50 to-transparent p-4 rounded-r-lg">
-                                &ldquo;Once known for words, now known for silence and execution.&rdquo;
-                            </blockquote>
+
                         </div>
 
                         {/* Stats */}

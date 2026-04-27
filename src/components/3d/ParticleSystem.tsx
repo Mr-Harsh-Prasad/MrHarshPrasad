@@ -54,8 +54,8 @@ export default function ParticleSystem({ count = 2000, isHovering = false }: Par
         float height = position.y;
         float angle = position.z;
         
-        // Orbit motion
-        float currentAngle = angle + time * 0.1 * aRandom;
+        // Orbit motion (slower, smoother)
+        float currentAngle = angle + time * 0.05 * aRandom;
         
         // Calculate 3D position
         vec3 finalPos;
@@ -73,8 +73,8 @@ export default function ParticleSystem({ count = 2000, isHovering = false }: Par
         // If hovering text, amplify the general energy and mouse pull
         float hoverFactor = mix(1.0, 2.5, isHovering);
         
-        // Pull particles toward mouse slightly
-        vec3 dirToMouse = normalize(mouseWorld - finalPos);
+        // Pull particles toward mouse slightly (add epsilon to avoid NaN glitches)
+        vec3 dirToMouse = normalize(mouseWorld - finalPos + vec3(0.0001));
         finalPos += dirToMouse * pullStrength * 1.5 * hoverFactor;
         
         vec4 mvPosition = modelViewMatrix * vec4(finalPos, 1.0);
@@ -84,7 +84,7 @@ export default function ParticleSystem({ count = 2000, isHovering = false }: Par
         gl_PointSize = (4.0 * aRandom * pixelRatio * hoverFactor) * (15.0 / -mvPosition.z);
         
         // Fade out particles that are far or pulled too much
-        vAlpha = mix(0.1, 0.8, aRandom) + (pullStrength * 0.5);
+        vAlpha = clamp(mix(0.1, 0.8, aRandom) + (pullStrength * 0.5), 0.0, 1.0);
       }
     `,
     fragmentShader: `
@@ -96,8 +96,8 @@ export default function ParticleSystem({ count = 2000, isHovering = false }: Par
         if (dist > 0.5) discard;
         
         // Soft glowing edge
-        float glow = 1.0 - (dist * 2.0);
-        glow = smoothstep(0.0, 1.0, glow);
+        float glow = exp(-dist * 3.0) * (1.0 - dist * 2.0);
+        glow = clamp(glow, 0.0, 1.0);
         
         // Cyan-ish color
         vec3 color = vec3(0.0, 0.8, 1.0);
@@ -138,15 +138,11 @@ export default function ParticleSystem({ count = 2000, isHovering = false }: Par
       <bufferGeometry>
         <bufferAttribute
           attach="attributes-position"
-          count={count}
-          array={positions}
-          itemSize={3}
+          args={[positions, 3]}
         />
         <bufferAttribute
           attach="attributes-aRandom"
-          count={count}
-          array={randoms}
-          itemSize={1}
+          args={[randoms, 1]}
         />
       </bufferGeometry>
       <shaderMaterial

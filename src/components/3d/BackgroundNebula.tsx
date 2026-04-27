@@ -25,11 +25,6 @@ export default function BackgroundNebula() {
       uniform vec2 resolution;
       varying vec2 vUv;
 
-      // Random function for stars
-      float random(vec2 st) {
-          return fract(sin(dot(st.xy, vec2(12.9898,78.233))) * 43758.5453123);
-      }
-
       void main() {
         vec2 uv = vUv;
         
@@ -39,25 +34,18 @@ export default function BackgroundNebula() {
         vec3 bgColor = mix(colorBottom, colorTop, uv.y);
 
         // Subtle Parallax based on mouse
-        vec2 parallaxUv = uv + (mouse * 0.02);
+        vec2 parallaxUv = uv + (mouse * 0.05);
         
-        // Starfield effect
-        float starValue = random(parallaxUv * 100.0);
-        float starIntensity = 0.0;
+        // Smooth flowing nebula instead of glitchy stars
+        float t = time * 0.2;
+        float n1 = sin(parallaxUv.x * 4.0 + t) * cos(parallaxUv.y * 4.0 + t * 0.8);
+        float n2 = sin(parallaxUv.x * 8.0 - t * 0.5) * cos(parallaxUv.y * 8.0 - t * 0.6);
+        float nebula = smoothstep(0.2, 0.8, (n1 + n2 * 0.5) * 0.5 + 0.5);
         
-        // Only show very sparse stars
-        if (starValue > 0.995) {
-            starIntensity = 1.0;
-        } else if (starValue > 0.990) {
-            starIntensity = 0.5;
-        }
+        // Cyan/blue soft glow
+        vec3 nebulaColor = vec3(0.0, 0.6, 1.0) * nebula * 0.1;
 
-        // Add subtle twinkle
-        starIntensity *= (sin(time * 2.0 + starValue * 10.0) * 0.5 + 0.5);
-
-        vec3 starColor = vec3(1.0, 1.0, 1.0) * starIntensity;
-
-        vec3 finalColor = bgColor + starColor;
+        vec3 finalColor = bgColor + nebulaColor;
 
         gl_FragColor = vec4(finalColor, 1.0);
       }

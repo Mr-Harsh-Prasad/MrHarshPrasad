@@ -150,12 +150,12 @@ function TiltCard({ item, index }: { item: typeof achievements[0], index: number
                             key={i} 
                             className="absolute rounded-full bg-white/40 blur-[1px]"
                             style={{
-                                width: Math.random() * 4 + 1 + 'px',
-                                height: Math.random() * 4 + 1 + 'px',
-                                left: Math.random() * 100 + '%',
-                                top: Math.random() * 100 + '%',
-                                animation: `float-particle ${Math.random() * 3 + 2}s ease-in-out infinite alternate`,
-                                animationDelay: `${Math.random() * 2}s`
+                                width: (Math.abs(Math.sin(i * 1.5 + index)) * 4) + 1 + 'px',
+                                height: (Math.abs(Math.sin(i * 1.5 + index)) * 4) + 1 + 'px',
+                                left: (Math.abs(Math.sin(i * 2.5 + index)) * 100) + '%',
+                                top: (Math.abs(Math.sin(i * 3.5 + index)) * 100) + '%',
+                                animation: `float-particle ${(Math.abs(Math.sin(i * 4.5 + index)) * 3) + 2}s ease-in-out infinite alternate`,
+                                animationDelay: `${Math.abs(Math.sin(i * 5.5 + index)) * 2}s`
                             }}
                         />
                     ))}
