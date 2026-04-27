@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from 'framer-motion';
 import MagneticButton from '@/components/ui/MagneticButton';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -80,159 +80,147 @@ const projects = [
 ];
 
 /**
- * ProjectCard - Individual project showcase with hover effects
+ * InteractiveProjectCard - 3D Tilt Card with Framer Motion
  */
-function ProjectCard({
+function InteractiveProjectCard({
     project,
     index,
 }: {
     project: (typeof projects)[0];
     index: number;
 }) {
-    const [isHovered, setIsHovered] = useState(false);
     const cardRef = useRef<HTMLDivElement>(null);
+    const x = useMotionValue(0);
+    const y = useMotionValue(0);
+    const [isHovered, setIsHovered] = useState(false);
 
-    useEffect(() => {
-        const card = cardRef.current;
-        if (!card) return;
+    // Smooth the mouse movement
+    const mouseXSpring = useSpring(x, { stiffness: 150, damping: 15 });
+    const mouseYSpring = useSpring(y, { stiffness: 150, damping: 15 });
 
-        gsap.fromTo(
-            card,
-            { opacity: 0, y: 60 },
-            {
-                opacity: 1,
-                y: 0,
-                duration: 0.8,
-                delay: index * 0.15,
-                ease: 'power3.out',
-                scrollTrigger: {
-                    trigger: card,
-                    start: 'top 85%',
-                    toggleActions: 'play none none reverse',
-                },
-            }
-        );
-    }, [index]);
+    // Rotate based on mouse position
+    const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["10deg", "-10deg"]);
+    const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-10deg", "10deg"]);
+
+    const handleMouseMove = (e: React.MouseEvent) => {
+        if (!cardRef.current) return;
+        const rect = cardRef.current.getBoundingClientRect();
+        const width = rect.width;
+        const height = rect.height;
+        const mouseX = e.clientX - rect.left;
+        const mouseY = e.clientY - rect.top;
+        const xPct = mouseX / width - 0.5;
+        const yPct = mouseY / height - 0.5;
+        x.set(xPct);
+        y.set(yPct);
+    };
+
+    const handleMouseLeave = () => {
+        setIsHovered(false);
+        x.set(0);
+        y.set(0);
+    };
 
     return (
         <motion.div
             ref={cardRef}
-            className="relative group"
+            className="relative h-full perspective-1000 group cursor-pointer"
+            onMouseMove={handleMouseMove}
             onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
+            onMouseLeave={handleMouseLeave}
+            initial={{ opacity: 0, y: 60 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8, delay: index * 0.1, ease: 'easeOut' }}
         >
-            {/* Card Container */}
+            {/* 3D Container */}
             <motion.div
-                className="glass overflow-hidden rounded-2xl h-full flex flex-col"
-                whileHover={{ y: -12 }}
-                transition={{ duration: 0.4, ease: 'easeOut' }}
+                style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
+                className="w-full h-full glass overflow-hidden rounded-2xl flex flex-col relative"
             >
-                {/* Project Image/Preview */}
-                <div className="relative h-64 overflow-hidden">
-                    {/* Project Image */}
+                {/* 3D Inner Content Container */}
+                <div style={{ transform: "translateZ(40px)" }} className="absolute inset-0 z-20 flex flex-col justify-end p-6 pointer-events-none">
+                    <h3 className="text-2xl font-bold text-white mb-2 group-hover:text-cyan-400 transition-colors drop-shadow-md">
+                        {project.title}
+                    </h3>
+                    <p className="text-white/80 text-sm mb-4 line-clamp-2 drop-shadow-md">
+                        {project.description}
+                    </p>
+
+                    {/* Tech Stack Chips */}
+                    <div className="flex flex-wrap gap-2 pointer-events-auto">
+                        {project.tech.map((tech) => (
+                            <motion.span
+                                key={tech}
+                                whileHover={{ scale: 1.1, backgroundColor: 'rgba(0,255,255,0.2)' }}
+                                className="text-xs px-3 py-1 rounded-full bg-white/10 text-white/90 border border-white/20 backdrop-blur-md transition-colors"
+                            >
+                                {tech}
+                            </motion.span>
+                        ))}
+                    </div>
+
+                    {/* Hover Action Buttons */}
+                    <AnimatePresence>
+                        {isHovered && (
+                            <motion.div
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: 10 }}
+                                className="absolute top-6 right-6 flex gap-3 pointer-events-auto"
+                            >
+                                {project.github && (
+                                    <a
+                                        href={project.github}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="w-10 h-10 rounded-full bg-black/50 border border-white/20 flex items-center justify-center text-white hover:bg-cyan-500/20 hover:border-cyan-500/50 transition-all backdrop-blur-sm"
+                                    >
+                                        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                                        </svg>
+                                    </a>
+                                )}
+                                {project.live && (
+                                    <a
+                                        href={project.live}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="w-10 h-10 rounded-full bg-black/50 border border-white/20 flex items-center justify-center text-white hover:bg-purple-500/20 hover:border-purple-500/50 transition-all backdrop-blur-sm"
+                                    >
+                                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                                        </svg>
+                                    </a>
+                                )}
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+                </div>
+
+                {/* Dark Gradient Overlay for readability */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/10 z-10 pointer-events-none" />
+
+                {/* Image Background */}
+                <div className="absolute inset-0 z-0">
                     {project.image ? (
                         <Image
                             src={project.image}
                             alt={project.title}
                             fill
                             sizes="(max-width: 768px) 100vw, 400px"
-                            className="object-cover transition-transform duration-500 group-hover:scale-105"
+                            className="object-cover transition-transform duration-700 group-hover:scale-110"
                         />
                     ) : (
-                        <>
-                            {/* Gradient placeholder fallback */}
-                            <div
-                                className={`absolute inset-0 bg-gradient-to-br ${project.color} opacity-80`}
-                            />
-                            {/* Grid pattern overlay */}
-                            <div className="absolute inset-0 opacity-20">
-                                <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-                                    <defs>
-                                        <pattern id={`grid-${project.id}`} width="10" height="10" patternUnits="userSpaceOnUse">
-                                            <path d="M 10 0 L 0 0 0 10" fill="none" stroke="white" strokeWidth="0.3" />
-                                        </pattern>
-                                    </defs>
-                                    <rect width="100%" height="100%" fill={`url(#grid-${project.id})`} />
-                                </svg>
-                            </div>
-                            {/* Project Title Overlay */}
-                            <div className="absolute inset-0 flex items-center justify-center">
-                                <span className="text-4xl font-bold text-white/30">
-                                    {project.title.split(' ')[0]}
-                                </span>
-                            </div>
-                        </>
+                        <div className={`absolute inset-0 bg-gradient-to-br ${project.color} opacity-80`} />
                     )}
-
-                    {/* Hover overlay with action buttons */}
-                    <motion.div
-                        className="absolute inset-0 bg-black/60 flex items-center justify-center gap-3"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: isHovered ? 1 : 0 }}
-                        transition={{ duration: 0.3 }}
-                    >
-                        {project.github && (
-                            <motion.a
-                                href={project.github}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="w-12 h-12 rounded-full border border-white/30 bg-white/10 backdrop-blur-sm flex items-center justify-center text-white hover:bg-white/20 transition-colors"
-                                initial={{ scale: 0.8, opacity: 0 }}
-                                animate={{ scale: isHovered ? 1 : 0.8, opacity: isHovered ? 1 : 0 }}
-                                transition={{ duration: 0.3 }}
-                                aria-label={`View ${project.title} on GitHub`}
-                            >
-                                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
-                                </svg>
-                            </motion.a>
-                        )}
-                        {project.live && (
-                            <motion.a
-                                href={project.live}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="w-12 h-12 rounded-full border border-white/30 bg-white/10 backdrop-blur-sm flex items-center justify-center text-white hover:bg-white/20 transition-colors"
-                                initial={{ scale: 0.8, opacity: 0 }}
-                                animate={{ scale: isHovered ? 1 : 0.8, opacity: isHovered ? 1 : 0 }}
-                                transition={{ duration: 0.3, delay: 0.05 }}
-                                aria-label={`View ${project.title} live demo`}
-                            >
-                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                                </svg>
-                            </motion.a>
-                        )}
-                    </motion.div>
-                </div>
-
-                {/* Project Info */}
-                <div className="p-6 flex-1 flex flex-col">
-                    <h3 className="text-xl font-bold text-text-primary mb-2 group-hover:gradient-text transition-all duration-300">
-                        {project.title}
-                    </h3>
-                    <p className="text-text-secondary text-sm mb-4 line-clamp-2 flex-1">
-                        {project.description}
-                    </p>
-
-                    {/* Tech Stack */}
-                    <div className="flex flex-wrap gap-2">
-                        {project.tech.map((tech) => (
-                            <span
-                                key={tech}
-                                className="text-xs px-3 py-1 rounded-full bg-bg-tertiary text-text-muted border border-border"
-                            >
-                                {tech}
-                            </span>
-                        ))}
-                    </div>
                 </div>
             </motion.div>
-
+            
             {/* Glow effect on hover */}
             <motion.div
-                className={`absolute -inset-1 bg-gradient-to-r ${project.color} rounded-2xl opacity-0 blur-xl -z-10`}
-                animate={{ opacity: isHovered ? 0.3 : 0 }}
+                className={`absolute -inset-2 bg-gradient-to-r ${project.color} rounded-2xl opacity-0 blur-xl -z-10`}
+                animate={{ opacity: isHovered ? 0.4 : 0 }}
                 transition={{ duration: 0.3 }}
             />
         </motion.div>
@@ -248,23 +236,6 @@ export default function Projects() {
 
     useEffect(() => {
         const ctx = gsap.context(() => {
-            // Title entrance
-            gsap.fromTo(
-                titleRef.current,
-                { opacity: 0, y: 60 },
-                {
-                    opacity: 1,
-                    y: 0,
-                    duration: 1.2,
-                    ease: 'expo.out',
-                    scrollTrigger: {
-                        trigger: titleRef.current,
-                        start: 'top 80%',
-                        toggleActions: 'play none none reverse',
-                    },
-                }
-            );
-
             // Horizontal Scroll
             const projectsContainer = sectionRef.current?.querySelector('.projects-horizontal-scroll') as HTMLElement;
             if (projectsContainer) {
@@ -294,26 +265,32 @@ export default function Projects() {
     }, []);
 
     return (
-        <section ref={sectionRef} id="projects" className="section bg-bg-secondary">
-            <div className="container">
+        <section ref={sectionRef} id="projects" className="section bg-black relative overflow-hidden">
+            <div className="container relative z-10">
                 {/* Section Header */}
-                <div ref={titleRef} className="text-center mb-16">
-                    <span className="section-subtitle gradient-text">My Work</span>
-                    <h2 className="section-title text-text-primary">
-                        Featured <span className="gradient-text">Projects</span>
+                <motion.div 
+                    ref={titleRef} 
+                    className="text-center mb-16"
+                    initial={{ opacity: 0, y: 60 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-100px" }}
+                    transition={{ duration: 1, ease: "easeOut" }}
+                >
+                    <span className="section-subtitle text-cyan-400">My Work</span>
+                    <h2 className="section-title text-white drop-shadow-md">
+                        Featured <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500">Projects</span>
                     </h2>
-                    <p className="text-text-secondary max-w-2xl mx-auto mt-4">
-                        A selection of projects that showcase my skills and passion for
-                        building great digital experiences.
+                    <p className="text-white/60 max-w-2xl mx-auto mt-4">
+                        A selection of products I've engineered, featuring modern stacks and interactive experiences.
                     </p>
-                </div>
+                </motion.div>
 
                 {/* Projects Horizontal Container */}
-                <div className="mt-12 overflow-hidden">
+                <div className="mt-12 overflow-hidden pb-10">
                     <div className="projects-horizontal-scroll flex flex-nowrap gap-8 w-max px-[5vw]">
                         {projects.map((project, index) => (
-                            <div key={project.id} className="w-[85vw] md:w-[600px] flex-shrink-0">
-                                <ProjectCard project={project} index={index} />
+                            <div key={project.id} className="w-[85vw] md:w-[600px] h-[450px] flex-shrink-0">
+                                <InteractiveProjectCard project={project} index={index} />
                             </div>
                         ))}
                     </div>
@@ -323,7 +300,7 @@ export default function Projects() {
                 <div className="text-center mt-12">
                     <MagneticButton
                         href="https://github.com/Mr-Harsh-Prasad"
-                        className="btn-secondary"
+                        className="btn-secondary !border-cyan-500/30 hover:!border-cyan-400"
                     >
                         <span>View More on GitHub</span>
                         <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -332,9 +309,9 @@ export default function Projects() {
                     </MagneticButton>
                 </div>
             </div>
-
-            {/* Projects Themed Background */}
-            <div className="bg-projects-theme" />
+            
+            {/* Grid Pattern overlay for tech feel */}
+            <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-5 pointer-events-none" />
         </section>
     );
 }

@@ -9,39 +9,49 @@ import ProfessionalExperience from '@/components/sections/ProfessionalExperience
 import Resume from '@/components/sections/Resume';
 import Contact from '@/components/sections/Contact';
 import Footer from '@/components/sections/Footer';
+import GlowingSeparator from '@/components/ui/GlowingSeparator';
 
 /**
  * Home Page - Main portfolio page composing all sections
  */
 export default function Home() {
   return (
-    <main className="relative">
+    <main className="relative bg-black text-white">
       {/* Hero Section - Full viewport intro */}
       <Hero />
+      <GlowingSeparator />
 
       {/* About Section - Personal introduction */}
       <About />
+      <GlowingSeparator />
 
       {/* Education Section */}
       <Education />
+      <GlowingSeparator />
 
       {/* Achievements Section */}
       <Achievements />
+      <GlowingSeparator />
 
       {/* Skills Section - Technologies and abilities */}
       <Skills />
+      <GlowingSeparator />
 
       {/* Projects Section - Portfolio showcases */}
       <Projects />
+      <GlowingSeparator />
 
       {/* Professional Experience Section */}
       <ProfessionalExperience />
+      <GlowingSeparator />
 
       {/* Certifications Section */}
       <Certifications />
+      <GlowingSeparator />
 
       {/* Resume Section - Download CTA */}
       <Resume />
+      <GlowingSeparator />
 
       {/* Contact Section - Get in touch form */}
       <Contact />
@@ -51,4 +61,3 @@ export default function Home() {
     </main>
   );
 }
-

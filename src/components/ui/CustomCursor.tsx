@@ -7,6 +7,7 @@ import gsap from 'gsap';
  * CustomCursor - Premium custom cursor with hover interactions
  * Features:
  * - Smooth movement with GSAP
+ * - Soft radial glow trailing effect
  * - Blend mode for visual interest
  * - Scale on hover over interactive elements
  * - Hidden on mobile devices
@@ -14,19 +15,22 @@ import gsap from 'gsap';
 export default function CustomCursor() {
   const cursorRef = useRef<HTMLDivElement>(null);
   const cursorDotRef = useRef<HTMLDivElement>(null);
+  const cursorGlowRef = useRef<HTMLDivElement>(null);
   const [isHovering, setIsHovering] = useState(false);
   const [isHidden, setIsHidden] = useState(false);
 
   useEffect(() => {
     const cursor = cursorRef.current;
     const cursorDot = cursorDotRef.current;
+    const cursorGlow = cursorGlowRef.current;
     
-    if (!cursor || !cursorDot) return;
+    if (!cursor || !cursorDot || !cursorGlow) return;
 
     // Check if touch device
     if ('ontouchstart' in window) {
       cursor.style.display = 'none';
       cursorDot.style.display = 'none';
+      cursorGlow.style.display = 'none';
       return;
     }
 
@@ -46,6 +50,14 @@ export default function CustomCursor() {
         y: e.clientY - 4,
         duration: 0.1,
         ease: 'power2.out',
+      });
+
+      // Move the glowing trail with a longer delay
+      gsap.to(cursorGlow, {
+        x: e.clientX - 150,
+        y: e.clientY - 150,
+        duration: 1.2,
+        ease: 'power4.out',
       });
     };
 
@@ -106,10 +118,29 @@ export default function CustomCursor() {
         ease: 'expo.out',
       });
     }
+
+    const cursorGlow = cursorGlowRef.current;
+    if (cursorGlow) {
+      gsap.to(cursorGlow, {
+        scale: isHovering ? 1.5 : 1,
+        opacity: isHovering ? 0.3 : 0.15,
+        duration: 0.5,
+        ease: 'power2.out',
+      });
+    }
   }, [isHovering]);
 
   return (
     <>
+      {/* Background radial glow */}
+      <div
+        ref={cursorGlowRef}
+        className="fixed top-0 left-0 w-[300px] h-[300px] rounded-full bg-accent-primary blur-[80px] pointer-events-none z-[9997]"
+        style={{
+          opacity: isHidden ? 0 : 0.15,
+          transition: 'opacity 0.3s ease',
+        }}
+      />
       {/* Outer cursor ring */}
       <div
         ref={cursorRef}
