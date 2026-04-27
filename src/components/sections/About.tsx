@@ -91,7 +91,7 @@ export default function About() {
                             {/* Inner zoom container */}
                             <div className="absolute inset-0 transition-transform duration-1000 ease-out group-hover:scale-110">
                                 <Image
-                                    src="/mrharshprasad.png"
+                                    src="/about-pic.webp"
                                     alt="Harsh Prasad — Computer Science & Taekwondo Black Belt"
                                     fill
                                     priority
