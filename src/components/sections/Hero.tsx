@@ -81,29 +81,28 @@ export default function Hero() {
         />
       </div>
 
-      {/* ── Edge blur: sharp centre, blurred left & right ── */}
+      {/* ── Edge blur: sharp centre, soft blur on far edges only ── */}
       <div style={{
         position: 'absolute',
         inset: 0,
-        backdropFilter: 'blur(14px)',
-        WebkitBackdropFilter: 'blur(14px)',
-        /* Mask: opaque on edges (blur shows), transparent in centre (no blur) */
+        backdropFilter: 'blur(6px)',
+        WebkitBackdropFilter: 'blur(6px)',
         maskImage: `linear-gradient(
           to right,
           black 0%,
-          black 28%,
-          transparent 38%,
-          transparent 62%,
-          black 72%,
+          black 20%,
+          transparent 30%,
+          transparent 70%,
+          black 80%,
           black 100%
         )`,
         WebkitMaskImage: `linear-gradient(
           to right,
           black 0%,
-          black 28%,
-          transparent 38%,
-          transparent 62%,
-          black 72%,
+          black 20%,
+          transparent 30%,
+          transparent 70%,
+          black 80%,
           black 100%
         )`,
         zIndex: 1,
