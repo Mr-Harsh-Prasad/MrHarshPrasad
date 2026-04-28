@@ -46,8 +46,8 @@ export default function Hero() {
       style={{
         position: 'relative',
         width: '100%',
-        height: '100vh',
-        minHeight: '680px',
+        height: '100svh',
+        minHeight: '600px',
         overflow: 'hidden',
         display: 'flex',
         alignItems: 'center',
@@ -66,7 +66,6 @@ export default function Hero() {
         }}
       >
         <img
-          className="hero-bg-img"
           src="/hero-bg-pic.png"
           alt="Harsh Prasad"
           style={{
@@ -76,38 +75,12 @@ export default function Hero() {
             height: '100%',
             objectFit: 'cover',
             objectPosition: 'center center',
-            imageRendering: 'auto',
           }}
         />
       </div>
 
-      {/* ── Edge blur: sharp centre, soft blur on far edges only ── */}
-      <div style={{
-        position: 'absolute',
-        inset: 0,
-        backdropFilter: 'blur(6px)',
-        WebkitBackdropFilter: 'blur(6px)',
-        maskImage: `linear-gradient(
-          to right,
-          black 0%,
-          black 20%,
-          transparent 30%,
-          transparent 70%,
-          black 80%,
-          black 100%
-        )`,
-        WebkitMaskImage: `linear-gradient(
-          to right,
-          black 0%,
-          black 20%,
-          transparent 30%,
-          transparent 70%,
-          black 80%,
-          black 100%
-        )`,
-        zIndex: 1,
-        pointerEvents: 'none',
-      }} />
+      {/* ── Edge blur: sharp centre, soft sides — desktop only ── */}
+      <div className="hero-edge-blur" />
 
       {/* ── Golden-pink cinematic overlay ── */}
       <div style={{
@@ -116,44 +89,31 @@ export default function Hero() {
         background: `
           linear-gradient(
             105deg,
-            rgba(10, 5, 2, 0.92) 0%,
-            rgba(20, 8, 4, 0.75) 38%,
-            rgba(255, 160, 60, 0.12) 62%,
-            rgba(255, 80, 140, 0.18) 100%
+            rgba(10,5,2,0.92) 0%,
+            rgba(20,8,4,0.78) 38%,
+            rgba(255,160,60,0.12) 62%,
+            rgba(255,80,140,0.18) 100%
           ),
-          linear-gradient(
-            to top,
-            rgba(8, 3, 2, 0.85) 0%,
-            transparent 55%
-          )
+          linear-gradient(to top, rgba(8,3,2,0.88) 0%, transparent 55%)
         `,
         zIndex: 1,
       }} />
 
       {/* ── Warm glow orbs ── */}
       <div style={{
-        position: 'absolute',
-        inset: 0,
-        zIndex: 1,
-        pointerEvents: 'none',
-        overflow: 'hidden',
+        position: 'absolute', inset: 0, zIndex: 1,
+        pointerEvents: 'none', overflow: 'hidden',
       }}>
-        {/* golden orb top-left */}
         <div style={{
-          position: 'absolute',
-          top: '-120px', left: '-80px',
-          width: '480px', height: '480px',
-          borderRadius: '50%',
+          position: 'absolute', top: '-120px', left: '-80px',
+          width: '480px', height: '480px', borderRadius: '50%',
           background: 'radial-gradient(circle, rgba(255,183,60,0.18) 0%, transparent 70%)',
           filter: 'blur(40px)',
           animation: 'orbFloat 14s ease-in-out infinite',
         }} />
-        {/* pink orb bottom-right */}
         <div style={{
-          position: 'absolute',
-          bottom: '-80px', right: '-60px',
-          width: '380px', height: '380px',
-          borderRadius: '50%',
+          position: 'absolute', bottom: '-80px', right: '-60px',
+          width: '380px', height: '380px', borderRadius: '50%',
           background: 'radial-gradient(circle, rgba(255,100,160,0.2) 0%, transparent 70%)',
           filter: 'blur(40px)',
           animation: 'orbFloat 18s ease-in-out infinite reverse',
@@ -162,8 +122,7 @@ export default function Hero() {
 
       {/* ── Left accent stripe ── */}
       <div style={{
-        position: 'absolute',
-        left: 0, top: '10%', bottom: '10%',
+        position: 'absolute', left: 0, top: '10%', bottom: '10%',
         width: '3px',
         background: 'linear-gradient(to bottom, transparent, #FFB83C 25%, #FF6EB4 75%, transparent)',
         zIndex: 2,
@@ -171,21 +130,10 @@ export default function Hero() {
       }} />
 
       {/* ── Content grid ── */}
-      <div style={{
-        position: 'relative',
-        zIndex: 3,
-        width: '100%',
-        maxWidth: '1300px',
-        margin: '0 auto',
-        padding: '0 clamp(1.5rem, 5vw, 4rem)',
-        display: 'grid',
-        gridTemplateColumns: '1fr 1fr',
-        gap: '2rem',
-        alignItems: 'center',
-      }}>
+      <div className="hero-grid">
 
         {/* ══ LEFT — Name + CTAs ══ */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.4rem' }}>
+        <div className="hero-left">
 
           {/* eyebrow */}
           <div data-animate style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
@@ -197,7 +145,7 @@ export default function Hero() {
               fontFamily: 'var(--font-mono)',
               fontSize: '0.7rem',
               letterSpacing: '0.28em',
-              textTransform: 'uppercase',
+              textTransform: 'uppercase' as const,
               background: 'linear-gradient(to right, #FFB83C, #FF6EB4)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
@@ -210,21 +158,14 @@ export default function Hero() {
           {/* Big name */}
           <h1 data-animate style={{
             fontFamily: 'var(--font-display)',
-            fontSize: 'clamp(4.2rem, 10vw, 9.5rem)',
+            fontSize: 'clamp(3.6rem, 10vw, 9.5rem)',
             lineHeight: 0.87,
             letterSpacing: '-0.01em',
             margin: 0,
             background: `linear-gradient(
               90deg,
-              #FFFFFF,
-              #FFE8B0,
-              #FFB83C,
-              #FF9A5C,
-              #FF6EB4,
-              #FF3E8A,
-              #FFB83C,
-              #FFE8B0,
-              #FFFFFF
+              #FFFFFF, #FFE8B0, #FFB83C, #FF9A5C,
+              #FF6EB4, #FF3E8A, #FFB83C, #FFE8B0, #FFFFFF
             )`,
             backgroundSize: '300% 100%',
             WebkitBackgroundClip: 'text',
@@ -248,7 +189,7 @@ export default function Hero() {
           {/* subtitle */}
           <p data-animate style={{
             fontFamily: 'var(--font-body)',
-            fontSize: 'clamp(0.88rem, 1.3vw, 1.05rem)',
+            fontSize: 'clamp(0.85rem, 1.3vw, 1.05rem)',
             color: 'rgba(255,235,200,0.8)',
             lineHeight: 1.65,
             maxWidth: '27rem',
@@ -259,60 +200,33 @@ export default function Hero() {
           </p>
 
           {/* CTAs */}
-          <div data-animate style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginTop: '0.4rem' }}>
+          <div data-animate className="hero-ctas">
             <a
               href="#contact"
-              style={{
-                display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
-                padding: '0.8rem 1.8rem',
-                background: 'linear-gradient(135deg, #FFB83C, #FF6EB4)',
-                color: '#1a0a00',
-                fontWeight: 700,
-                fontSize: '0.82rem',
-                letterSpacing: '0.06em',
-                textTransform: 'uppercase',
-                borderRadius: '8px',
-                border: 'none',
-                textDecoration: 'none',
-                boxShadow: '0 0 28px rgba(255,183,60,0.4)',
-                transition: 'transform 0.25s ease, box-shadow 0.25s ease',
-              }}
+              className="hero-cta-primary"
               onMouseEnter={e => {
-                (e.currentTarget as HTMLElement).style.transform = 'translateY(-3px)';
-                (e.currentTarget as HTMLElement).style.boxShadow = '0 0 50px rgba(255,183,60,0.6)';
+                (e.currentTarget as HTMLAnchorElement).style.transform = 'translateY(-3px)';
+                (e.currentTarget as HTMLAnchorElement).style.boxShadow = '0 0 50px rgba(255,183,60,0.6)';
               }}
               onMouseLeave={e => {
-                (e.currentTarget as HTMLElement).style.transform = 'translateY(0)';
-                (e.currentTarget as HTMLElement).style.boxShadow = '0 0 28px rgba(255,183,60,0.4)';
+                (e.currentTarget as HTMLAnchorElement).style.transform = 'translateY(0)';
+                (e.currentTarget as HTMLAnchorElement).style.boxShadow = '0 0 28px rgba(255,183,60,0.4)';
               }}
             >
               Get in Touch
             </a>
             <a
               href="#projects"
-              style={{
-                display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
-                padding: '0.8rem 1.8rem',
-                background: 'transparent',
-                color: 'rgba(255,235,200,0.9)',
-                fontWeight: 600,
-                fontSize: '0.82rem',
-                letterSpacing: '0.06em',
-                textTransform: 'uppercase',
-                borderRadius: '8px',
-                border: '1px solid rgba(255,183,60,0.4)',
-                textDecoration: 'none',
-                transition: 'all 0.25s ease',
-              }}
+              className="hero-cta-secondary"
               onMouseEnter={e => {
-                (e.currentTarget as HTMLElement).style.background = 'rgba(255,183,60,0.1)';
-                (e.currentTarget as HTMLElement).style.borderColor = '#FFB83C';
-                (e.currentTarget as HTMLElement).style.boxShadow = '0 0 20px rgba(255,183,60,0.3)';
+                (e.currentTarget as HTMLAnchorElement).style.background = 'rgba(255,183,60,0.1)';
+                (e.currentTarget as HTMLAnchorElement).style.borderColor = '#FFB83C';
+                (e.currentTarget as HTMLAnchorElement).style.boxShadow = '0 0 20px rgba(255,183,60,0.3)';
               }}
               onMouseLeave={e => {
-                (e.currentTarget as HTMLElement).style.background = 'transparent';
-                (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,183,60,0.4)';
-                (e.currentTarget as HTMLElement).style.boxShadow = 'none';
+                (e.currentTarget as HTMLAnchorElement).style.background = 'transparent';
+                (e.currentTarget as HTMLAnchorElement).style.borderColor = 'rgba(255,183,60,0.4)';
+                (e.currentTarget as HTMLAnchorElement).style.boxShadow = 'none';
               }}
             >
               View Work
@@ -321,15 +235,8 @@ export default function Hero() {
         </div>
 
         {/* ══ RIGHT — Badges + Quote ══ */}
-        <div style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '1.4rem',
-          alignItems: 'flex-end',
-          marginRight: '-2rem',
-        }}>
+        <div className="hero-right">
 
-          {/* Badge cards */}
           {[
             {
               icon: '🥋',
@@ -352,21 +259,12 @@ export default function Hero() {
               sub: 'React · Node · Cybersecurity',
               color: '#FF9A5C',
             },
-          ].map((badge, i) => (
+          ].map((badge) => (
             <div
               key={badge.label}
               data-animate
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.9rem',
-                borderLeft: `2px solid ${badge.color}`,
-                paddingLeft: '0.9rem',
-                width: '100%',
-                maxWidth: '22rem',
-                transition: 'transform 0.3s ease',
-                cursor: 'default',
-              }}
+              className="hero-badge"
+              style={{ borderLeft: `2px solid ${badge.color}` }}
               onMouseEnter={e => {
                 (e.currentTarget as HTMLElement).style.transform = 'translateX(-6px)';
               }}
@@ -381,7 +279,7 @@ export default function Hero() {
                   fontFamily: 'var(--font-mono)',
                   fontSize: '0.58rem',
                   letterSpacing: '0.24em',
-                  textTransform: 'uppercase',
+                  textTransform: 'uppercase' as const,
                   color: badge.color,
                   marginBottom: '0.15rem',
                   opacity: 0.85,
@@ -420,7 +318,6 @@ export default function Hero() {
               marginTop: '0.6rem',
               padding: '0.6rem 0 0.6rem 0.9rem',
               borderLeft: '2px solid rgba(255,183,60,0.4)',
-              position: 'relative',
             }}
           >
             <p style={{
@@ -432,16 +329,15 @@ export default function Hero() {
               margin: '0 0 0.5rem',
               letterSpacing: '0.01em',
             }}>
-              If you don't fight for what you want,<br />
-              don't cry for what you lose.
+              If you don&apos;t fight for what you want,<br />
+              don&apos;t cry for what you lose.
             </p>
-
             <span style={{
               display: 'block',
               fontFamily: 'var(--font-mono)',
               fontSize: '0.63rem',
               letterSpacing: '0.2em',
-              textTransform: 'uppercase',
+              textTransform: 'uppercase' as const,
               background: 'linear-gradient(to right, #FFB83C, #FF6EB4)',
               WebkitBackgroundClip: 'text',
               backgroundClip: 'text',
@@ -494,20 +390,6 @@ export default function Hero() {
           0%   { background-position: 0%   50%; }
           50%  { background-position: 100% 50%; }
           100% { background-position: 0%   50%; }
-        }
-
-        /* ── Responsive: stack vertically on mobile ── */
-        @media (max-width: 768px) {
-          #hero > div:nth-child(5) {
-            grid-template-columns: 1fr !important;
-            gap: 2.5rem !important;
-          }
-          #hero > div:nth-child(5) > div:last-child {
-            align-items: flex-start !important;
-          }
-          #hero > div:nth-child(5) > div:last-child > div {
-            max-width: 100% !important;
-          }
         }
       `}</style>
     </section>
