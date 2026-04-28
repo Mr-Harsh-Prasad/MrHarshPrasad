@@ -21,7 +21,7 @@ export default function Hero() {
                 scrollTrigger: {
                     trigger: sectionRef.current,
                     start: 'top top',
-                    end: '+=800', // Pin for 800px of scrolling to reveal lights
+                    end: '+=400', // Pin for 400px of scrolling to reveal lights
                     scrub: 1, // Smooth scrub
                     pin: true,
                 }

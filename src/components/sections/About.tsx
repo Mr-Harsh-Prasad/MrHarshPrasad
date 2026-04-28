@@ -137,7 +137,7 @@ export default function About() {
     }, []);
 
     return (
-        <section ref={sectionRef} id="about" className="relative min-h-screen py-24 lg:py-32 bg-[#020202] overflow-hidden flex flex-col justify-center">
+        <section ref={sectionRef} id="about" className="relative py-16 lg:py-24 bg-[#020202] overflow-hidden flex flex-col justify-center">
             
             {/* Kinetic Typography Background */}
             <div className="absolute top-1/3 left-0 w-[200vw] -translate-y-1/2 pointer-events-none z-0 opacity-10 mix-blend-overlay">
