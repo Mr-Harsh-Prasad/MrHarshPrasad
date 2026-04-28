@@ -1,156 +1,199 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, ReactNode } from 'react';
 import Image from 'next/image';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const stats = [
-    { number: '01', label: 'Black Belt', sub: '1st Dan Taekwondo' },
-    { number: '02', label: 'Hackathon Win', sub: 'MLH Gemini Buildathon' },
-    { number: '03', label: 'B.Tech CSE', sub: 'AKTU — Class of 2028' },
-];
+// Magnetic Bento Card Component
+const BentoCard = ({ children, className = '', delay = 0 }: { children: ReactNode, className?: string, delay?: number }) => {
+    const cardRef = useRef<HTMLDivElement>(null);
+    const glowRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const card = cardRef.current;
+        const glow = glowRef.current;
+        if (!card || !glow) return;
+
+        const onMouseMove = (e: MouseEvent) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            // Update glow position
+            gsap.to(glow, {
+                x, y,
+                duration: 0.4,
+                ease: "power2.out"
+            });
+
+            // Calculate 3D tilt
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            const rotateX = ((y - centerY) / centerY) * -3;
+            const rotateY = ((x - centerX) / centerX) * 3;
+
+            gsap.to(card, {
+                rotateX,
+                rotateY,
+                duration: 0.5,
+                ease: "power2.out",
+                transformPerspective: 1000
+            });
+        };
+
+        const onMouseLeave = () => {
+            gsap.to(card, {
+                rotateX: 0,
+                rotateY: 0,
+                duration: 0.7,
+                ease: "power3.out"
+            });
+            gsap.to(glow, {
+                opacity: 0,
+                duration: 0.5
+            });
+        };
+
+        const onMouseEnter = () => {
+            gsap.to(glow, {
+                opacity: 1,
+                duration: 0.5
+            });
+        };
+
+        card.addEventListener('mousemove', onMouseMove);
+        card.addEventListener('mouseleave', onMouseLeave);
+        card.addEventListener('mouseenter', onMouseEnter);
+
+        return () => {
+            card.removeEventListener('mousemove', onMouseMove);
+            card.removeEventListener('mouseleave', onMouseLeave);
+            card.removeEventListener('mouseenter', onMouseEnter);
+        };
+    }, []);
+
+    return (
+        <div 
+            ref={cardRef} 
+            className={`bento-card group relative rounded-3xl border border-white/5 bg-white/[0.015] overflow-hidden backdrop-blur-xl transition-colors duration-500 hover:border-white/10 ${className}`}
+            style={{ opacity: 0, transform: 'translateY(40px)' }} // For scroll-trigger entry
+            data-delay={delay}
+        >
+            {/* The cursor-following glow */}
+            <div 
+                ref={glowRef}
+                className="absolute top-0 left-0 w-[400px] h-[400px] bg-white/10 rounded-full blur-[100px] -translate-x-1/2 -translate-y-1/2 pointer-events-none opacity-0 mix-blend-screen"
+            />
+            <div className="relative z-10 h-full w-full">
+                {children}
+            </div>
+        </div>
+    );
+};
 
 export default function About() {
     const sectionRef = useRef<HTMLElement>(null);
-    const headRef    = useRef<HTMLDivElement>(null);
-    const imgRef     = useRef<HTMLDivElement>(null);
-    const bodyRef    = useRef<HTMLDivElement>(null);
-    const statsRef   = useRef<HTMLDivElement>(null);
-
-    // Helper to split text into words for staggered animation
-    const splitText = (text: string) => {
-        return text.split(' ').map((word, i) => (
-            <span key={i} className="inline-block overflow-hidden mr-[0.25em] align-bottom">
-                <span className="word-anim inline-block">{word}</span>
-            </span>
-        ));
-    };
+    const marqueeRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         const ctx = gsap.context(() => {
-            const tl = gsap.timeline({
-                scrollTrigger: {
-                    trigger: sectionRef.current,
-                    start: 'top 75%',
-                    toggleActions: 'play none none reverse',
-                },
+            
+            // Kinetic Typography Scrub
+            if (marqueeRef.current) {
+                gsap.to(marqueeRef.current, {
+                    x: '-25%',
+                    ease: 'none',
+                    scrollTrigger: {
+                        trigger: sectionRef.current,
+                        start: 'top bottom',
+                        end: 'bottom top',
+                        scrub: 1,
+                    }
+                });
+            }
+
+            // Staggered entry for Bento Cards
+            const cards = gsap.utils.toArray('.bento-card') as HTMLElement[];
+            cards.forEach((card) => {
+                const delay = card.getAttribute('data-delay') || 0;
+                gsap.to(card, {
+                    opacity: 1,
+                    y: 0,
+                    duration: 1.2,
+                    delay: Number(delay),
+                    ease: "power3.out",
+                    scrollTrigger: {
+                        trigger: sectionRef.current,
+                        start: 'top 80%',
+                    }
+                });
             });
 
-            // Head text reveal
-            tl.fromTo(headRef.current?.querySelectorAll('.word-anim') ?? [],
-                { y: '100%', opacity: 0 },
-                { y: '0%', opacity: 1, duration: 1, stagger: 0.05, ease: 'expo.out' }
-            )
-            // Image reveal
-            .fromTo(imgRef.current,
-                { opacity: 0, scale: 1.05, filter: 'blur(10px)' },
-                { opacity: 1, scale: 1, filter: 'blur(0px)', duration: 1.5, ease: 'power4.out' },
-                '-=0.8'
-            )
-            // Body paragraphs reveal
-            .fromTo(bodyRef.current?.children ?? [],
-                { opacity: 0, y: 20 },
-                { opacity: 1, y: 0, stagger: 0.1, duration: 1, ease: 'expo.out' },
-                '-=1.2'
-            )
-            // Stats reveal
-            .fromTo(statsRef.current?.children ?? [],
-                { opacity: 0, y: 30 },
-                { opacity: 1, y: 0, stagger: 0.12, duration: 0.8, ease: 'expo.out' },
-                '-=0.8'
-            );
         }, sectionRef);
         return () => ctx.revert();
     }, []);
 
     return (
-        <section ref={sectionRef} id="about" className="section">
-            <div className="container">
-
-                {/* Headline */}
-                <div ref={headRef} className="mb-16 max-w-3xl">
-                    <span className="section-subtitle overflow-hidden block">
-                        <span className="word-anim block">About Me</span>
-                    </span>
-                    <h2 className="section-title text-text-primary leading-[1.1] mt-2">
-                        {splitText('Discipline')}
-                        <br />
-                        <span className="gradient-text">{splitText('Meets Tech.')}</span>
-                    </h2>
-                </div>
-
-                {/* Grid: photo left, content right */}
-                <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-start">
-
-                    {/* Photo with cinematic hover */}
-                    <div ref={imgRef} className="relative group perspective-1000">
-                        <div className="relative aspect-[3/4] max-w-sm overflow-hidden rounded-2xl border border-white/5 transition-all duration-700 ease-out group-hover:shadow-[0_0_40px_rgba(230,57,70,0.2)]">
-                            {/* Inner zoom container */}
-                            <div className="absolute inset-0 transition-transform duration-1000 ease-out group-hover:scale-110">
-                                <Image
-                                    src="/about-pic.webp"
-                                    alt="Harsh Prasad — Computer Science & Taekwondo Black Belt"
-                                    fill
-                                    priority
-                                    sizes="(max-width: 768px) 100vw, 400px"
-                                    className="object-cover object-top transition-all duration-700 group-hover:brightness-110 group-hover:contrast-125"
-                                />
-                            </div>
-                            
-                            {/* Dynamic lighting overlay */}
-                            <div className="absolute inset-0 bg-gradient-to-tr from-black/60 via-transparent to-white/10 opacity-50 mix-blend-overlay transition-opacity duration-700 group-hover:opacity-100" />
-                            
-                            {/* Highlight reflection */}
-                            <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:animate-shimmer" />
-
-                            {/* Red accent line */}
-                            <div className="absolute inset-y-0 -right-2 w-0.5 bg-gradient-to-b from-transparent via-[#e63946] to-transparent" />
-                        </div>
-                        
-                        {/* Location tag */}
-                        <div className="absolute -bottom-4 left-4 bg-bg-tertiary/90 backdrop-blur-md border border-border px-4 py-2 rounded-lg mono text-xs text-text-muted transition-transform duration-500 group-hover:-translate-y-2 group-hover:shadow-lg">
-                            // Ghaziabad, India 🇮🇳
-                        </div>
-                    </div>
-
-                    {/* Text + stats */}
-                    <div ref={bodyRef} className="space-y-8">
-                        <div className="space-y-5 text-text-secondary leading-relaxed text-lg">
-                            <p>
-                                I&apos;m <strong className="text-text-primary font-semibold">Harsh Prasad</strong> — a Computer Science
-                                undergraduate who believes the best code is written with the same mindset as a black belt:
-                                slow deliberate practice, fast decisive execution.
-                            </p>
-                            <p>
-                                Training in <span className="text-[#e63946] font-medium">Taekwondo for years</span> taught me
-                                that discipline isn&apos;t optional — it&apos;s the foundation. I bring that same obsession
-                                with fundamentals to every line of software I write.
-                            </p>
-
-                        </div>
-
-                        {/* Stats */}
-                        <div ref={statsRef} className="grid grid-cols-3 gap-4 pt-6 border-t border-border">
-                            {stats.map((s) => (
-                                <div key={s.number} className="flex flex-col gap-1 group/stat cursor-default">
-                                    <span className="font-mono text-4xl font-bold text-[#e63946] leading-none transition-transform duration-300 group-hover/stat:-translate-y-1 group-hover/stat:text-accent-secondary">{s.number}</span>
-                                    <span className="text-text-primary font-semibold text-sm transition-colors duration-300 group-hover/stat:text-white">{s.label}</span>
-                                    <span className="text-text-muted text-xs">{s.sub}</span>
-                                </div>
-                            ))}
-                        </div>
-
-                        <p className="mono text-xs text-text-muted tracking-widest uppercase">
-                            // Technical Head · GeeksforGeeks Cloud Computing Club
-                        </p>
-                    </div>
+        <section ref={sectionRef} id="about" className="relative min-h-screen py-24 lg:py-32 bg-[#020202] overflow-hidden flex flex-col justify-center">
+            
+            {/* Kinetic Typography Background */}
+            <div className="absolute top-1/3 left-0 w-[200vw] -translate-y-1/2 pointer-events-none z-0 opacity-10 mix-blend-overlay">
+                <div ref={marqueeRef} className="text-[18vw] font-black leading-none whitespace-nowrap text-transparent tracking-tight" style={{ WebkitTextStroke: '2px rgba(255,255,255,0.8)' }}>
+                    DISCIPLINE • EXECUTION • DISCIPLINE • EXECUTION • 
                 </div>
             </div>
 
-            <div className="absolute top-0 right-0 w-[500px] h-[500px] rounded-full bg-[#e63946] opacity-[0.03] blur-[150px] pointer-events-none mix-blend-screen" />
+            <div className="container px-4 sm:px-6 mx-auto relative z-10 max-w-6xl">
+                
+                <div className="mb-12 lg:mb-16">
+                    <span className="text-[#e63946] font-mono tracking-widest text-xs uppercase font-semibold">01 // About Me</span>
+                    <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-white mt-3">
+                        Beyond the <span className="text-white/40 italic">Code.</span>
+                    </h2>
+                </div>
+
+                {/* The Bento Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-6 auto-rows-[250px] md:auto-rows-[300px]">
+                    
+                    {/* Box 1: Portrait (Spans 2 columns, 2 rows) */}
+                    <BentoCard className="md:col-span-2 md:row-span-2" delay={0}>
+                        <div className="absolute inset-0 w-full h-full">
+                            <Image
+                                src="/about-pic.webp"
+                                alt="Harsh Prasad"
+                                fill
+                                className="object-cover object-center transition-transform duration-[15s] group-hover:scale-110 ease-out transition-all duration-700"
+                            />
+                            {/* Inner vignette for depth */}
+                            <div className="absolute inset-0 shadow-[inset_0_-100px_100px_-20px_#020202]" />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+                            
+                            <div className="absolute bottom-8 left-8">
+                                <div className="text-white text-2xl font-serif font-bold">Harsh Prasad</div>
+                                <div className="text-white/60 text-sm mono mt-1">Computer Science Student</div>
+                            </div>
+                        </div>
+                    </BentoCard>
+
+                    {/* Box 2: Bio (Spans 2 columns, 2 rows) */}
+                    <BentoCard className="md:col-span-2 md:row-span-2 p-8 md:p-12 flex flex-col justify-center" delay={0.1}>
+                        <h3 className="text-xl md:text-3xl font-bold text-white mb-6">The Philosophy</h3>
+                        <p className="text-white/60 leading-relaxed text-base md:text-lg">
+                            I believe the best architecture is written with the mindset of a martial artist: 
+                            <span className="text-white font-medium mx-1 border-b border-[#e63946]/50">slow, deliberate practice</span> 
+                            combined with 
+                            <span className="text-white font-medium mx-1 border-b border-[#e63946]/50">fast, decisive execution</span>.
+                            Discipline isn&apos;t optional—it&apos;s the foundation of everything I build.
+                        </p>
+                    </BentoCard>
+
+                </div>
+            </div>
+            
+            <div className="absolute top-1/2 right-0 w-[600px] h-[600px] rounded-full bg-[#e63946] opacity-[0.02] blur-[150px] pointer-events-none mix-blend-screen -translate-y-1/2" />
         </section>
     );
 }
