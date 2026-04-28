@@ -1,144 +1,90 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 
-gsap.registerPlugin(ScrollTrigger);
-
 const skills = [
-    { name: 'C', tag: 'Programming', level: 82, color: '#3b82f6' },
-    { name: 'Python', tag: 'Programming', level: 75, color: '#eab308' },
-    { name: 'Java', tag: 'Programming', level: 65, color: '#ef4444' },
-    { name: 'HTML & CSS', tag: 'Web', level: 88, color: '#ec4899' },
+    { name: 'C / C++', level: 82, category: 'Low-Level Architecture', color: '#3b82f6', desc: 'Deep understanding of memory management, pointers, and performance-critical systems.' },
+    { name: 'Python', level: 75, category: 'AI & Backend', color: '#eab308', desc: 'Extensive experience in computer vision, machine learning, and robust backend development.' },
+    { name: 'Java', level: 65, category: 'Enterprise Systems', color: '#ef4444', desc: 'Object-oriented design patterns and scalable application architecture.' },
+    { name: 'Web Stack', level: 88, category: 'Frontend & UI', color: '#ec4899', desc: 'Next.js, React, Tailwind, and GSAP for world-class interactive web experiences.' },
 ];
 
-function SkillNode({ skill, index }: { skill: typeof skills[0], index: number }) {
-    const [isHovered, setIsHovered] = useState(false);
-    const radius = 38;
-    const circumference = 2 * Math.PI * radius;
-    const strokeDashoffset = circumference - (skill.level / 100) * circumference;
-
-    return (
-        <motion.div
-            initial={{ opacity: 0, scale: 0.8, y: 20 }}
-            whileInView={{ opacity: 1, scale: 1, y: 0 }}
-            viewport={{ once: true, margin: '-50px' }}
-            transition={{ delay: index * 0.05, duration: 0.5, type: 'spring' }}
-            className="relative group cursor-pointer"
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-        >
-            <div className="flex flex-col items-center justify-center p-6 rounded-2xl border border-white/5 bg-bg-tertiary/30 backdrop-blur-md transition-all duration-500 hover:bg-bg-tertiary/80 hover:border-white/20 relative overflow-hidden z-10 hover:-translate-y-2">
-                
-                {/* Circular Progress Ring */}
-                <div className="relative w-24 h-24 flex items-center justify-center mb-4">
-                    {/* Background Ring */}
-                    <svg className="absolute inset-0 w-full h-full -rotate-90">
-                        <circle
-                            cx="48"
-                            cy="48"
-                            r={radius}
-                            fill="transparent"
-                            stroke="rgba(255,255,255,0.05)"
-                            strokeWidth="4"
-                        />
-                    </svg>
-                    
-                    {/* Animated Fill Ring */}
-                    <svg className="absolute inset-0 w-full h-full -rotate-90">
-                        <motion.circle
-                            cx="48"
-                            cy="48"
-                            r={radius}
-                            fill="transparent"
-                            stroke={skill.color}
-                            strokeWidth="4"
-                            strokeLinecap="round"
-                            strokeDasharray={circumference}
-                            initial={{ strokeDashoffset: circumference }}
-                            animate={{ strokeDashoffset: isHovered ? strokeDashoffset : circumference }}
-                            transition={{ duration: 1, ease: 'easeOut' }}
-                            style={{ filter: `drop-shadow(0 0 6px ${skill.color})` }}
-                        />
-                    </svg>
-                    
-                    {/* Level Text (appears on hover) */}
-                    <div className="absolute inset-0 flex items-center justify-center font-mono text-sm font-bold opacity-0 transition-opacity duration-300 group-hover:opacity-100" style={{ color: skill.color }}>
-                        {skill.level}%
-                    </div>
-                    
-                    {/* Idle Icon / Initial */}
-                    <div className="absolute inset-0 flex items-center justify-center text-2xl font-bold text-text-primary opacity-100 transition-opacity duration-300 group-hover:opacity-0">
-                        {skill.name.charAt(0)}
-                    </div>
-                </div>
-
-                <span className="text-text-primary font-semibold text-center group-hover:text-white transition-colors duration-300">{skill.name}</span>
-                <span className="text-text-muted text-[10px] mono uppercase tracking-widest mt-1 text-center group-hover:text-text-secondary transition-colors duration-300">{skill.tag}</span>
-
-                {/* Ambient glow behind card */}
-                <div 
-                    className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-500 pointer-events-none mix-blend-screen"
-                    style={{ background: `radial-gradient(circle at center, ${skill.color} 0%, transparent 70%)` }}
-                />
-            </div>
-        </motion.div>
-    );
-}
-
-/**
- * Skills Section — Interactive visual grid with glowing nodes.
- */
 export default function Skills() {
-    const sectionRef = useRef<HTMLElement>(null);
-    const titleRef = useRef<HTMLDivElement>(null);
-
-    useEffect(() => {
-        const ctx = gsap.context(() => {
-            gsap.fromTo(
-                titleRef.current,
-                { opacity: 0, y: 50 },
-                {
-                    opacity: 1, y: 0, duration: 1.2, ease: 'expo.out',
-                    scrollTrigger: {
-                        trigger: titleRef.current,
-                        start: 'top 80%',
-                        toggleActions: 'play none none reverse',
-                    },
-                }
-            );
-        }, sectionRef);
-
-        return () => ctx.revert();
-    }, []);
+    const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
     return (
-        <section ref={sectionRef} id="skills" className="section bg-bg-secondary relative overflow-hidden">
-            <div className="container relative z-10">
-                <div className="flex flex-col items-center mb-16 text-center" ref={titleRef}>
-                    <span className="section-subtitle">Technical Skills</span>
-                    <h2 className="section-title text-text-primary mb-6">
-                        What I <span className="gradient-text">Work With.</span>
-                    </h2>
-                    <p className="text-text-secondary max-w-lg leading-relaxed">
-                        Languages and tools I&apos;ve trained with — each one practiced with intention,
-                        not just memorized. Hover to reveal proficiency.
-                    </p>
-                </div>
+        <section 
+            id="skills" 
+            className="relative h-screen w-full bg-[#020202] flex flex-col md:flex-row overflow-hidden border-b border-white/5"
+            onMouseLeave={() => setHoveredIndex(null)}
+        >
+            {skills.map((skill, index) => {
+                const isActive = hoveredIndex === index;
+                const isAnyHovered = hoveredIndex !== null;
 
-                {/* Interactive Skills Grid */}
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
-                    {skills.map((skill, index) => (
-                        <SkillNode key={skill.name} skill={skill} index={index} />
-                    ))}
-                </div>
-            </div>
+                return (
+                    <motion.div
+                        key={skill.name}
+                        className="relative group border-b md:border-b-0 md:border-r border-white/5 overflow-hidden cursor-crosshair flex flex-col justify-center items-center bg-[#050505]"
+                        onMouseEnter={() => setHoveredIndex(index)}
+                        initial={false}
+                        animate={{
+                            flex: isActive ? 5 : (isAnyHovered ? 0.5 : 1)
+                        }}
+                        transition={{ duration: 0.6, ease: [0.32, 0.72, 0, 1] }}
+                        style={{ height: '100%', width: '100%' }}
+                    >
+                        {/* Background Color Glow */}
+                        <motion.div 
+                            className="absolute inset-0 z-0 opacity-0 transition-opacity duration-700 pointer-events-none"
+                            animate={{ opacity: isActive ? 0.15 : 0 }}
+                            style={{ background: `linear-gradient(to bottom right, ${skill.color}, transparent)` }}
+                        />
 
-            {/* Background Decorations */}
-            <div className="bg-code-theme" />
-            <div className="grid-pattern opacity-20" />
+                        {/* Collapsed State (Vertical Text on Desktop) */}
+                        <motion.div 
+                            className="absolute inset-0 flex items-center justify-center pointer-events-none"
+                            animate={{ opacity: isActive ? 0 : 1 }}
+                            transition={{ duration: 0.3 }}
+                        >
+                            <h3 className="text-3xl md:text-5xl font-serif font-bold text-white/40 tracking-widest uppercase md:-rotate-90 whitespace-nowrap transition-colors duration-500 group-hover:text-white/80">
+                                {skill.name}
+                            </h3>
+                        </motion.div>
+
+                        {/* Expanded State */}
+                        <motion.div 
+                            className="absolute inset-0 p-8 md:p-16 flex flex-col justify-between z-10 pointer-events-none overflow-hidden"
+                            animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 20 }}
+                            transition={{ duration: 0.5, delay: isActive ? 0.2 : 0 }}
+                        >
+                            {/* Top info */}
+                            <div className="min-w-max">
+                                <span className="font-mono tracking-widest text-xs md:text-sm uppercase block mb-4 font-bold" style={{ color: skill.color }}>
+                                    {skill.category}
+                                </span>
+                                <h3 className="text-5xl md:text-7xl lg:text-8xl font-serif font-bold text-white tracking-tighter uppercase whitespace-nowrap">
+                                    {skill.name}
+                                </h3>
+                                <p className="text-white/60 mt-6 max-w-sm text-sm md:text-base leading-relaxed hidden md:block whitespace-normal">
+                                    {skill.desc}
+                                </p>
+                            </div>
+
+                            {/* Bottom info */}
+                            <div className="flex flex-col md:flex-row md:items-end justify-between w-full gap-4 mt-auto">
+                                <span className="font-mono text-white/30 text-sm md:text-lg uppercase tracking-widest hidden md:block">
+                                    Proficiency Level
+                                </span>
+                                <div className="text-7xl md:text-9xl font-serif font-bold tracking-tighter leading-none" style={{ color: skill.color }}>
+                                    {skill.level}<span className="text-3xl md:text-5xl text-white/30">%</span>
+                                </div>
+                            </div>
+                        </motion.div>
+                    </motion.div>
+                );
+            })}
         </section>
     );
 }
