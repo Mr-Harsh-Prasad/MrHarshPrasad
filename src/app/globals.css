@@ -48,7 +48,7 @@
   --shadow-gold: 0 0 30px rgba(255, 183, 3, 0.3);
 
   /* Spacing */
-  --section-padding: clamp(3rem, 6vw, 6rem);
+  --section-padding: clamp(2.5rem, 4vw, 4.5rem);
 
   /* Easing */
   --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);

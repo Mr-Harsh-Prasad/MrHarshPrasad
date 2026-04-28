@@ -66,7 +66,7 @@ export default function ProfessionalExperience() {
         <section ref={sectionRef} id="experience" className="section relative overflow-hidden">
             <div className="container relative z-10">
                 {/* Section Header */}
-                <div ref={titleRef} className="text-center mb-20">
+                <div ref={titleRef} className="text-center mb-10">
                     <span className="section-subtitle gradient-text">Experience</span>
                     <h2 className="section-title text-text-primary">
                         Professional <span className="gradient-text">Experience</span>
@@ -91,7 +91,7 @@ export default function ProfessionalExperience() {
                     </motion.div>
 
                     {/* Timeline Items */}
-                    <div className="flex flex-col gap-16 relative">
+                    <div className="flex flex-col gap-8 relative">
                         {experiences.map((exp, index) => {
                             const isEven = index % 2 === 0;
                             return (

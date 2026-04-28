@@ -98,9 +98,9 @@ export default function Experience() {
     }, []);
 
     return (
-        <section ref={sectionRef} id="experience" className="relative bg-[#020202] py-24 md:py-32 overflow-hidden border-b border-white/5">
+        <section ref={sectionRef} id="experience" className="section relative bg-[#020202] overflow-hidden border-b border-white/5">
             {/* Header Text */}
-            <div className="relative z-10 text-center mb-24 md:mb-40">
+            <div className="relative z-10 text-center mb-10">
                 <span className="text-[#e63946] font-mono tracking-widest text-xs uppercase font-semibold">04 // History</span>
                 <h2 className="text-5xl md:text-7xl lg:text-8xl font-serif font-bold text-white tracking-tighter mt-4">
                     The <span className="text-white/30 italic">Timeline.</span>
@@ -118,7 +118,7 @@ export default function Experience() {
                     className="absolute left-8 md:left-1/2 top-0 bottom-0 w-[3px] bg-gradient-to-b from-[#e63946]/0 via-[#e63946] to-[#00ffff] md:-translate-x-1/2 origin-top scale-y-0 z-0 shadow-[0_0_20px_rgba(230,57,70,0.8)]" 
                 />
 
-                <div className="relative z-10 flex flex-col gap-24 md:gap-40 py-12 md:py-24">
+                <div className="relative z-10 flex flex-col gap-12 py-6">
                     {experiences.map((exp, i) => {
                         const isEven = i % 2 === 0;
                         return (
@@ -132,9 +132,7 @@ export default function Experience() {
 
                                 {/* Content Box */}
                                 <div className={`w-full pl-20 md:pl-0 md:w-5/12 ${isEven ? 'md:text-right md:pr-16' : 'md:text-left md:pl-16'} node-content`}>
-                                    <div className="inline-block px-4 py-1.5 rounded-full border border-white/10 bg-white/[0.02] text-white/50 mono text-xs mb-4 md:mb-6 backdrop-blur-md font-semibold tracking-wider">
-                                        {exp.date}
-                                    </div>
+
                                     <h3 className="text-3xl md:text-5xl font-serif font-bold text-white mb-4 tracking-tighter leading-tight">{exp.title}</h3>
                                     <div className="text-[#e63946] mono text-sm mb-6 tracking-widest uppercase flex items-center gap-2 justify-start md:justify-end">
                                         {!isEven && <span className="w-4 h-[1px] bg-[#e63946] block md:hidden" />}

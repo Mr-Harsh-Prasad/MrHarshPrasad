@@ -1,5 +1,4 @@
 import Hero from '@/components/sections/Hero';
-import About from '@/components/sections/About';
 import Education from '@/components/sections/Education';
 import Achievements from '@/components/sections/Achievements';
 import Skills from '@/components/sections/Skills';
@@ -17,12 +16,8 @@ import GlowingSeparator from '@/components/ui/GlowingSeparator';
 export default function Home() {
   return (
     <main className="relative bg-black text-white">
-      {/* Hero Section - Full viewport intro */}
+      {/* Hero Section */}
       <Hero />
-      <GlowingSeparator />
-
-      {/* About Section - Personal introduction */}
-      <About />
       <GlowingSeparator />
 
       {/* Education Section */}

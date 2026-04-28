@@ -64,7 +64,7 @@ export default function Education() {
         <section ref={sectionRef} id="education" className="section relative overflow-hidden">
             <div className="container relative z-10">
                 {/* Section Header */}
-                <div ref={titleRef} className="text-center mb-20">
+                <div ref={titleRef} className="text-center mb-12">
                     <span className="section-subtitle gradient-text">Education</span>
                     <h2 className="section-title text-text-primary">
                         Academic <span className="gradient-text">Background</span>

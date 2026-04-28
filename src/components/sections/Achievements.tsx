@@ -203,7 +203,7 @@ export default function Achievements() {
         <section ref={sectionRef} id="achievements" className="section bg-bg-secondary relative overflow-hidden">
             <div className="container relative z-10">
                 {/* Section Header */}
-                <div ref={titleRef} className="text-center mb-16">
+                <div ref={titleRef} className="text-center mb-10">
                     <span className="section-subtitle gradient-text">Achievements</span>
                     <h2 className="section-title text-text-primary">
                         Proud <span className="gradient-text">Milestones</span>
@@ -214,7 +214,7 @@ export default function Achievements() {
                 </div>
 
                 {/* Achievement Cards */}
-                <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <div className="grid md:grid-cols-2 gap-5 max-w-4xl mx-auto">
                     {achievements.map((item, index) => (
                         <TiltCard key={item.title} item={item} index={index} />
                     ))}
