@@ -1,4 +1,4 @@
-import { useRef, useMemo } from 'react';
+import { useRef, useMemo, useState } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 
@@ -12,33 +12,39 @@ export default function ParticleSystem({ count = 2000, isHovering = false }: Par
   const materialRef = useRef<THREE.ShaderMaterial>(null);
   const { mouse, viewport } = useThree();
 
-  const { positions, randoms } = useMemo(() => {
+  const [{ positions, randoms }] = useState(() => {
     const pos = new Float32Array(count * 3);
     const rand = new Float32Array(count);
     
     for (let i = 0; i < count; i++) {
-      // Store: x = radius, y = height, z = angle
-      const radius = 2 + Math.random() * 8; // Spread out more
-      const height = (Math.random() - 0.5) * 4;
-      const angle = Math.random() * Math.PI * 2;
+      const r = Math.random();
+      const h = Math.random();
+      const a = Math.random();
+      const s = Math.random();
+
+      const radius = 2 + r * 8; 
+      const height = (h - 0.5) * 4;
+      const angle = a * Math.PI * 2;
       
       pos[i * 3] = radius;
       pos[i * 3 + 1] = height;
       pos[i * 3 + 2] = angle;
       
-      // Random value for speed variation
-      rand[i] = 0.5 + Math.random() * 0.5;
+      rand[i] = 0.5 + s * 0.5;
     }
     return { positions: pos, randoms: rand };
-  }, [count]);
+  });
 
-  const shaderArgs = useMemo(() => ({
-    uniforms: {
-      time: { value: 0 },
-      mouse: { value: new THREE.Vector2() },
-      isHovering: { value: 0.0 },
-      pixelRatio: { value: Math.min(window.devicePixelRatio, 2.0) }
-    },
+  const shaderArgs = useMemo(() => {
+    const dpr = typeof window !== 'undefined' ? Math.min(window.devicePixelRatio, 2.0) : 1.0;
+    return {
+      uniforms: {
+        time: { value: 0 },
+        mouse: { value: new THREE.Vector2() },
+        isHovering: { value: 0.0 },
+        pixelRatio: { value: dpr }
+      },
+
     vertexShader: `
       uniform float time;
       uniform vec2 mouse;
@@ -105,7 +111,8 @@ export default function ParticleSystem({ count = 2000, isHovering = false }: Par
         gl_FragColor = vec4(color, vAlpha * glow);
       }
     `
-  }), []);
+    };
+  }, [count]);
 
   useFrame((state) => {
     if (materialRef.current) {

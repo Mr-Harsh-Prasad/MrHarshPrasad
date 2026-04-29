@@ -35,7 +35,7 @@ export default function Skills() {
               initial={{ opacity: 0, y: 32 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-40px' }}
-              transition={{ delay: i * 0.09, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ delay: i * 0.09, duration: 0.5, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
               whileHover={{ y: -5, transition: { duration: 0.25 } }}
               className="card relative overflow-hidden cursor-default group"
             >
@@ -93,7 +93,7 @@ export default function Skills() {
                   initial={{ scaleX: 0 }}
                   whileInView={{ scaleX: skill.level / 100 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 1, delay: i * 0.1 + 0.2, ease: [0.16, 1, 0.3, 1] }}
+                  transition={{ duration: 1, delay: i * 0.1 + 0.2, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
                 />
               </div>
 

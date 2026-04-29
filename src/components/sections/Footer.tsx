@@ -109,7 +109,7 @@ export default function Footer() {
                             <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/30 to-transparent group-hover:animate-shimmer" />
                         </button>
                         <p className="text-text-muted text-xs mono mt-2 tracking-widest transition-colors duration-300 group-hover:text-accent-primary">
-                            // HARSH PRASAD — PORTFOLIO
+                            {`// HARSH PRASAD — PORTFOLIO`}
                         </p>
                     </div>
 

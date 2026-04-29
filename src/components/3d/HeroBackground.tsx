@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useMemo } from 'react';
+import { useRef, useMemo, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Float, Sphere, MeshDistortMaterial } from '@react-three/drei';
 import * as THREE from 'three';
@@ -41,15 +41,15 @@ function ParticleField() {
     const particlesRef = useRef<THREE.Points>(null);
     const count = 500;
 
-    const positions = useMemo(() => {
-        const positions = new Float32Array(count * 3);
+    const [positions] = useState(() => {
+        const pos = new Float32Array(count * 3);
         for (let i = 0; i < count * 3; i += 3) {
-            positions[i] = (Math.random() - 0.5) * 15;
-            positions[i + 1] = (Math.random() - 0.5) * 15;
-            positions[i + 2] = (Math.random() - 0.5) * 10;
+            pos[i] = (Math.random() - 0.5) * 15;
+            pos[i + 1] = (Math.random() - 0.5) * 15;
+            pos[i + 2] = (Math.random() - 0.5) * 10;
         }
-        return positions;
-    }, []);
+        return pos;
+    });
 
     useFrame((state) => {
         if (!particlesRef.current) return;

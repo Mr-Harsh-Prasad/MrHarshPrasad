@@ -72,7 +72,7 @@ export default function ProfessionalExperience() {
                         Professional <span className="gradient-text">Experience</span>
                     </h2>
                     <p className="text-text-secondary max-w-2xl mx-auto mt-4">
-                        Roles where I've led, built, and mentored in real-world environments.
+                        Roles where I&apos;ve led, built, and mentored in real-world environments.
                     </p>
                 </div>
 
