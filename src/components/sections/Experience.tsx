@@ -10,16 +10,23 @@ const experiences = [
     {
         title: 'Web Exploit Hunting & Bug Bounty',
         company: 'EDU Skills',
-        date: '2023 - Present',
+        date: '2025',
         description: 'Learning web security concepts, vulnerability assessment, and participating in bug bounty programs to secure modern web infrastructure.',
         color: '#e63946'
     },
     {
         title: 'AR/VR Development',
         company: 'Unity Engine',
-        date: '2022 - 2023',
+        date: '2026',
         description: 'Hands-on engineering of Augmented Reality and Virtual Reality spatial computing applications using the Unity framework.',
         color: '#00ffff'
+    },
+    {
+        title: 'AI in Cyber Security',
+        company: 'EDU Skills',
+        date: '2026',
+        description: 'Comprehensive study of AI-driven cybersecurity, covering machine learning, deep learning, threat detection, incident response, cloud and endpoint security, ethical AI, and future trends in intelligent cyber defense.',
+        color: '#e12fd3ff'
     }
 ];
 
@@ -50,11 +57,11 @@ export default function Experience() {
                 const glow = node.querySelector('.node-glow');
                 const content = node.querySelector('.node-content');
                 const isEven = i % 2 === 0;
-                
+
                 // Content slides in when laser reaches it
-                gsap.fromTo(content, 
+                gsap.fromTo(content,
                     { opacity: 0, x: isEven ? 50 : -50 },
-                    { 
+                    {
                         opacity: 1, x: 0, duration: 1, ease: "power3.out",
                         scrollTrigger: {
                             trigger: node,
@@ -76,7 +83,7 @@ export default function Experience() {
                         }
                     }
                 );
-                
+
                 // Dot lights up instantly
                 const dot = node.querySelector('.node-dot');
                 gsap.to(dot, {
@@ -108,14 +115,14 @@ export default function Experience() {
             </div>
 
             <div className="container mx-auto px-4 max-w-6xl relative">
-                
+
                 {/* The Central Wire */}
                 <div ref={lineRef} className="absolute left-8 md:left-1/2 top-0 bottom-0 w-[1px] bg-white/5 md:-translate-x-1/2" />
-                
+
                 {/* The Laser */}
-                <div 
-                    ref={laserRef} 
-                    className="absolute left-8 md:left-1/2 top-0 bottom-0 w-[3px] bg-gradient-to-b from-[#e63946]/0 via-[#e63946] to-[#00ffff] md:-translate-x-1/2 origin-top scale-y-0 z-0 shadow-[0_0_20px_rgba(230,57,70,0.8)]" 
+                <div
+                    ref={laserRef}
+                    className="absolute left-8 md:left-1/2 top-0 bottom-0 w-[3px] bg-gradient-to-b from-[#e63946]/0 via-[#e63946] to-[#00ffff] md:-translate-x-1/2 origin-top scale-y-0 z-0 shadow-[0_0_20px_rgba(230,57,70,0.8)]"
                 />
 
                 <div className="relative z-10 flex flex-col gap-12 py-6">
@@ -123,7 +130,7 @@ export default function Experience() {
                         const isEven = i % 2 === 0;
                         return (
                             <div key={i} className={`timeline-node relative flex items-center justify-between w-full ${isEven ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
-                                
+
                                 {/* Center Node */}
                                 <div className="absolute left-8 md:left-1/2 top-0 md:top-1/2 -translate-x-1/2 md:-translate-y-1/2 flex items-center justify-center z-10">
                                     <div className="node-glow absolute w-12 h-12 rounded-full pointer-events-none mix-blend-screen" style={{ backgroundColor: exp.color }} />
@@ -143,7 +150,7 @@ export default function Experience() {
                                         {exp.description}
                                     </p>
                                 </div>
-                                
+
                                 {/* Empty side for spacing on Desktop */}
                                 <div className="hidden md:block w-5/12" />
                             </div>
@@ -151,7 +158,7 @@ export default function Experience() {
                     })}
                 </div>
             </div>
-            
+
         </section>
     );
 }
