@@ -9,18 +9,18 @@ gsap.registerPlugin(ScrollTrigger);
 
 const experiences = [
     {
-        role: 'Technical Head',
-        org: 'GeeksforGeeks Cloud Computing Club',
+        role: 'Vice President',
+        org: 'GFG Student Chapter',
         location: 'Ghaziabad',
         period: 'Sept 2025 – Present',
-        icon: '☁️',
+        icon: '🏛️',
         color: 'from-green-500 to-emerald-400',
         glowColor: 'rgba(16, 185, 129, 0.5)',
         points: [
-            'Led technical activities and coordinated student projects.',
-            'Organized coding sessions and technical workshops.',
-            'Mentored peers in programming and development.',
-            'Managed team collaboration and event execution.',
+            'Leading the GFG Student Chapter as Vice President in 3rd year.',
+            'Overseeing chapter operations, events, and member engagement.',
+            'Coordinating with GeeksforGeeks and college administration.',
+            'Mentoring juniors and driving technical community growth.',
         ],
     },
 ];
