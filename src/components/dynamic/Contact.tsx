@@ -82,7 +82,7 @@ export default function Contact({ email, githubUrl, linkedinUrl, twitterUrl }: C
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-100px' }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] as Easing }}
-          className="mb-16 text-center"
+          className="mb-16 lg:mb-20 text-center"
         >
           <span className="section-subtitle">Contact</span>
           <h2 className="section-title gradient-text">Get In Touch</h2>
@@ -91,7 +91,7 @@ export default function Contact({ email, githubUrl, linkedinUrl, twitterUrl }: C
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
           {/* Contact Info */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}

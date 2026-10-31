@@ -161,18 +161,75 @@ export default function AppearancePage() {
     setSettings(prev => ({ ...prev, [key]: value }));
   };
 
+  const validateSettings = (s: SiteSettings): string | null => {
+    // Validate color format (#rrggbb)
+    const hexColorRegex = /^#[0-9a-fA-F]{6}$/;
+    if (!hexColorRegex.test(s.themePrimaryColor)) return 'Primary color must be a valid hex color (e.g., #ccff00)';
+    if (!hexColorRegex.test(s.themeSecondaryColor)) return 'Secondary color must be a valid hex color (e.g., #00ffcc)';
+    if (!hexColorRegex.test(s.themeAccentColor)) return 'Accent color must be a valid hex color (e.g., #88ff00)';
+    
+    // Validate URL lengths (varchar limits)
+    const urlFields = [
+      { key: 'heroImageUrl', label: 'Hero Image URL', max: 500 },
+      { key: 'siteUrl', label: 'Site URL', max: 200 },
+      { key: 'githubUrl', label: 'GitHub URL', max: 200 },
+      { key: 'linkedinUrl', label: 'LinkedIn URL', max: 200 },
+      { key: 'twitterUrl', label: 'Twitter URL', max: 200 },
+    ];
+    for (const f of urlFields) {
+      if (s[f.key as keyof SiteSettings] && (s[f.key as keyof SiteSettings] as string).length > f.max) {
+        return `${f.label} exceeds ${f.max} characters`;
+      }
+    }
+    
+    // Validate varchar text fields
+    const textFields = [
+      { key: 'fontFamilyBase', label: 'Body Font', max: 100 },
+      { key: 'fontFamilyDisplay', label: 'Display Font', max: 100 },
+      { key: 'fontFamilyMono', label: 'Mono Font', max: 100 },
+      { key: 'fontSizeBase', label: 'Base Font Size', max: 10 },
+      { key: 'fontSizeScale', label: 'Font Scale', max: 20 },
+      { key: 'animationPreference', label: 'Animation', max: 50 },
+      { key: 'animationDuration', label: 'Animation Duration', max: 20 },
+      { key: 'animationEasing', label: 'Easing', max: 50 },
+      { key: 'heroTitle', label: 'Hero Title', max: 200 },
+      { key: 'heroCtaText', label: 'Primary CTA Text', max: 50 },
+      { key: 'heroCtaLink', label: 'Primary CTA Link', max: 100 },
+      { key: 'heroSecondaryCtaText', label: 'Secondary CTA Text', max: 50 },
+      { key: 'heroSecondaryCtaLink', label: 'Secondary CTA Link', max: 100 },
+      { key: 'siteTitle', label: 'Site Title', max: 100 },
+      { key: 'email', label: 'Email', max: 100 },
+      { key: 'footerText', label: 'Footer Text', max: 200 },
+    ];
+    for (const f of textFields) {
+      const val = s[f.key as keyof SiteSettings] as string;
+      if (val && val.length > f.max) {
+        return `${f.label} exceeds ${f.max} characters`;
+      }
+    }
+    
+    return null;
+  };
+
   const handleSave = async () => {
+    const validationError = validateSettings(settings);
+    if (validationError) {
+      toast({ title: 'Validation Error', description: validationError, variant: 'destructive' });
+      return;
+    }
+    
     setIsSaving(true);
     try {
+      console.log('Saving settings:', settings);
       const res = await fetch('/api/admin/settings', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(settings),
       });
       const data = await res.json();
+      console.log('Save response:', data);
       if (data.success) {
         toast({ title: 'Saved', description: 'Appearance settings updated successfully', variant: 'success' });
-        // Refresh the page to apply new CSS variables
         router.refresh();
       } else {
         toast({ title: 'Error', description: data.error || 'Failed to save settings', variant: 'destructive' });

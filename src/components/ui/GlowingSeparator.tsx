@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 
 export default function GlowingSeparator() {
     return (
-        <div className="w-full h-16 relative overflow-hidden flex items-center justify-center -my-8 pointer-events-none z-10">
+        <div className="w-full h-12 lg:h-16 relative overflow-hidden flex items-center justify-center -my-6 lg:-my-8 pointer-events-none z-10">
             <motion.div 
                 initial={{ width: 0, opacity: 0 }}
                 whileInView={{ width: "80%", opacity: 1 }}

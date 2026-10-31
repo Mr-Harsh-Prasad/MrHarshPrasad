@@ -51,7 +51,7 @@ export default function Skills({ skills }: SkillsProps) {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-100px' }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="mb-16"
+          className="mb-16 lg:mb-20"
         >
           <span className="section-subtitle">Skills</span>
           <h2 className="section-title gradient-text">Technical Stack</h2>
@@ -65,7 +65,7 @@ export default function Skills({ skills }: SkillsProps) {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: '-100px' }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
         >
           {skills.map((skill) => {
             const Icon = getIcon(skill.icon);
@@ -73,7 +73,7 @@ export default function Skills({ skills }: SkillsProps) {
               <motion.article
                 key={skill.id}
                 variants={itemVariants}
-                className="shiny-card"
+                className="shiny-card p-6"
                 style={{ borderColor: skill.color ? `${skill.color}40` : 'transparent' }}
               >
                 <div className="flex items-center gap-4 mb-6">

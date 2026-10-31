@@ -53,7 +53,7 @@ export default function Projects({ projects }: ProjectsProps) {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-100px' }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="mb-16"
+          className="mb-16 lg:mb-20"
         >
           <span className="section-subtitle">Projects</span>
           <h2 className="section-title gradient-text">Selected Work</h2>
@@ -67,7 +67,7 @@ export default function Projects({ projects }: ProjectsProps) {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: '-100px' }}
-          className="grid grid-cols-1 lg:grid-cols-2 gap-6"
+          className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8"
         >
           {displayProjects.map((project, index) => (
             <motion.article
@@ -77,7 +77,7 @@ export default function Projects({ projects }: ProjectsProps) {
             >
               <Link
                 href={`/projects/${project.slug}`}
-                className="block shiny-card h-full group"
+                className="block shiny-card h-full group p-6"
               >
                 {/* Project Image */}
                 {(project.thumbnailUrl || project.imageUrl) && (
@@ -103,7 +103,7 @@ export default function Projects({ projects }: ProjectsProps) {
                     {project.title}
                   </h3>
                   
-                  <p className="text-gray-400 text-sm mb-4 flex-1">
+                  <p className="text-gray-400 text-sm mb-4 flex-1 leading-relaxed">
                     {project.shortDescription || project.description.slice(0, 150)}...
                   </p>
 
@@ -130,7 +130,7 @@ export default function Projects({ projects }: ProjectsProps) {
                         rel="noopener noreferrer"
                         className="flex items-center gap-2 text-sm text-gray-400 hover:text-lime-400 transition-colors"
                       >
-                        <ExternalLink className="w-4 h-4" />
+                        <ExternalLink className="w-4 h-4 flex-shrink-0" />
                         Live Demo
                       </a>
                     )}
@@ -141,7 +141,7 @@ export default function Projects({ projects }: ProjectsProps) {
                         rel="noopener noreferrer"
                         className="flex items-center gap-2 text-sm text-gray-400 hover:text-lime-400 transition-colors"
                       >
-                        <GitBranch className="w-4 h-4" />
+                        <GitBranch className="w-4 h-4 flex-shrink-0" />
                         Code
                       </a>
                     )}

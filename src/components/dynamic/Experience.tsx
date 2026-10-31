@@ -54,7 +54,7 @@ export default function Experience({ experiences }: ExperienceProps) {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-100px' }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="mb-16"
+          className="mb-16 lg:mb-20"
         >
           <span className="section-subtitle">Experience</span>
           <h2 className="section-title gradient-text">Professional Journey</h2>
@@ -68,13 +68,13 @@ export default function Experience({ experiences }: ExperienceProps) {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: '-100px' }}
-          className="space-y-8"
+          className="space-y-6 lg:space-y-8"
         >
           {experiences.map((exp, index) => (
             <motion.article
               key={exp.id}
               variants={itemVariants}
-              className="shiny-card relative"
+              className="shiny-card relative p-6 lg:p-8"
             >
               {/* Timeline Dot */}
               <div className="absolute left-0 top-8 w-4 h-4 rounded-full bg-lime-400 border-4 border-black z-10" />
@@ -124,7 +124,7 @@ export default function Experience({ experiences }: ExperienceProps) {
                 </div>
 
                 {exp.description && (
-                  <p className="text-gray-400 mb-6 pl-8 lg:pl-20 max-w-3xl">{exp.description}</p>
+                  <p className="text-gray-400 mb-6 pl-8 lg:pl-20 max-w-3xl leading-relaxed">{exp.description}</p>
                 )}
 
                 {exp.achievements.length > 0 && (

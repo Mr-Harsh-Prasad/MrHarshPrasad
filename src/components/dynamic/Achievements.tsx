@@ -51,7 +51,7 @@ export default function Achievements({ achievements }: AchievementsProps) {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-100px' }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="mb-16"
+          className="mb-16 lg:mb-20"
         >
           <span className="section-subtitle">Achievements</span>
           <h2 className="section-title gradient-text">Certifications & Awards</h2>
@@ -71,7 +71,7 @@ export default function Achievements({ achievements }: AchievementsProps) {
             <motion.article
               key={ach.id}
               variants={itemVariants}
-              className="shiny-card relative overflow-hidden"
+              className="shiny-card relative overflow-hidden p-6"
             >
               <div className="flex gap-6">
                 {/* Certificate Image */}

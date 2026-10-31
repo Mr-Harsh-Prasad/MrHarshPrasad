@@ -57,7 +57,7 @@ export default function Hero({
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="relative w-full max-w-md"
+            className="relative w-full max-w-md lg:max-w-lg xl:max-w-xl"
           >
             <div className="aspect-square relative">
               <img
@@ -97,45 +97,45 @@ export default function Hero({
           </motion.div>
 
           <motion.div variants={animationVariants} initial="hidden" animate="visible" transition={{ delay: 0.2 }}>
-            <p className="gradient-text-flow text-xl max-w-xl">{subtitle}</p>
+            <p className="gradient-text-flow text-xl max-w-2xl lg:max-w-xl">{subtitle}</p>
           </motion.div>
 
           <motion.div variants={animationVariants} initial="hidden" animate="visible" transition={{ delay: 0.3 }}>
-            <p className="text-gray-400 text-lg max-w-xl">{description}</p>
+            <p className="text-gray-400 text-lg max-w-2xl lg:max-w-xl leading-relaxed">{description}</p>
           </motion.div>
 
           <motion.div variants={animationVariants} initial="hidden" animate="visible" transition={{ delay: 0.4 }}>
-            <div className="hero-ctas">
+            <div className="hero-ctas flex flex-wrap gap-4">
               <Link href={ctaLink} className="hero-cta-primary">
                 {ctaText}
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className="w-4 h-4 flex-shrink-0" />
               </Link>
               <Link href={secondaryCtaLink} className="hero-cta-secondary">
-                <Mail className="w-4 h-4" />
+                <Mail className="w-4 h-4 flex-shrink-0" />
                 {secondaryCtaText}
               </Link>
             </div>
           </motion.div>
 
           <motion.div variants={animationVariants} initial="hidden" animate="visible" transition={{ delay: 0.5 }}>
-            <div className="flex items-center gap-6 pt-4 border-t border-white/10">
+            <div className="flex flex-wrap items-center gap-4 pt-6 border-t border-white/10">
               {githubUrl && (
-                <a href={githubUrl} target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-lime-400 transition-colors" aria-label="GitHub">
+                <a href={githubUrl} target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-lime-400 transition-colors p-2 rounded-lg hover:bg-white/5" aria-label="GitHub">
                   <GitBranch className="w-6 h-6" />
                 </a>
               )}
               {linkedinUrl && (
-                <a href={linkedinUrl} target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-lime-400 transition-colors" aria-label="LinkedIn">
+                <a href={linkedinUrl} target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-lime-400 transition-colors p-2 rounded-lg hover:bg-white/5" aria-label="LinkedIn">
                   <LucideLink className="w-6 h-6" />
                 </a>
               )}
               {twitterUrl && (
-                <a href={twitterUrl} target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-lime-400 transition-colors" aria-label="Twitter">
+                <a href={twitterUrl} target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-lime-400 transition-colors p-2 rounded-lg hover:bg-white/5" aria-label="Twitter">
                   <MessageSquare className="w-6 h-6" />
                 </a>
               )}
               {email && (
-                <a href={`mailto:${email}`} className="text-gray-500 hover:text-lime-400 transition-colors" aria-label="Email">
+                <a href={`mailto:${email}`} className="text-gray-500 hover:text-lime-400 transition-colors p-2 rounded-lg hover:bg-white/5" aria-label="Email">
                   <Mail className="w-6 h-6" />
                 </a>
               )}
@@ -150,7 +150,7 @@ export default function Hero({
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-              className="w-full max-w-md aspect-square"
+              className="w-full max-w-md aspect-square lg:max-w-lg xl:max-w-xl"
             >
               <div className="w-full h-full rounded-2xl border border-white/10 bg-gradient-to-br from-white/5 to-white/10 flex items-center justify-center">
                 <div className="text-center p-8">

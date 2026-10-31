@@ -72,6 +72,8 @@ export async function PUT(request: NextRequest) {
     }
 
     const body = await request.json();
+    console.log('Updating settings with body:', JSON.stringify(body, null, 2));
+    
     const existing = await db.query.siteSettings.findFirst();
 
     let result;
@@ -85,11 +87,14 @@ export async function PUT(request: NextRequest) {
       [result] = await db.insert(siteSettings).values(body).returning();
     }
 
+    console.log('Settings updated successfully:', result);
     return NextResponse.json({ success: true, data: result });
   } catch (error) {
     console.error('Error updating settings:', error);
+    // Return the actual error message for debugging
+    const errorMessage = error instanceof Error ? error.message : 'Failed to update settings';
     return NextResponse.json(
-      { success: false, error: 'Failed to update settings' },
+      { success: false, error: errorMessage },
       { status: 500 }
     );
   }

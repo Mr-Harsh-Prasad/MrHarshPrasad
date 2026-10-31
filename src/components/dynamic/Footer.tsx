@@ -29,9 +29,9 @@ export default function Footer({
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="section relative border-t border-white/10 pt-12 pb-8">
+    <footer className="section relative border-t border-white/10 pt-16 pb-12">
       <div className="container relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 mb-12 lg:mb-16">
           {/* Brand */}
           <div className="lg:col-span-1">
             <Link href="/" className="flex items-center gap-3 mb-6">
@@ -45,24 +45,24 @@ export default function Footer({
             <p className="text-gray-400 mb-6 max-w-sm">
               {footerText || 'Building accessible, performant web experiences with modern technologies.'}
             </p>
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-wrap gap-3">
               {footerShowGithub && githubUrl && (
-                <a href={githubUrl} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-lime-400 transition-colors" aria-label="GitHub">
+                <a href={githubUrl} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-lime-400 transition-colors p-2 rounded-lg hover:bg-white/5" aria-label="GitHub">
                   <GitBranch className="w-6 h-6" />
                 </a>
               )}
               {footerShowLinkedin && linkedinUrl && (
-                <a href={linkedinUrl} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-lime-400 transition-colors" aria-label="LinkedIn">
+                <a href={linkedinUrl} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-lime-400 transition-colors p-2 rounded-lg hover:bg-white/5" aria-label="LinkedIn">
                   <LucideLink className="w-6 h-6" />
                 </a>
               )}
               {twitterUrl && (
-                <a href={twitterUrl} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-lime-400 transition-colors" aria-label="Twitter">
+                <a href={twitterUrl} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-lime-400 transition-colors p-2 rounded-lg hover:bg-white/5" aria-label="Twitter">
                   <MessageSquare className="w-6 h-6" />
                 </a>
               )}
               {email && (
-                <a href={`mailto:${email}`} className="text-gray-400 hover:text-lime-400 transition-colors" aria-label="Email">
+                <a href={`mailto:${email}`} className="text-gray-400 hover:text-lime-400 transition-colors p-2 rounded-lg hover:bg-white/5" aria-label="Email">
                   <Mail className="w-6 h-6" />
                 </a>
               )}
@@ -71,13 +71,13 @@ export default function Footer({
 
           {/* Quick Links */}
           <div>
-            <h4 className="font-bold text-lg mb-4">Quick Links</h4>
-            <nav className="space-y-3">
-              <Link href="#hero" className="text-gray-400 hover:text-lime-400 transition-colors">Home</Link>
-              <Link href="#projects" className="text-gray-400 hover:text-lime-400 transition-colors">Projects</Link>
-              <Link href="#experience" className="text-gray-400 hover:text-lime-400 transition-colors">Experience</Link>
-              <Link href="#skills" className="text-gray-400 hover:text-lime-400 transition-colors">Skills</Link>
-              <Link href="#contact" className="text-gray-400 hover:text-lime-400 transition-colors">Contact</Link>
+            <h4 className="font-bold text-lg mb-4 lg:mb-6">Quick Links</h4>
+            <nav className="space-y-3 lg:space-y-4">
+              <Link href="#hero" className="text-gray-400 hover:text-lime-400 transition-colors block">Home</Link>
+              <Link href="#projects" className="text-gray-400 hover:text-lime-400 transition-colors block">Projects</Link>
+              <Link href="#experience" className="text-gray-400 hover:text-lime-400 transition-colors block">Experience</Link>
+              <Link href="#skills" className="text-gray-400 hover:text-lime-400 transition-colors block">Skills</Link>
+              <Link href="#contact" className="text-gray-400 hover:text-lime-400 transition-colors block">Contact</Link>
             </nav>
           </div>
 
@@ -103,12 +103,12 @@ export default function Footer({
         </div>
 
         {/* Bottom Bar */}
-        <div className="pt-8 border-t border-white/10">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="pt-8 lg:pt-12 border-t border-white/10">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4 lg:gap-6">
             <p className="text-gray-500 text-sm">
               © {currentYear} {siteTitle?.split('|')[0]?.trim() || 'Harsh Prasad'}. All rights reserved.
             </p>
-            <div className="flex items-center gap-4 text-sm text-gray-500">
+            <div className="flex items-center gap-3 lg:gap-4 text-sm text-gray-500">
               <span>Built with</span>
               <Heart className="w-4 h-4 text-red-400" />
               <span>Next.js, React & Tailwind CSS</span>

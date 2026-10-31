@@ -55,7 +55,7 @@ export default function Education({ educations }: EducationProps) {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-100px' }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="mb-16"
+          className="mb-16 lg:mb-20"
         >
           <span className="section-subtitle">Education</span>
           <h2 className="section-title gradient-text">Academic Background</h2>
@@ -69,7 +69,7 @@ export default function Education({ educations }: EducationProps) {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: '-100px' }}
-          className="space-y-8"
+          className="space-y-6 lg:space-y-8"
         >
           {educations.map((edu, index) => (
             <motion.article
@@ -121,16 +121,16 @@ export default function Education({ educations }: EducationProps) {
                   </div>
 
                   {edu.description && (
-                    <p className="text-gray-400 mb-4">{edu.description}</p>
+                    <p className="text-gray-400 mb-4 leading-relaxed">{edu.description}</p>
                   )}
 
                   {edu.achievements.length > 0 && (
                     <div>
-                      <h4 className="font-medium text-sm text-gray-400 mb-2 uppercase tracking-wider">Achievements</h4>
-                      <ul className="space-y-1">
+                      <h4 className="font-medium text-sm text-gray-400 mb-3 uppercase tracking-wider">Achievements</h4>
+                      <ul className="space-y-2">
                         {edu.achievements.map((achievement, i) => (
-                          <li key={i} className="flex items-center gap-2 text-sm text-gray-300">
-                            <BookOpen className="w-4 h-4 text-lime-400 flex-shrink-0" />
+                          <li key={i} className="flex items-start gap-2 text-sm text-gray-300">
+                            <BookOpen className="w-4 h-4 text-lime-400 flex-shrink-0 mt-0.5" />
                             <span>{achievement}</span>
                           </li>
                         ))}
