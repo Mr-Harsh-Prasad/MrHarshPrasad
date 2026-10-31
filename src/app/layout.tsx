@@ -4,7 +4,6 @@ import './globals.css';
 import CustomCursor from '@/components/ui/CustomCursor';
 import SmoothScroll from '@/components/ui/SmoothScroll';
 import Navbar from '@/components/ui/Navbar';
-import { ThemeProvider } from '@/components/ThemeProvider';
 import { db } from '@/db';
 import { siteSettings } from '@/db/schema';
 
@@ -143,22 +142,20 @@ export default async function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${spaceMono.variable}`}>
       <body className="antialiased" style={style}>
-        <ThemeProvider>
-          {/* Custom cursor (hidden on touch devices) */}
-          <CustomCursor />
+        {/* Custom cursor (hidden on touch devices) */}
+        <CustomCursor />
 
-          {/* Navigation */}
-          <Navbar />
+        {/* Navigation */}
+        <Navbar />
 
-          {/* Smooth scroll wrapper */}
-          <SmoothScroll>
-            {/* Noise texture overlay for premium feel */}
-            <div className="noise-overlay" />
+        {/* Smooth scroll wrapper */}
+        <SmoothScroll>
+          {/* Noise texture overlay for premium feel */}
+          <div className="noise-overlay" />
 
-            {/* Main content */}
-            {children}
-          </SmoothScroll>
-        </ThemeProvider>
+          {/* Main content */}
+          {children}
+        </SmoothScroll>
       </body>
     </html>
   );

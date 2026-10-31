@@ -1,8 +1,8 @@
 import * as dotenv from 'dotenv';
 dotenv.config({ path: '.env.local' });
 
-import { db } from '@/db';
-import { siteSettings, projects, experiences, educations, skills, achievements, users } from '@/db/schema';
+import { db } from '../src/db';
+import { siteSettings, projects, experiences, educations, skills, achievements, users } from '../src/db/schema';
 import bcrypt from 'bcryptjs';
 
 async function seed() {
