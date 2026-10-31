@@ -3,6 +3,7 @@ dotenv.config({ path: '.env.local' });
 
 import { db } from '../src/db';
 import { siteSettings, projects, experiences, educations, skills, achievements, users } from '../src/db/schema';
+import { eq } from 'drizzle-orm';
 import bcrypt from 'bcryptjs';
 
 async function seed() {
