@@ -55,12 +55,14 @@ async function seed() {
     // 2. Create admin user
     console.log('Creating admin user...');
     const adminEmail = process.env.ADMIN_EMAIL?.toLowerCase() || 'admin@example.com';
+    const adminPassword = process.env.ADMIN_PASSWORD || 'Admin@123!ChangeMe';
     const existingUser = await db.query.users.findFirst({
       where: (users, { eq }) => eq(users.email, adminEmail),
     });
 
+    const passwordHash = await bcrypt.hash(adminPassword, 12);
+
     if (!existingUser) {
-      const passwordHash = await bcrypt.hash('Admin@123!ChangeMe', 12);
       await db.insert(users).values({
         email: adminEmail,
         name: 'Admin',
@@ -69,9 +71,13 @@ async function seed() {
       });
       console.log('✅ Admin user created');
       console.log(`   Email: ${adminEmail}`);
-      console.log(`   Password: Admin@123!ChangeMe (CHANGE THIS IMMEDIATELY!)`);
+      console.log(`   Password: ${adminPassword}`);
     } else {
-      console.log('✅ Admin user already exists');
+      // Update password in case it changed
+      await db.update(users).set({ passwordHash }).where(eq(users.email, adminEmail));
+      console.log('✅ Admin user updated with new password');
+      console.log(`   Email: ${adminEmail}`);
+      console.log(`   Password: ${adminPassword}`);
     }
 
     // 3. Create sample projects
