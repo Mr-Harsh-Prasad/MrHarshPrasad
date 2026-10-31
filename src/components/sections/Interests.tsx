@@ -1,11 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { motion } from 'framer-motion';
-
-gsap.registerPlugin(ScrollTrigger);
 
 // Interests data
 const interests = [
@@ -14,7 +10,7 @@ const interests = [
         icon: '🥋',
         highlight: '1st Dan Black Belt',
         isHighlighted: true,
-        color: 'from-red-500 to-orange-500',
+        color: 'from-lime-400 to-green-400',
     },
     {
         name: 'Chess',
@@ -54,25 +50,18 @@ export default function Interests() {
     const titleRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        const ctx = gsap.context(() => {
-            gsap.fromTo(
-                titleRef.current,
-                { opacity: 0, y: 40 },
-                {
-                    opacity: 1,
-                    y: 0,
-                    duration: 0.8,
-                    ease: 'power3.out',
-                    scrollTrigger: {
-                        trigger: titleRef.current,
-                        start: 'top 80%',
-                        toggleActions: 'play none none reverse',
-                    },
-                }
-            );
-        }, sectionRef);
-
-        return () => ctx.revert();
+        const items = titleRef.current?.querySelectorAll<HTMLElement>('[data-animate]');
+        items?.forEach((el, i) => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = `opacity 0.8s cubic-bezier(0.16,1,0.3,1) ${i * 120}ms, transform 0.8s cubic-bezier(0.16,1,0.3,1) ${i * 120}ms`;
+            requestAnimationFrame(() => {
+                setTimeout(() => {
+                    el.style.opacity = '1';
+                    el.style.transform = 'translateY(0)';
+                }, 100);
+            });
+        });
     }, []);
 
     return (
@@ -80,8 +69,8 @@ export default function Interests() {
             <div className="container">
                 {/* Section Header */}
                 <div ref={titleRef} className="text-center mb-16">
-                    <span className="section-subtitle gradient-text">Beyond Code</span>
-                    <h2 className="section-title text-text-primary">
+                    <span data-animate className="section-subtitle gradient-text">Beyond Code</span>
+                    <h2 data-animate className="section-title text-text-primary">
                         Interests & <span className="gradient-text">Hobbies</span>
                     </h2>
                 </div>
@@ -101,7 +90,7 @@ export default function Interests() {
                                 className={`
                                     glass p-6 rounded-2xl text-center cursor-default
                                     ${interest.isHighlighted
-                                        ? 'border-2 border-accent-primary shadow-lg shadow-accent-primary/20 min-w-[280px]'
+                                        ? 'border-2 border-lime-400/50 shadow-lg shadow-lime-400/20 min-w-[280px]'
                                         : 'min-w-[140px]'
                                     }
                                 `}
@@ -120,14 +109,14 @@ export default function Interests() {
 
                                 {/* Highlight badge for Taekwondo */}
                                 {interest.highlight && (
-                                    <span className="inline-block mt-2 px-3 py-1 text-xs font-semibold rounded-full bg-gradient-to-r from-accent-primary to-accent-secondary text-white">
+                                    <span className="inline-block mt-2 px-3 py-1 text-xs font-semibold rounded-full bg-gradient-to-r from-lime-400 to-cyan-400 text-black">
                                         {interest.highlight}
                                     </span>
                                 )}
 
                                 {/* Glow effect for highlighted */}
                                 {interest.isHighlighted && (
-                                    <div className="absolute -inset-1 bg-gradient-to-r from-accent-primary to-accent-secondary rounded-2xl opacity-20 blur-xl -z-10" />
+                                    <div className="absolute -inset-1 bg-gradient-to-r from-lime-400 to-cyan-400 rounded-2xl opacity-20 blur-xl -z-10" />
                                 )}
                             </motion.div>
                         </motion.div>

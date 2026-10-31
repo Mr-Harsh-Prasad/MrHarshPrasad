@@ -1,23 +1,19 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { motion, useScroll, useTransform } from 'framer-motion';
-
-gsap.registerPlugin(ScrollTrigger);
 
 const education = [
     {
         institution: 'IMS Engineering College, Ghaziabad',
-        degree: 'B.Tech – Computer Science',
+        degree: 'B.Tech – Computer Science Engineering',
         period: 'Sept 2024 – Present',
         icon: '🎓',
-        color: 'from-blue-500 to-indigo-400',
-        glowColor: 'rgba(59, 130, 246, 0.5)',
+        color: 'from-lime-400 to-cyan-400',
+        glowColor: 'rgba(204, 255, 0, 0.5)',
         details: [
             'Pursuing B.Tech in Computer Science Engineering.',
-            'Active member of the GeeksforGeeks Cloud Computing Club.',
+            'Active member of the GeeksforGeeks Student Chapter.',
             'Participating in hackathons, coding contests, and technical workshops.',
         ],
     },
@@ -39,25 +35,18 @@ export default function Education() {
     const lineHeight = useTransform(scrollYProgress, [0, 1], ['0%', '100%']);
 
     useEffect(() => {
-        const ctx = gsap.context(() => {
-            gsap.fromTo(
-                titleRef.current,
-                { opacity: 0, y: 40 },
-                {
-                    opacity: 1,
-                    y: 0,
-                    duration: 0.8,
-                    ease: 'power3.out',
-                    scrollTrigger: {
-                        trigger: titleRef.current,
-                        start: 'top 80%',
-                        toggleActions: 'play none none reverse',
-                    },
-                }
-            );
-        }, sectionRef);
-
-        return () => ctx.revert();
+        const items = titleRef.current?.querySelectorAll<HTMLElement>('[data-animate]');
+        items?.forEach((el, i) => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = `opacity 0.8s cubic-bezier(0.16,1,0.3,1) ${i * 120}ms, transform 0.8s cubic-bezier(0.16,1,0.3,1) ${i * 120}ms`;
+            requestAnimationFrame(() => {
+                setTimeout(() => {
+                    el.style.opacity = '1';
+                    el.style.transform = 'translateY(0)';
+                }, 100);
+            });
+        });
     }, []);
 
     return (
@@ -65,11 +54,11 @@ export default function Education() {
             <div className="container relative z-10">
                 {/* Section Header */}
                 <div ref={titleRef} className="text-center mb-12">
-                    <span className="section-subtitle gradient-text">Education</span>
-                    <h2 className="section-title text-text-primary">
+                    <span data-animate className="section-subtitle gradient-text">Education</span>
+                    <h2 data-animate className="section-title text-text-primary">
                         Academic <span className="gradient-text">Background</span>
                     </h2>
-                    <p className="text-text-secondary max-w-2xl mx-auto mt-4">
+                    <p data-animate className="text-text-secondary max-w-2xl mx-auto mt-4">
                         Where my journey in computer science began.
                     </p>
                 </div>
@@ -77,15 +66,15 @@ export default function Education() {
                 {/* Animated Timeline */}
                 <div ref={timelineRef} className="relative max-w-4xl mx-auto">
                     {/* Background Track */}
-                    <div className="absolute left-[28px] md:left-1/2 top-0 bottom-0 w-1 bg-white/5 md:-translate-x-1/2 rounded-full" />
+                    <div className="absolute left-[28px] md:left-1/2 top-0 bottom-0 w-0.5 bg-white/5 md:-translate-x-1/2 rounded-full" />
                     
                     {/* Glowing Fill Track */}
                     <motion.div 
-                        className="absolute left-[28px] md:left-1/2 top-0 w-1 bg-gradient-to-b from-blue-500 to-indigo-500 md:-translate-x-1/2 rounded-full origin-top"
+                        className="absolute left-[28px] md:left-1/2 top-0 w-0.5 bg-gradient-to-b from-lime-400 to-cyan-400 md:-translate-x-1/2 rounded-full origin-top"
                         style={{ height: lineHeight }}
                     >
                         {/* Leading glow dot */}
-                        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 w-4 h-4 rounded-full bg-white shadow-[0_0_20px_rgba(59,130,246,1)]" />
+                        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 w-3 h-3 rounded-full bg-lime-400 shadow-[0_0_15px_rgba(204,255,0,1)]" />
                     </motion.div>
 
                     {/* Timeline Items */}
@@ -99,13 +88,13 @@ export default function Education() {
 
                                     {/* Center Node */}
                                     <motion.div 
-                                        className="absolute left-[28px] md:left-1/2 -translate-x-1/2 w-10 h-10 rounded-full border-4 border-black bg-bg-secondary flex items-center justify-center z-10 shadow-[0_0_15px_rgba(0,0,0,0.5)]"
+                                        className="absolute left-[28px] md:left-1/2 -translate-x-1/2 w-9 h-9 rounded-full border-4 border-bg-primary bg-bg-secondary flex items-center justify-center z-10 shadow-[0_0_20px_rgba(0,0,0,0.5)]"
                                         initial={{ scale: 0, opacity: 0 }}
                                         whileInView={{ scale: 1, opacity: 1 }}
                                         viewport={{ once: true, margin: "-100px" }}
                                         transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
                                     >
-                                        <div className="w-3 h-3 rounded-full bg-gradient-to-br from-blue-400 to-indigo-400" />
+                                        <div className="w-2.5 h-2.5 rounded-full bg-gradient-to-br from-lime-400 to-cyan-400" />
                                     </motion.div>
 
                                     {/* Content Card */}
@@ -128,8 +117,8 @@ export default function Education() {
 
                                                 <div className="flex-1">
                                                     {/* Institution */}
-                                                    <h3 className="text-xl font-bold text-text-primary group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-blue-400 group-hover:to-indigo-400 transition-all duration-300">{edu.institution}</h3>
-                                                    <span className="text-sm text-accent-primary font-medium">{edu.degree}</span>
+                                                    <h3 className="text-xl font-bold text-text-primary group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-lime-400 group-hover:to-cyan-400 transition-all duration-300">{edu.institution}</h3>
+                                                    <span className="text-sm text-lime-400 font-medium">{edu.degree}</span>
 
                                                     {/* Period */}
                                                     <div className="flex items-center gap-1.5 mt-2 mb-4">
@@ -165,7 +154,7 @@ export default function Education() {
             </div>
             
             {/* Ambient Background Glow */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-600/5 rounded-full blur-[120px] pointer-events-none mix-blend-screen" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-lime-500/5 rounded-full blur-[120px] pointer-events-none mix-blend-screen" />
         </section>
     );
 }

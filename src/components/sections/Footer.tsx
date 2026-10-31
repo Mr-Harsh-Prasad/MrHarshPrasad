@@ -1,11 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { motion, useMotionValue, useSpring } from 'framer-motion';
-
-gsap.registerPlugin(ScrollTrigger);
 
 /**
  * Footer — clean, branded, minimal, with interactive signature glow.
@@ -31,29 +27,34 @@ export default function Footer() {
     };
 
     useEffect(() => {
-        const ctx = gsap.context(() => {
-            gsap.fromTo(
-                footerRef.current,
-                { opacity: 0 },
-                {
-                    opacity: 1, duration: 1, ease: 'expo.out',
-                    scrollTrigger: {
-                        trigger: footerRef.current,
-                        start: 'top 95%',
-                        toggleActions: 'play none none reverse',
-                    },
-                }
-            );
-            // animated border line
-            gsap.fromTo(lineRef.current, { scaleX: 0 }, {
-                scaleX: 1, duration: 1.5, ease: 'expo.out',
-                scrollTrigger: {
-                    trigger: footerRef.current,
-                    start: 'top 90%',
-                },
+        const items = footerRef.current?.querySelectorAll<HTMLElement>('[data-animate]');
+        items?.forEach((el, i) => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = `opacity 0.8s cubic-bezier(0.16,1,0.3,1) ${i * 100}ms, transform 0.8s cubic-bezier(0.16,1,0.3,1) ${i * 100}ms`;
+            requestAnimationFrame(() => {
+                setTimeout(() => {
+                    el.style.opacity = '1';
+                    el.style.transform = 'translateY(0)';
+                }, 100);
             });
-        }, footerRef);
-        return () => ctx.revert();
+        });
+        
+        // animated border line
+        if (lineRef.current) {
+            lineRef.current.style.transformOrigin = 'left';
+            lineRef.current.style.transform = 'scaleX(0)';
+            lineRef.current.style.transition = 'transform 1.5s cubic-bezier(0.16,1,0.3,1)';
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        lineRef.current!.style.transform = 'scaleX(1)';
+                    }
+                });
+            }, { threshold: 0.1 });
+            observer.observe(footerRef.current!);
+            return () => observer.disconnect();
+        }
     }, []);
 
     const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -81,7 +82,7 @@ export default function Footer() {
                         y: '-50%',
                         width: '400px',
                         height: '400px',
-                        background: 'radial-gradient(circle closest-side, rgba(230, 57, 70, 0.15), transparent)',
+                        background: 'radial-gradient(circle closest-side, rgba(204,255,0,0.15), transparent)',
                         opacity: isHovered ? 1 : 0,
                     }}
                     transition={{ duration: 0.3 }}
@@ -91,7 +92,7 @@ export default function Footer() {
             {/* glow top line */}
             <div
                 ref={lineRef}
-                className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#e63946] to-transparent origin-left z-10"
+                className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-lime-400 to-transparent origin-left z-10"
             />
 
             <div className="container relative z-10 pointer-events-none">
@@ -106,20 +107,20 @@ export default function Footer() {
                         >
                             <span className="relative z-10 transition-transform duration-300 group-hover:scale-105 inline-block">MHP.</span>
                             {/* Signature shine on hover */}
-                            <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/30 to-transparent group-hover:animate-shimmer" />
+                            <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-lime-400/30 to-transparent group-hover:animate-shimmer" />
                         </button>
-                        <p className="text-text-muted text-xs mono mt-2 tracking-widest transition-colors duration-300 group-hover:text-accent-primary">
+                        <p data-animate className="text-text-muted text-xs mono mt-2 tracking-widest transition-colors duration-300 group-hover:text-lime-400">
                             {`// HARSH PRASAD — PORTFOLIO`}
                         </p>
                     </div>
 
                     {/* Links */}
                     <nav className="flex flex-wrap gap-6 text-sm text-text-muted pointer-events-auto">
-                        {['about', 'skills', 'projects', 'contact'].map((id) => (
+                        {['education', 'skills', 'projects', 'achievements', 'experience', 'contact'].map((id) => (
                             <a
                                 key={id}
                                 href={`#${id}`}
-                                className="hover:text-text-primary hover:glow-text transition-all uppercase tracking-widest text-xs mono"
+                                className="hover:text-text-primary transition-all uppercase tracking-widest text-xs mono hover:text-lime-400"
                             >
                                 {id}
                             </a>
@@ -129,7 +130,7 @@ export default function Footer() {
                     {/* Back to top arrow */}
                     <button
                         onClick={scrollToTop}
-                        className="w-10 h-10 rounded-full border border-border flex items-center justify-center text-text-muted hover:border-accent-primary hover:text-accent-primary transition-all duration-300 pointer-events-auto hover:-translate-y-1 hover:shadow-[0_0_15px_rgba(230,57,70,0.3)]"
+                        className="w-10 h-10 rounded-full border border-border flex items-center justify-center text-text-muted hover:border-lime-400 hover:text-lime-400 transition-all duration-300 pointer-events-auto hover:-translate-y-1 hover:shadow-[0_0_15px_rgba(204,255,0,0.3)]"
                         aria-label="Scroll to top"
                     >
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -140,24 +141,18 @@ export default function Footer() {
 
                 {/* Copyright */}
                 <div className="mt-10 pt-6 border-t border-border/40 flex flex-col sm:flex-row justify-between items-center gap-3">
-                    <p className="text-text-muted text-xs mono">
+                    <p data-animate className="text-text-muted text-xs mono">
                         © {new Date().getFullYear()} Mr Harsh Prasad. All rights reserved.
                     </p>
-                    <p className="text-text-muted/50 text-xs mono">
+                    <p data-animate className="text-text-muted/50 text-xs mono">
                         Built with 🩷 AB
                     </p>
                 </div>
             </div>
 
             {/* Static bg orbs */}
-            <div className="absolute bottom-0 left-1/4 w-64 h-64 bg-[#e63946] opacity-[0.03] rounded-full blur-[100px] pointer-events-none" />
-            <div className="absolute bottom-0 right-1/4 w-64 h-64 bg-[#ffb703] opacity-[0.02] rounded-full blur-[100px] pointer-events-none" />
-            
-            <style jsx global>{`
-                .glow-text {
-                    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-                }
-            `}</style>
+            <div className="absolute bottom-0 left-1/4 w-64 h-64 bg-lime-500 opacity-[0.03] rounded-full blur-[100px] pointer-events-none" />
+            <div className="absolute bottom-0 right-1/4 w-64 h-64 bg-cyan-500 opacity-[0.02] rounded-full blur-[100px] pointer-events-none" />
         </footer>
     );
 }

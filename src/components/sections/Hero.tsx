@@ -1,42 +1,41 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import HeroScene3D from '@/components/3d/HeroScene3D';
 
 export default function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
+  const [isReducedMotion, setIsReducedMotion] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
 
-  /* ── subtle parallax on mouse move ── */
   useEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
-
-    const handleMove = (e: MouseEvent) => {
-      const { innerWidth: w, innerHeight: h } = window;
-      const dx = (e.clientX / w - 0.5) * 14;
-      const dy = (e.clientY / h - 0.5) * 8;
-      const bg = section.querySelector<HTMLElement>('.hero-bg-wrap');
-      if (bg) bg.style.transform = `scale(1.02) translate(${dx * 0.25}px, ${dy * 0.25}px)`;
+    const timer = setTimeout(() => setIsMounted(true), 0);
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const handler = (e: MediaQueryListEvent) => setIsReducedMotion(e.matches);
+    mediaQuery.addEventListener('change', handler);
+    // Set initial value after mount to avoid sync setState in effect
+    setTimeout(() => setIsReducedMotion(mediaQuery.matches), 0);
+    return () => {
+      clearTimeout(timer);
+      mediaQuery.removeEventListener('change', handler);
     };
-    window.addEventListener('mousemove', handleMove);
-    return () => window.removeEventListener('mousemove', handleMove);
   }, []);
 
-  /* ── entrance animation on mount ── */
   useEffect(() => {
+    if (!isMounted) return;
     const items = sectionRef.current?.querySelectorAll<HTMLElement>('[data-animate]');
     items?.forEach((el, i) => {
       el.style.opacity = '0';
-      el.style.transform = 'translateY(40px)';
-      el.style.transition = `opacity 0.9s cubic-bezier(0.16,1,0.3,1) ${i * 140}ms,
-                              transform 0.9s cubic-bezier(0.16,1,0.3,1) ${i * 140}ms`;
-      requestAnimationFrame(() =>
+      el.style.transform = 'translateY(30px)';
+      el.style.transition = `opacity 1s cubic-bezier(0.16,1,0.3,1) ${i * 120}ms, transform 1s cubic-bezier(0.16,1,0.3,1) ${i * 120}ms`;
+      requestAnimationFrame(() => {
         setTimeout(() => {
           el.style.opacity = '1';
           el.style.transform = 'translateY(0)';
-        }, 60)
-      );
+        }, 100);
+      });
     });
-  }, []);
+  }, [isMounted]);
 
   return (
     <section
@@ -53,188 +52,144 @@ export default function Hero() {
         alignItems: 'center',
       }}
     >
-      {/* ── Background photo ── */}
+      {/* 3D Scene */}
+      <HeroScene3D isReducedMotion={isReducedMotion} />
+
+      {/* Subtle atmospheric overlay */}
       <div
-        className="hero-bg-wrap"
         style={{
           position: 'absolute',
           inset: 0,
-          transform: 'scale(1.02)',
-          transition: 'transform 0.12s linear',
-          willChange: 'transform',
-          zIndex: 0,
+          zIndex: 1,
+          pointerEvents: 'none',
+          background: `
+            radial-gradient(ellipse at 20% 30%, rgba(204,255,0,0.03) 0%, transparent 50%),
+            radial-gradient(ellipse at 80% 70%, rgba(0,255,204,0.02) 0%, transparent 40%),
+            linear-gradient(to bottom, rgba(3,3,3,0.8) 0%, transparent 60%, rgba(3,3,3,0.9) 100%)
+          `,
         }}
-      >
-        <img
-          src="/hero-bg-pic.png"
-          alt="Harsh Prasad"
-          style={{
-            position: 'absolute',
-            inset: 0,
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
-            objectPosition: 'center center',
-          }}
-        />
-      </div>
+      />
 
-      {/* ── Edge blur: sharp centre, soft sides — desktop only ── */}
-      <div className="hero-edge-blur" />
+      {/* Grid pattern overlay */}
+      <div className="absolute inset-0 grid-pattern pointer-events-none" style={{ opacity: 0.15, zIndex: 1 }} />
 
-      {/* ── Golden-pink cinematic overlay ── */}
-      <div style={{
-        position: 'absolute',
-        inset: 0,
-        background: `
-          linear-gradient(
-            105deg,
-            rgba(10,5,2,0.92) 0%,
-            rgba(20,8,4,0.78) 38%,
-            rgba(255,160,60,0.12) 62%,
-            rgba(255,80,140,0.18) 100%
-          ),
-          linear-gradient(to top, rgba(8,3,2,0.88) 0%, transparent 55%)
-        `,
-        zIndex: 1,
-      }} />
+      {/* Content grid */}
+      <div className="hero-grid" style={{ zIndex: 10 }}>
 
-      {/* ── Warm glow orbs ── */}
-      <div style={{
-        position: 'absolute', inset: 0, zIndex: 1,
-        pointerEvents: 'none', overflow: 'hidden',
-      }}>
-        <div style={{
-          position: 'absolute', top: '-120px', left: '-80px',
-          width: '480px', height: '480px', borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(255,183,60,0.18) 0%, transparent 70%)',
-          filter: 'blur(40px)',
-          animation: 'orbFloat 14s ease-in-out infinite',
-        }} />
-        <div style={{
-          position: 'absolute', bottom: '-80px', right: '-60px',
-          width: '380px', height: '380px', borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(255,100,160,0.2) 0%, transparent 70%)',
-          filter: 'blur(40px)',
-          animation: 'orbFloat 18s ease-in-out infinite reverse',
-        }} />
-      </div>
-
-      {/* ── Left accent stripe ── */}
-      <div style={{
-        position: 'absolute', left: 0, top: '10%', bottom: '10%',
-        width: '3px',
-        background: 'linear-gradient(to bottom, transparent, #FFB83C 25%, #FF6EB4 75%, transparent)',
-        zIndex: 2,
-        boxShadow: '0 0 18px rgba(255,183,60,0.5)',
-      }} />
-
-      {/* ── Content grid ── */}
-      <div className="hero-grid">
-
-        {/* ══ LEFT — Name + CTAs ══ */}
+        {/* LEFT — Name + CTAs */}
         <div className="hero-left">
-
-          {/* eyebrow */}
+          {/* Eyebrow */}
           <div data-animate style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
             <span style={{
-              display: 'inline-block', width: '2rem', height: '1.5px',
-              background: 'linear-gradient(to right, #FFB83C, #FF6EB4)',
+              display: 'inline-block', width: '2.5rem', height: '1px',
+              background: 'linear-gradient(to right, transparent, #ccff00, transparent)',
             }} />
             <span style={{
               fontFamily: 'var(--font-mono)',
               fontSize: '0.7rem',
-              letterSpacing: '0.28em',
-              textTransform: 'uppercase' as const,
-              background: 'linear-gradient(to right, #FFB83C, #FF6EB4)',
+              letterSpacing: '0.3em',
+              textTransform: 'uppercase',
+              background: 'linear-gradient(to right, #ccff00, #00ffcc)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
+              fontWeight: 500,
             }}>
-              Developer · Athlete · Hacker
+              DEVELOPER · ATHLETE · HACKER
             </span>
           </div>
 
-          {/* Big name */}
+          {/* Main heading */}
           <h1 data-animate style={{
             fontFamily: 'var(--font-display)',
-            fontSize: 'clamp(3.6rem, 10vw, 9.5rem)',
-            lineHeight: 0.87,
-            letterSpacing: '-0.01em',
+            fontSize: 'clamp(4rem, 12vw, 10rem)',
+            lineHeight: 0.85,
+            letterSpacing: '-0.02em',
             margin: 0,
-            background: `linear-gradient(
-              90deg,
-              #FFFFFF, #FFE8B0, #FFB83C, #FF9A5C,
-              #FF6EB4, #FF3E8A, #FFB83C, #FFE8B0, #FFFFFF
-            )`,
-            backgroundSize: '300% 100%',
-            WebkitBackgroundClip: 'text',
-            backgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            animation: 'heroNameShift 5s ease-in-out infinite',
-            filter: 'drop-shadow(0 4px 40px rgba(255,183,60,0.4))',
+            fontWeight: 400,
+            textTransform: 'uppercase',
           }}>
-            MR.<br />HARSH<br />PRASAD
+            <span className="hero-name">HARSH</span>
+            <br />
+            <span className="hero-name">PRASAD</span>
           </h1>
 
-          {/* rule */}
+          {/* Divider */}
           <div data-animate style={{
-            width: 'clamp(3rem, 8vw, 5.5rem)',
-            height: '2px',
-            background: 'linear-gradient(to right, #FFB83C, #FF6EB4)',
-            borderRadius: '1px',
-            boxShadow: '0 0 14px rgba(255,183,60,0.5)',
+            width: 'clamp(4rem, 10vw, 6rem)',
+            height: '1px',
+            background: 'linear-gradient(to right, transparent, #ccff00, transparent)',
+            marginTop: '0.5rem',
           }} />
 
-          {/* subtitle */}
+          {/* Role */}
           <p data-animate style={{
             fontFamily: 'var(--font-body)',
-            fontSize: 'clamp(0.85rem, 1.3vw, 1.05rem)',
-            color: 'rgba(255,235,200,0.8)',
-            lineHeight: 1.65,
-            maxWidth: '27rem',
+            fontSize: 'clamp(1rem, 1.8vw, 1.25rem)',
+            color: 'rgba(245,245,245,0.7)',
+            lineHeight: 1.6,
+            maxWidth: '30rem',
             margin: 0,
+            fontWeight: 400,
+            letterSpacing: '0.01em',
           }}>
-            Full-Stack Developer &amp; Cybersecurity Enthusiast<br />
-            blending code, discipline, and creativity.
+            Full-Stack Developer & Cybersecurity Enthusiast
+            <br />
+            <span style={{ color: 'rgba(204,255,0,0.8)' }}>Blending code, discipline, and creativity.</span>
           </p>
 
           {/* CTAs */}
-          <div data-animate className="hero-ctas">
+          <div data-animate className="hero-ctas" style={{ marginTop: '1rem' }}>
             <a
               href="#contact"
               className="hero-cta-primary"
-              onMouseEnter={e => {
-                (e.currentTarget as HTMLAnchorElement).style.transform = 'translateY(-3px)';
-                (e.currentTarget as HTMLAnchorElement).style.boxShadow = '0 0 50px rgba(255,183,60,0.6)';
+              style={{
+                background: 'linear-gradient(135deg, #ccff00, #88ff44)',
+                color: '#030303',
+                boxShadow: '0 0 30px rgba(204, 255, 0, 0.4)',
               }}
-              onMouseLeave={e => {
-                (e.currentTarget as HTMLAnchorElement).style.transform = 'translateY(0)';
-                (e.currentTarget as HTMLAnchorElement).style.boxShadow = '0 0 28px rgba(255,183,60,0.4)';
+              onMouseEnter={(e) => {
+                const target = e.currentTarget as HTMLAnchorElement;
+                target.style.transform = 'translateY(-3px) scale(1.02)';
+                target.style.boxShadow = '0 0 50px rgba(204, 255, 0, 0.6), 0 10px 30px rgba(204, 255, 0, 0.2)';
+              }}
+              onMouseLeave={(e) => {
+                const target = e.currentTarget as HTMLAnchorElement;
+                target.style.transform = 'translateY(0) scale(1)';
+                target.style.boxShadow = '0 0 30px rgba(204, 255, 0, 0.4)';
               }}
             >
-              Get in Touch
+              Let&apos;s Connect
             </a>
             <a
               href="#projects"
               className="hero-cta-secondary"
-              onMouseEnter={e => {
-                (e.currentTarget as HTMLAnchorElement).style.background = 'rgba(255,183,60,0.1)';
-                (e.currentTarget as HTMLAnchorElement).style.borderColor = '#FFB83C';
-                (e.currentTarget as HTMLAnchorElement).style.boxShadow = '0 0 20px rgba(255,183,60,0.3)';
+              style={{
+                background: 'transparent',
+                color: 'rgba(245,245,245,0.9)',
+                borderColor: 'rgba(204,255,0,0.4)',
               }}
-              onMouseLeave={e => {
-                (e.currentTarget as HTMLAnchorElement).style.background = 'transparent';
-                (e.currentTarget as HTMLAnchorElement).style.borderColor = 'rgba(255,183,60,0.4)';
-                (e.currentTarget as HTMLAnchorElement).style.boxShadow = 'none';
+              onMouseEnter={(e) => {
+                const target = e.currentTarget as HTMLAnchorElement;
+                target.style.background = 'rgba(204,255,0,0.08)';
+                target.style.borderColor = '#ccff00';
+                target.style.boxShadow = '0 0 20px rgba(204, 255, 0, 0.3)';
+                target.style.color = '#ccff00';
+              }}
+              onMouseLeave={(e) => {
+                const target = e.currentTarget as HTMLAnchorElement;
+                target.style.background = 'transparent';
+                target.style.borderColor = 'rgba(204,255,0,0.4)';
+                target.style.boxShadow = 'none';
+                target.style.color = 'rgba(245,245,245,0.9)';
               }}
             >
-              View Work
+              Explore My Work
             </a>
           </div>
 
-          {/* Profile links — subtle, understated */}
-          <div data-animate style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', marginTop: '0.5rem' }}>
+          {/* Profile links */}
+          <div data-animate style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', marginTop: '1.5rem' }}>
             {[
               {
                 label: 'LeetCode',
@@ -298,96 +253,109 @@ export default function Hero() {
                   display: 'inline-flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  width: '30px',
-                  height: '30px',
-                  borderRadius: '6px',
-                  color: 'rgba(255,220,160,0.38)',
-                  transition: 'color 0.2s ease, background 0.2s ease',
+                  width: '36px',
+                  height: '36px',
+                  borderRadius: '8px',
+                  color: 'rgba(204,255,0,0.4)',
+                  transition: 'color 0.2s ease, background 0.2s ease, transform 0.2s ease',
                   textDecoration: 'none',
                 }}
-                onMouseEnter={e => {
-                  (e.currentTarget as HTMLAnchorElement).style.color = 'rgba(255,183,60,0.85)';
-                  (e.currentTarget as HTMLAnchorElement).style.background = 'rgba(255,183,60,0.07)';
+                onMouseEnter={(e) => {
+                  const target = e.currentTarget as HTMLAnchorElement;
+                  target.style.color = '#ccff00';
+                  target.style.background = 'rgba(204,255,0,0.1)';
+                  target.style.transform = 'translateY(-2px)';
                 }}
-                onMouseLeave={e => {
-                  (e.currentTarget as HTMLAnchorElement).style.color = 'rgba(255,220,160,0.38)';
-                  (e.currentTarget as HTMLAnchorElement).style.background = 'transparent';
+                onMouseLeave={(e) => {
+                  const target = e.currentTarget as HTMLAnchorElement;
+                  target.style.color = 'rgba(204,255,0,0.4)';
+                  target.style.background = 'transparent';
+                  target.style.transform = 'translateY(0)';
                 }}
               >
                 {svg}
               </a>
             ))}
             <span style={{
-              marginLeft: '0.25rem',
+              marginLeft: '0.5rem',
               fontFamily: 'var(--font-mono)',
-              fontSize: '0.58rem',
-              letterSpacing: '0.18em',
-              textTransform: 'uppercase' as const,
-              color: 'rgba(255,220,160,0.22)',
+              fontSize: '0.6rem',
+              letterSpacing: '0.2em',
+              textTransform: 'uppercase',
+              color: 'rgba(204,255,0,0.3)',
             }}>
               / profiles
             </span>
           </div>
         </div>
 
-        {/* ══ RIGHT — Badges + Quote ══ */}
+        {/* RIGHT — Achievements badges */}
         <div className="hero-right">
-
           {[
             {
               icon: '🥋',
-              label: 'Martial Arts',
+              label: 'MARTIAL ARTS',
               value: '1st Dan Black Belt',
               sub: 'World Taekwondo Federation',
-              color: '#FFB83C',
+              color: '#ccff00',
             },
             {
               icon: '🏆',
-              label: 'Hackathon',
+              label: 'HACKATHON',
               value: 'MLH Winner',
               sub: 'Major League Hacking · Global',
-              color: '#FF6EB4',
+              color: '#00ffcc',
             },
             {
               icon: '💻',
-              label: 'Engineering',
-              value: 'Full-Stack Engineer',
+              label: 'ENGINEERING',
+              value: 'Full-Stack Developer',
               sub: 'React · Node · Cybersecurity',
-              color: '#FF9A5C',
+              color: '#88ff00',
             },
           ].map((badge) => (
             <div
               key={badge.label}
               data-animate
               className="hero-badge"
-              style={{ borderLeft: `2px solid ${badge.color}` }}
-              onMouseEnter={e => {
-                (e.currentTarget as HTMLElement).style.transform = 'translateX(-6px)';
+              style={{
+                borderLeft: `2px solid ${badge.color}`,
+                paddingLeft: '1rem',
+                width: '100%',
+                maxWidth: '24rem',
+                transition: 'transform 0.3s ease, border-color 0.3s ease',
               }}
-              onMouseLeave={e => {
-                (e.currentTarget as HTMLElement).style.transform = 'translateX(0)';
+              onMouseEnter={(e) => {
+                const target = e.currentTarget as HTMLElement;
+                target.style.transform = 'translateX(-8px)';
+                target.style.borderLeftColor = '#ffffff';
+              }}
+              onMouseLeave={(e) => {
+                const target = e.currentTarget as HTMLElement;
+                target.style.transform = 'translateX(0)';
+                target.style.borderLeftColor = badge.color;
               }}
             >
-              <span style={{ fontSize: '1.6rem', flexShrink: 0, opacity: 0.9 }}>{badge.icon}</span>
+              <span style={{ fontSize: '1.8rem', flexShrink: 0, opacity: 0.9 }}>{badge.icon}</span>
               <div>
                 <span style={{
                   display: 'block',
                   fontFamily: 'var(--font-mono)',
-                  fontSize: '0.58rem',
-                  letterSpacing: '0.24em',
-                  textTransform: 'uppercase' as const,
+                  fontSize: '0.6rem',
+                  letterSpacing: '0.25em',
+                  textTransform: 'uppercase',
                   color: badge.color,
-                  marginBottom: '0.15rem',
-                  opacity: 0.85,
+                  marginBottom: '0.2rem',
+                  opacity: 0.8,
                 }}>
                   {badge.label}
                 </span>
                 <span style={{
                   display: 'block',
                   fontFamily: 'var(--font-body)',
-                  fontWeight: 700,
-                  fontSize: 'clamp(0.9rem, 1.15vw, 1rem)',
-                  color: 'rgba(255,245,225,0.92)',
+                  fontWeight: 600,
+                  fontSize: 'clamp(0.95rem, 1.3vw, 1.1rem)',
+                  color: 'rgba(245,245,245,0.95)',
                   letterSpacing: '-0.01em',
                 }}>
                   {badge.value}
@@ -396,8 +364,8 @@ export default function Hero() {
                   display: 'block',
                   fontFamily: 'var(--font-mono)',
                   fontSize: '0.65rem',
-                  color: 'rgba(255,220,160,0.38)',
-                  marginTop: '0.1rem',
+                  color: 'rgba(160,160,160,0.6)',
+                  marginTop: '0.15rem',
                 }}>
                   {badge.sub}
                 </span>
@@ -409,20 +377,20 @@ export default function Hero() {
           <div
             data-animate
             style={{
-              maxWidth: '22rem',
+              maxWidth: '24rem',
               width: '100%',
-              marginTop: '0.6rem',
-              padding: '0.6rem 0 0.6rem 0.9rem',
-              borderLeft: '2px solid rgba(255,183,60,0.4)',
+              marginTop: '1rem',
+              padding: '1rem 0 1rem 1.2rem',
+              borderLeft: '1px solid rgba(204,255,0,0.3)',
             }}
           >
             <p style={{
               fontFamily: 'var(--font-body)',
               fontStyle: 'italic',
-              fontSize: 'clamp(0.8rem, 1vw, 0.9rem)',
-              color: 'rgba(255,235,200,0.72)',
+              fontSize: 'clamp(0.85rem, 1.1vw, 0.95rem)',
+              color: 'rgba(245,245,245,0.6)',
               lineHeight: 1.7,
-              margin: '0 0 0.5rem',
+              margin: '0 0 0.75rem',
               letterSpacing: '0.01em',
             }}>
               If you don&apos;t fight for what you want,<br />
@@ -431,10 +399,10 @@ export default function Hero() {
             <span style={{
               display: 'block',
               fontFamily: 'var(--font-mono)',
-              fontSize: '0.63rem',
+              fontSize: '0.65rem',
               letterSpacing: '0.2em',
-              textTransform: 'uppercase' as const,
-              background: 'linear-gradient(to right, #FFB83C, #FF6EB4)',
+              textTransform: 'uppercase',
+              background: 'linear-gradient(to right, #ccff00, #00ffcc)',
               WebkitBackgroundClip: 'text',
               backgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
@@ -445,47 +413,76 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* ── Scroll indicator ── */}
+      {/* Scroll indicator */}
       <div style={{
         position: 'absolute',
-        bottom: '2.2rem',
+        bottom: '2.5rem',
         left: '50%',
         transform: 'translateX(-50%)',
-        zIndex: 3,
+        zIndex: 10,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        gap: '0.5rem',
+        gap: '0.6rem',
       }}>
         <span style={{
           fontFamily: 'var(--font-mono)',
-          fontSize: '0.58rem',
-          letterSpacing: '0.24em',
+          fontSize: '0.6rem',
+          letterSpacing: '0.25em',
           textTransform: 'uppercase',
-          color: 'rgba(255,220,160,0.55)',
+          color: 'rgba(204,255,0,0.5)',
         }}>Scroll</span>
         <div style={{
           width: '1px',
-          height: '3rem',
-          background: 'linear-gradient(to bottom, rgba(255,183,60,0.8), transparent)',
-          animation: 'scrollPulse 2.2s ease-in-out infinite',
+          height: '3.5rem',
+          background: 'linear-gradient(to bottom, rgba(204,255,0,0.8), transparent)',
+          animation: 'scrollPulse 2.5s ease-in-out infinite',
         }} />
       </div>
 
-      <style>{`
-        @keyframes orbFloat {
-          0%, 100% { transform: translate(0, 0) scale(1); }
-          33%       { transform: translate(30px, -40px) scale(1.08); }
-          66%       { transform: translate(-20px, 25px) scale(0.96); }
-        }
+      <style jsx global>{`
         @keyframes scrollPulse {
-          0%, 100% { opacity: 0.55; transform: scaleY(1); }
+          0%, 100% { opacity: 0.5; transform: scaleY(1); }
           50%       { opacity: 1;    transform: scaleY(1.2); }
         }
-        @keyframes heroNameShift {
+        @keyframes fluid-lime-cyan {
           0%   { background-position: 0%   50%; }
           50%  { background-position: 100% 50%; }
           100% { background-position: 0%   50%; }
+        }
+        @media (max-width: 768px) {
+          .hero-grid {
+            grid-template-columns: 1fr !important;
+            padding: 5rem clamp(1.25rem, 6vw, 2rem) 2rem !important;
+            align-items: flex-start !important;
+            gap: 2rem !important;
+          }
+          .hero-right {
+            align-items: flex-start !important;
+            margin-right: 0 !important;
+            width: 100%;
+          }
+          .hero-badge {
+            max-width: 100% !important;
+          }
+          .hero-ctas {
+            flex-direction: row;
+            width: 100%;
+          }
+          .hero-cta-primary, .hero-cta-secondary {
+            flex: 1;
+            justify-content: center;
+            font-size: 0.78rem;
+            padding: 0.75rem 1rem;
+          }
+        }
+        @media (max-width: 480px) {
+          .hero-ctas {
+            flex-direction: column;
+          }
+          .hero-cta-primary, .hero-cta-secondary {
+            text-align: center;
+          }
         }
       `}</style>
     </section>

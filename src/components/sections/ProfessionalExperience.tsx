@@ -1,11 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { motion, useScroll, useTransform } from 'framer-motion';
-
-gsap.registerPlugin(ScrollTrigger);
 
 const experiences = [
     {
@@ -14,10 +10,10 @@ const experiences = [
         location: 'Ghaziabad',
         period: 'Sept 2025 – Present',
         icon: '🏛️',
-        color: 'from-green-500 to-emerald-400',
-        glowColor: 'rgba(16, 185, 129, 0.5)',
+        color: 'from-lime-400 to-emerald-400',
+        glowColor: 'rgba(204, 255, 0, 0.5)',
         points: [
-            'Leading the GFG Student Chapter as Vice President in 3rd year.',
+            'Leading the GFG Student Chapter as Vice President.',
             'Overseeing chapter operations, events, and member engagement.',
             'Coordinating with GeeksforGeeks and college administration.',
             'Mentoring juniors and driving technical community growth.',
@@ -41,25 +37,18 @@ export default function ProfessionalExperience() {
     const lineHeight = useTransform(scrollYProgress, [0, 1], ['0%', '100%']);
 
     useEffect(() => {
-        const ctx = gsap.context(() => {
-            gsap.fromTo(
-                titleRef.current,
-                { opacity: 0, y: 40 },
-                {
-                    opacity: 1,
-                    y: 0,
-                    duration: 0.8,
-                    ease: 'power3.out',
-                    scrollTrigger: {
-                        trigger: titleRef.current,
-                        start: 'top 80%',
-                        toggleActions: 'play none none reverse',
-                    },
-                }
-            );
-        }, sectionRef);
-
-        return () => ctx.revert();
+        const items = titleRef.current?.querySelectorAll<HTMLElement>('[data-animate]');
+        items?.forEach((el, i) => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = `opacity 0.8s cubic-bezier(0.16,1,0.3,1) ${i * 120}ms, transform 0.8s cubic-bezier(0.16,1,0.3,1) ${i * 120}ms`;
+            requestAnimationFrame(() => {
+                setTimeout(() => {
+                    el.style.opacity = '1';
+                    el.style.transform = 'translateY(0)';
+                }, 100);
+            });
+        });
     }, []);
 
     return (
@@ -67,11 +56,11 @@ export default function ProfessionalExperience() {
             <div className="container relative z-10">
                 {/* Section Header */}
                 <div ref={titleRef} className="text-center mb-10">
-                    <span className="section-subtitle gradient-text">Experience</span>
-                    <h2 className="section-title text-text-primary">
+                    <span data-animate className="section-subtitle gradient-text">Experience</span>
+                    <h2 data-animate className="section-title text-text-primary">
                         Professional <span className="gradient-text">Experience</span>
                     </h2>
-                    <p className="text-text-secondary max-w-2xl mx-auto mt-4">
+                    <p data-animate className="text-text-secondary max-w-2xl mx-auto mt-4">
                         Roles where I&apos;ve led, built, and mentored in real-world environments.
                     </p>
                 </div>
@@ -79,15 +68,15 @@ export default function ProfessionalExperience() {
                 {/* Animated Timeline */}
                 <div ref={timelineRef} className="relative max-w-4xl mx-auto">
                     {/* Background Track */}
-                    <div className="absolute left-[28px] md:left-1/2 top-0 bottom-0 w-1 bg-white/5 md:-translate-x-1/2 rounded-full" />
+                    <div className="absolute left-[28px] md:left-1/2 top-0 bottom-0 w-0.5 bg-white/5 md:-translate-x-1/2 rounded-full" />
                     
                     {/* Glowing Fill Track */}
                     <motion.div 
-                        className="absolute left-[28px] md:left-1/2 top-0 w-1 bg-gradient-to-b from-green-500 to-emerald-500 md:-translate-x-1/2 rounded-full origin-top"
+                        className="absolute left-[28px] md:left-1/2 top-0 w-0.5 bg-gradient-to-b from-lime-400 to-emerald-400 md:-translate-x-1/2 rounded-full origin-top"
                         style={{ height: lineHeight }}
                     >
                         {/* Leading glow dot */}
-                        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 w-4 h-4 rounded-full bg-white shadow-[0_0_20px_rgba(16,185,129,1)]" />
+                        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 w-3 h-3 rounded-full bg-lime-400 shadow-[0_0_15px_rgba(204,255,0,1)]" />
                     </motion.div>
 
                     {/* Timeline Items */}
@@ -101,13 +90,13 @@ export default function ProfessionalExperience() {
 
                                     {/* Center Node */}
                                     <motion.div 
-                                        className="absolute left-[28px] md:left-1/2 -translate-x-1/2 w-10 h-10 rounded-full border-4 border-black bg-bg-secondary flex items-center justify-center z-10 shadow-[0_0_15px_rgba(0,0,0,0.5)]"
+                                        className="absolute left-[28px] md:left-1/2 -translate-x-1/2 w-9 h-9 rounded-full border-4 border-bg-primary bg-bg-secondary flex items-center justify-center z-10 shadow-[0_0_20px_rgba(0,0,0,0.5)]"
                                         initial={{ scale: 0, opacity: 0 }}
                                         whileInView={{ scale: 1, opacity: 1 }}
                                         viewport={{ once: true, margin: "-100px" }}
                                         transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
                                     >
-                                        <div className="w-3 h-3 rounded-full bg-gradient-to-br from-green-400 to-emerald-400" />
+                                        <div className="w-2.5 h-2.5 rounded-full bg-gradient-to-br from-lime-400 to-emerald-400" />
                                     </motion.div>
 
                                     {/* Content Card */}
@@ -130,8 +119,8 @@ export default function ProfessionalExperience() {
 
                                                 <div className="flex-1">
                                                     {/* Role & Org */}
-                                                    <h3 className="text-xl font-bold text-text-primary group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-green-400 group-hover:to-emerald-400 transition-all duration-300">{exp.role}</h3>
-                                                    <span className="text-sm text-accent-primary font-medium">{exp.org}</span>
+                                                    <h3 className="text-xl font-bold text-text-primary group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-lime-400 group-hover:to-emerald-400 transition-all duration-300">{exp.role}</h3>
+                                                    <span className="text-sm text-lime-400 font-medium">{exp.org}</span>
 
                                                     {/* Meta */}
                                                     <div className="flex flex-wrap gap-3 mt-2 mb-4">
@@ -141,6 +130,12 @@ export default function ProfessionalExperience() {
                                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                                                             </svg>
                                                             {exp.location}
+                                                        </span>
+                                                        <span className="text-xs text-text-muted flex items-center gap-1 bg-white/5 px-2 py-1 rounded-md">
+                                                            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                                            </svg>
+                                                            {exp.period}
                                                         </span>
                                                     </div>
 
@@ -170,7 +165,7 @@ export default function ProfessionalExperience() {
             </div>
             
             {/* Ambient Background Glow */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-green-600/5 rounded-full blur-[120px] pointer-events-none mix-blend-screen" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-lime-500/5 rounded-full blur-[120px] pointer-events-none mix-blend-screen" />
         </section>
     );
 }

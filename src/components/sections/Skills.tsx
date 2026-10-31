@@ -3,14 +3,14 @@
 import { motion } from 'framer-motion';
 
 const skills = [
-  { name: 'HTML',       level: 92, category: 'Markup Language',   color: '#e34f26', icon: '</>' },
-  { name: 'CSS',        level: 85, category: 'Styling Language',  color: '#264de4', icon: '{}' },
+  { name: 'C',          level: 85, category: 'Systems Language',  color: '#3b82f6', icon: 'C' },
+  { name: 'Python',     level: 80, category: 'AI & Backend',      color: '#f5c518', icon: 'Py' },
   { name: 'JavaScript', level: 78, category: 'Web Language',      color: '#f7df1e', icon: 'JS' },
-  { name: 'React',      level: 72, category: 'UI Framework',      color: '#61dafb', icon: '⚛' },
-  { name: 'Next.js',    level: 68, category: 'Full-Stack',        color: '#ffffff', icon: 'N›' },
-  { name: 'Python',     level: 75, category: 'AI & Backend',      color: '#f5c518', icon: 'Py' },
-  { name: 'Java',       level: 65, category: 'Enterprise',        color: '#f97316', icon: 'Jv' },
-  { name: 'C',          level: 80, category: 'Systems Language',  color: '#3b82f6', icon: 'C' },
+  { name: 'TypeScript', level: 75, category: 'Web Language',      color: '#3178c6', icon: 'TS' },
+  { name: 'React',      level: 75, category: 'UI Framework',      color: '#61dafb', icon: '⚛' },
+  { name: 'Next.js',    level: 72, category: 'Full-Stack',        color: '#ffffff', icon: 'N›' },
+  { name: 'Node.js',    level: 70, category: 'Backend',           color: '#68a063', icon: 'Node' },
+  { name: 'SQL',        level: 70, category: 'Database',          color: '#e38d13', icon: 'SQL' },
 ];
 
 export default function Skills() {
@@ -26,7 +26,7 @@ export default function Skills() {
             Tech <span className="gradient-text">Skills</span>
           </h2>
           <p className="text-text-secondary max-w-xl mx-auto mt-3 text-sm">
-            Languages I work with regularly.
+            Technologies I work with regularly.
           </p>
         </div>
 

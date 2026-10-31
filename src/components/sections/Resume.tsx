@@ -1,12 +1,8 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import MagneticButton from '@/components/ui/MagneticButton';
-
-gsap.registerPlugin(ScrollTrigger);
 
 /**
  * Resume Section - CTA section for resume download
@@ -29,25 +25,18 @@ export default function Resume() {
     };
 
     useEffect(() => {
-        const ctx = gsap.context(() => {
-            gsap.fromTo(
-                contentRef.current,
-                { opacity: 0, scale: 0.95 },
-                {
-                    opacity: 1,
-                    scale: 1,
-                    duration: 0.8,
-                    ease: 'power3.out',
-                    scrollTrigger: {
-                        trigger: contentRef.current,
-                        start: 'top 80%',
-                        toggleActions: 'play none none reverse',
-                    },
-                }
-            );
-        }, sectionRef);
-
-        return () => ctx.revert();
+        const items = contentRef.current?.querySelectorAll<HTMLElement>('[data-animate]');
+        items?.forEach((el, i) => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px) scale(0.98)';
+            el.style.transition = `opacity 0.8s cubic-bezier(0.16,1,0.3,1) ${i * 100}ms, transform 0.8s cubic-bezier(0.16,1,0.3,1) ${i * 100}ms`;
+            requestAnimationFrame(() => {
+                setTimeout(() => {
+                    el.style.opacity = '1';
+                    el.style.transform = 'translateY(0) scale(1)';
+                }, 100);
+            });
+        });
     }, []);
 
     return (
@@ -58,19 +47,19 @@ export default function Resume() {
                     className="relative max-w-4xl mx-auto glass-strong p-8 md:p-12 text-center overflow-hidden border border-white/5 rounded-3xl"
                 >
                     {/* Background gradient */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-accent-primary/5 via-transparent to-accent-tertiary/5 pointer-events-none" />
+                    <div className="absolute inset-0 bg-gradient-to-br from-lime-400/5 via-transparent to-cyan-400/5 pointer-events-none" />
 
                     {/* Decorative elements */}
-                    <div className="absolute top-0 left-1/4 w-32 h-32 bg-accent-primary/10 rounded-full blur-3xl pointer-events-none" />
-                    <div className="absolute bottom-0 right-1/4 w-32 h-32 bg-accent-tertiary/10 rounded-full blur-3xl pointer-events-none" />
+                    <div className="absolute top-0 left-1/4 w-32 h-32 bg-lime-400/10 rounded-full blur-3xl pointer-events-none" />
+                    <div className="absolute bottom-0 right-1/4 w-32 h-32 bg-cyan-400/10 rounded-full blur-3xl pointer-events-none" />
 
                     {/* Content */}
                     <div className="relative z-10">
-                        <span className="section-subtitle gradient-text">Resume</span>
-                        <h2 className="section-title text-text-primary mb-4">
+                        <span data-animate className="section-subtitle gradient-text">Resume</span>
+                        <h2 data-animate className="section-title text-text-primary mb-4">
                             Want to Know More?
                         </h2>
-                        <p className="text-text-secondary max-w-xl mx-auto mb-10">
+                        <p data-animate className="text-text-secondary max-w-xl mx-auto mb-10">
                             Download my resume to explore my full educational background,
                             skills, and experiences in detail.
                         </p>
@@ -93,7 +82,7 @@ export default function Resume() {
                                     y: '-50%',
                                     width: '150px',
                                     height: '150px',
-                                    background: 'radial-gradient(circle closest-side, rgba(230, 57, 70, 0.8), transparent)',
+                                    background: 'radial-gradient(circle closest-side, rgba(204,255,0,0.8), transparent)',
                                     filter: 'blur(20px)',
                                     opacity: isHovered ? 0.6 : 0,
                                 }}
@@ -101,7 +90,7 @@ export default function Resume() {
                             />
                             
                             {/* Static pulse glow behind button */}
-                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-accent-primary/20 blur-2xl rounded-full animate-pulse z-0 pointer-events-none" />
+                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-lime-400/20 blur-2xl rounded-full animate-pulse z-0 pointer-events-none" />
 
                             <div className="relative z-10">
                                 <MagneticButton href="/resume.pdf" download className="btn-primary overflow-hidden group">
@@ -128,7 +117,7 @@ export default function Resume() {
                         </div>
 
                         {/* Resume highlights */}
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-8">
+                        <div data-animate className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-8">
                             {[
                                 { icon: '🎓', label: 'B.Tech CS' },
                                 { icon: '💻', label: 'Web Dev' },
