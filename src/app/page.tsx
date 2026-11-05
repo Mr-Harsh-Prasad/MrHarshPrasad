@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import DynamicHero from '@/components/dynamic/Hero';
 import DynamicProjects from '@/components/dynamic/Projects';
 import DynamicExperience from '@/components/dynamic/Experience';
